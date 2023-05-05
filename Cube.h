@@ -1,5 +1,5 @@
-#ifndef CUBE_NEW_CUBE_H
-#define CUBE_NEW_CUBE_H
+#ifndef CUBE_CUBE_H
+#define CUBE_CUBE_H
 #include <iostream>
 #include <string>
 #include <cstring>
@@ -43,6 +43,12 @@ struct Face {
     };
     int8_t C[9];
 };
+
+struct Block {
+	int8_t top, bottom, front, back, left, right;
+};
+//using block_info_t = std::pair<const int8_t*, const int8_t*>;
+
 enum class FACE: uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
 enum class COLOR : unsigned char {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
 enum CORNER {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF}; //position is a solved state
@@ -72,9 +78,15 @@ public:
     void Down(int amount);
     void Up(int amount);
     void UpPrime(int amount);
-    void Right(int amount);
     void Left(int amount);
+    void Right(int amount);
+    void LeftPrime(int amount);
     void Back(int amount);
     COLOR getColor(FACE face, unsigned row, unsigned col);
+
+    int8_t* getCO();
+    int8_t* getCP();
+    int8_t* getEO();
+    int8_t* getEP();
 };
 #endif
