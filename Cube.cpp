@@ -295,23 +295,19 @@ void Cube::Front(int amount) {
     this->corners[(unsigned)CORNER::DLF] = this->corners[(unsigned)CORNER::DRF];
     this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::URF];
     this->corners[(unsigned)CORNER::URF] = hold;
-
     hold                                 = this->edges[(unsigned)EDGE::UF];
     this->edges[(unsigned)EDGE::UF]      = this->edges[(unsigned)EDGE::FL];
     this->edges[(unsigned)EDGE::FL]      = this->edges[(unsigned)EDGE::DF];
     this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::FR];
     this->edges[(unsigned)EDGE::FR]      = hold;
-
     this->updateCornerOrientation(CORNER::ULF, 2);
     this->updateCornerOrientation(CORNER::URF, 1);
     this->updateCornerOrientation(CORNER::DRF, 2);
     this->updateCornerOrientation(CORNER::DLF, 1);
-
     this->updateEdgeOrientationZ(EDGE::UF);
     this->updateEdgeOrientationZ(EDGE::FL);
     this->updateEdgeOrientationZ(EDGE::DF);
     this->updateEdgeOrientationZ(EDGE::FR);
-
     return *this;
 }*/
 
@@ -353,23 +349,19 @@ void Cube::FrontPrime(int amount) {
     this->corners[(unsigned)CORNER::URF] = this->corners[(unsigned)CORNER::DRF];
     this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::DLF];
     this->corners[(unsigned)CORNER::DLF] = hold;
-
     hold                                 = this->edges[(unsigned)EDGE::UF];
     this->edges[(unsigned)EDGE::UF]      = this->edges[(unsigned)EDGE::FR];
     this->edges[(unsigned)EDGE::FR]      = this->edges[(unsigned)EDGE::DF];
     this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::FL];
     this->edges[(unsigned)EDGE::FL]      = hold;
-
     this->updateCornerOrientation(CORNER::ULF, 2);
     this->updateCornerOrientation(CORNER::URF, 1);
     this->updateCornerOrientation(CORNER::DRF, 2);
     this->updateCornerOrientation(CORNER::DLF, 1);
-
     this->updateEdgeOrientationZ(EDGE::UF);
     this->updateEdgeOrientationZ(EDGE::FL);
     this->updateEdgeOrientationZ(EDGE::DF);
     this->updateEdgeOrientationZ(EDGE::FR);
-
     return *this;
 }*/
 
@@ -380,10 +372,8 @@ void Cube::FrontPrime(int amount) {
 {
     swap(this->corners[(unsigned)CORNER::ULF], this->corners[(unsigned)CORNER::DRF]);
     swap(this->corners[(unsigned)CORNER::URF], this->corners[(unsigned)CORNER::DLF]);
-
     swap(this->edges[(unsigned)EDGE::UF],      this->edges[(unsigned)EDGE::DF]);
     swap(this->edges[(unsigned)EDGE::FL],      this->edges[(unsigned)EDGE::FR]);
-
     return *this;
 }*/
 
@@ -425,18 +415,15 @@ void Cube::Right(int amount) {
     this->corners[(unsigned)CORNER::URB] = this->corners[(unsigned)CORNER::URF];
     this->corners[(unsigned)CORNER::URF] = this->corners[(unsigned)CORNER::DRF];
     this->corners[(unsigned)CORNER::DRF] = hold;
-
     hold                                 = this->edges[(unsigned)EDGE::BR];
     this->edges[(unsigned)EDGE::BR]      = this->edges[(unsigned)EDGE::UR];
     this->edges[(unsigned)EDGE::UR]      = this->edges[(unsigned)EDGE::FR];
     this->edges[(unsigned)EDGE::FR]      = this->edges[(unsigned)EDGE::DR];
     this->edges[(unsigned)EDGE::DR]      = hold;
-
     this->updateCornerOrientation(CORNER::DRB, 2);
     this->updateCornerOrientation(CORNER::DRF, 1);
     this->updateCornerOrientation(CORNER::URF, 2);
     this->updateCornerOrientation(CORNER::URB, 1);
-
     return *this;
 }*/
 
@@ -482,18 +469,15 @@ void Cube::RightPrime(int amount){
     this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::URF];
     this->corners[(unsigned)CORNER::URF] = this->corners[(unsigned)CORNER::URB];
     this->corners[(unsigned)CORNER::URB] = hold;
-
     hold                                 = this->edges[(unsigned)EDGE::BR];
     this->edges[(unsigned)EDGE::BR]      = this->edges[(unsigned)EDGE::DR];
     this->edges[(unsigned)EDGE::DR]      = this->edges[(unsigned)EDGE::FR];
     this->edges[(unsigned)EDGE::FR]      = this->edges[(unsigned)EDGE::UR];
     this->edges[(unsigned)EDGE::UR]      = hold;
-
     this->updateCornerOrientation(CORNER::DRB, 2);
     this->updateCornerOrientation(CORNER::DRF, 1);
     this->updateCornerOrientation(CORNER::URF, 2);
     this->updateCornerOrientation(CORNER::URB, 1);
-
     return *this;
 }*/
 
@@ -548,23 +532,19 @@ void Cube::Back(int amount) {
     this->corners[(unsigned)CORNER::URB] = this->corners[(unsigned)CORNER::DRB];
     this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::DLB];
     this->corners[(unsigned)CORNER::DLB] = hold;
-
     hold                                 = this->edges[(unsigned)EDGE::UB];
     this->edges[(unsigned)EDGE::UB]      = this->edges[(unsigned)EDGE::BR];
     this->edges[(unsigned)EDGE::BR]      = this->edges[(unsigned)EDGE::DB];
     this->edges[(unsigned)EDGE::DB]      = this->edges[(unsigned)EDGE::BL];
     this->edges[(unsigned)EDGE::BL]      = hold;
-
     this->updateCornerOrientation(CORNER::ULB, 1);
     this->updateCornerOrientation(CORNER::URB, 2);
     this->updateCornerOrientation(CORNER::DRB, 1);
     this->updateCornerOrientation(CORNER::DLB, 2);
-
     this->updateEdgeOrientationZ(EDGE::UB);
     this->updateEdgeOrientationZ(EDGE::BL);
     this->updateEdgeOrientationZ(EDGE::DB);
     this->updateEdgeOrientationZ(EDGE::BR);
-
     return *this;
 }*/
 
@@ -608,23 +588,19 @@ void Cube::BackPrime(int amount) {
     this->corners[(unsigned)CORNER::DLB] = this->corners[(unsigned)CORNER::DRB];
     this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::URB];
     this->corners[(unsigned)CORNER::URB] = hold;
-
     hold                                 = this->edges[(unsigned)EDGE::UB];
     this->edges[(unsigned)EDGE::UB]      = this->edges[(unsigned)EDGE::BL];
     this->edges[(unsigned)EDGE::BL]      = this->edges[(unsigned)EDGE::DB];
     this->edges[(unsigned)EDGE::DB]      = this->edges[(unsigned)EDGE::BR];
     this->edges[(unsigned)EDGE::BR]      = hold;
-
     this->updateCornerOrientation(CORNER::ULB, 1);
     this->updateCornerOrientation(CORNER::URB, 2);
     this->updateCornerOrientation(CORNER::DRB, 1);
     this->updateCornerOrientation(CORNER::DLB, 2);
-
     this->updateEdgeOrientationZ(EDGE::UB);
     this->updateEdgeOrientationZ(EDGE::BL);
     this->updateEdgeOrientationZ(EDGE::DB);
     this->updateEdgeOrientationZ(EDGE::BR);
-
     return *this;
 }*/
 
@@ -680,13 +656,11 @@ void Cube::Down(int amount) {
     this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::DRF];
     this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::DLF];
     this->corners[(unsigned)CORNER::DLF] = hold;
-
     hold                                 = this->edges[(unsigned)EDGE::DB];
     this->edges[(unsigned)EDGE::DB]      = this->edges[(unsigned)EDGE::DR];
     this->edges[(unsigned)EDGE::DR]      = this->edges[(unsigned)EDGE::DF];
     this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::DL];
     this->edges[(unsigned)EDGE::DL]      = hold;
-
     return *this;
 }*/
 
@@ -723,6 +697,22 @@ void Cube::DownPrime(int amount) {
 
     }
 }
+
+int8_t* Cube::getCO() {
+    return this->co;
+}
+
+int8_t* Cube::getCP() {
+    return this->cp;
+}
+
+int8_t* Cube::getEO() {
+    return this->eo;
+}
+
+int8_t* Cube::getEP() {
+    return this->ep;
+}
 /*RubiksCube& RubiksCubeIndexModel::dPrime()
 {
     Cubie hold                           = this->corners[(unsigned)CORNER::DLF];
@@ -730,13 +720,11 @@ void Cube::DownPrime(int amount) {
     this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::DRB];
     this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::DLB];
     this->corners[(unsigned)CORNER::DLB] = hold;
-
     hold                                 = this->edges[(unsigned)EDGE::DL];
     this->edges[(unsigned)EDGE::DL]      = this->edges[(unsigned)EDGE::DF];
     this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::DR];
     this->edges[(unsigned)EDGE::DR]      = this->edges[(unsigned)EDGE::DB];
     this->edges[(unsigned)EDGE::DB]      = hold;
-
     return *this;
 }*/
 
@@ -747,10 +735,8 @@ void Cube::DownPrime(int amount) {
 {
     swap(this->corners[(unsigned)CORNER::DLB], this->corners[(unsigned)CORNER::DRF]);
     swap(this->corners[(unsigned)CORNER::DRB], this->corners[(unsigned)CORNER::DLF]);
-
     swap(this->edges[(unsigned)EDGE::DB],      this->edges[(unsigned)EDGE::DF]);
     swap(this->edges[(unsigned)EDGE::DR],      this->edges[(unsigned)EDGE::DL]);
-
     return *this;
 }*/
 
