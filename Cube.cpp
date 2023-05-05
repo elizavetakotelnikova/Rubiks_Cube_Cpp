@@ -1,12 +1,12 @@
 #include "Cube.h"
 
 Cube::Cube() {
-	std::memset(co, 0, sizeof(co));
-	std::memset(eo, 0, sizeof(eo));
-	for (int i = 0; i < 8; i++) {
+    std::memset(co, 0, sizeof(co));
+    std::memset(eo, 0, sizeof(eo));
+    for (int i = 0; i < 8; i++) {
         cp[i] = i;
     }
-	for (int i = 0; i < 12; i++) {
+    for (int i = 0; i < 12; i++) {
         ep[i] = i;
     }
     centers[0] = COLOR::RED;
@@ -23,7 +23,7 @@ void Cube::Read(const char* filename) {
     for (int i = 0; i < 8; i++) {
         File >> cp[i] >> co[i];
     }
-    for (int i = 0; i < 12; i++ {
+    for (int i = 0; i < 12; i++) {
         File >> ep[i] >> eo[i];
     }
     std::cout << "Cube's state was successfully read from the file " << std::endl;
@@ -104,7 +104,7 @@ void Cube::Up(int amount) {
         cp[ULB] = tmp;
 
         tmp = co[ULF];
-        co[ULF] = co[URB];
+        co[ULF] = co[URF];
         co[URF] = co[URB];
         co[URB] = co[ULB];
         co[ULB] = tmp;
@@ -123,150 +123,173 @@ void Cube::Up(int amount) {
     }
 
     //return *this;
-  }
+}
 
-  /**
-   * Up prime.
-   */
-   void Cube::UPrime(int amount) {
-       for (int i = 0; i < amount; i++) {
-           int8_t tmp = cp[ULB];
-           cp[ULB] = cp[URB];
-           cp[URB] = cp[URF];
-           cp[URF] = cp[ULF];
-           cp[ULF] = tmp;
+/**
+ * Up prime.
+ */
+void Cube::UpPrime(int amount) {
+    for (int i = 0; i < amount; i++) {
+        int8_t tmp = cp[ULB];
+        cp[ULB] = cp[URB];
+        cp[URB] = cp[URF];
+        cp[URF] = cp[ULF];
+        cp[ULF] = tmp;
 
-           tmp = co[ULB];
-           co[ULB] = co[URB];
-           co[URB] = co[URF];
-           co[URF] = co[ULF];
-           co[ULF] = tmp;
+        tmp = co[ULB];
+        co[ULB] = co[URB];
+        co[URB] = co[URF];
+        co[URF] = co[ULF];
+        co[ULF] = tmp;
 
-           tmp = ep[UB];
-           ep[UB] = ep[UR];
-           ep[UR] = ep[UF];
-           ep[UF] = ep[UL];
-           ep[UL] = tmp;
+        tmp = ep[UB];
+        ep[UB] = ep[UR];
+        ep[UR] = ep[UF];
+        ep[UF] = ep[UL];
+        ep[UL] = tmp;
 
-           tmp = eo[UB];
-           eo[UB] = eo[UR];
-           eo[UR] = eo[UF];
-           eo[UF] = eo[UL];
-           eo[UL] = tmp;
+        tmp = eo[UB];
+        eo[UB] = eo[UR];
+        eo[UR] = eo[UF];
+        eo[UF] = eo[UL];
+        eo[UL] = tmp;
 
-       }
-  }
+    }
+}
 
-  /**
-   * Up 2.
-   */
+/**
+ * Up 2.
+ */
 /*  RubiksCube& RubiksCubeIndexModel::u2()
   {
     swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::URF]);
     swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::ULF]);
-
     swap(this->edges[(unsigned)EDGE::UB],      this->edges[(unsigned)EDGE::UF]);
     swap(this->edges[(unsigned)EDGE::UR],      this->edges[(unsigned)EDGE::UL]);
-
     return *this;
   }
 */
-  /**
-   * Left.
-   */
-  void Cube::Left(int amount) {
-      for (int i = 0; i < amount; i++) {
-          int8_t tmp = cp[DLB];
-          cp[DLB] = cp[DLF];
-          cp[DLF] = cp[ULF];
-          cp[ULF] = cp[ULB];
-          cp[ULB] = tmp;
-          
-          tmp = co[DLB];
-          co[DLB] = (co[DLF] + 2) % 3;
-          co[DLF] = (co[ULF] + 1) % 3;
-          co[ULF] = (co[ULB] + 2) % 3;
-          co[ULB] = (tmp + 1) % 3;
-          
-          tmp = ep[BL];
-          ep[BL] = ep[DL];
-          ep[DL] = ep[FL];
-          ep[FL] = ep[UL];
-          ep[UL] = tmp;
-          
-          tmp = eo[BL];
-          eo[BL] = eo[DL];
-          eo[DL] = eo[FL];
-          eo[FL] = eo[UL];
-          eo[UL] = tmp;
-      }
-  }
+/**
+ * Left.
+ */
+void Cube::Left(int amount) {
+    for (int i = 0; i < amount; i++) {
+        int8_t tmp = cp[DLB];
+        cp[DLB] = cp[DLF];
+        cp[DLF] = cp[ULF];
+        cp[ULF] = cp[ULB];
+        cp[ULB] = tmp;
 
-    /*this->updateCornerOrientation(CORNER::DLB, 1);
-    this->updateCornerOrientation(CORNER::DLF, 2);
-    this->updateCornerOrientation(CORNER::ULF, 1);
-    this->updateCornerOrientation(CORNER::ULB, 2); ???/
+        tmp = co[DLB];
+        co[DLB] = (co[DLF] + 1) % 3;
+        co[DLF] = (co[ULF] + 2) % 3;
+        co[ULF] = (co[ULB] + 1) % 3;
+        co[ULB] = (tmp + 2) % 3;
 
-    return *this;
-  }
+        tmp = ep[BL];
+        ep[BL] = ep[DL];
+        ep[DL] = ep[FL];
+        ep[FL] = ep[UL];
+        ep[UL] = tmp;
 
-  /**
-   * Left prime.
-   */
-  void Cube::LeftPrime() {
-      for (int i = 0; i < amount; i++) {
-          int8_t tmp = cp[DLB];
-          cp[DLB] = cp[ULB];
-          cp[ULB] = cp[ULF];
-          cp[ULF] = cp[DLF];
-          cp[DLF] = tmp;
-    
-          tmp = co[DLB];
-          co[DLB] = (co[DLF] + 1) % 3;
-          co[DLF] = (co[ULF] + 2) % 3;
-          co[ULF] = (co[ULB] + 1) % 3;
-          co[ULB] = (tmp + 2) % 3;
+        tmp = eo[BL];
+        eo[BL] = eo[DL];
+        eo[DL] = eo[FL];
+        eo[FL] = eo[UL];
+        eo[UL] = tmp;
+    }
+}
 
-          tmp = ep[BL];
-          ep[BL] = ep[UL];
-          ep[UL] = ep[FL];
-          ep[FL] = ep[DL];
-          ep[DL] = tmp;
-          
-          tmp = eo[BL];
-          eo[BL] = eo[UL];
-          eo[UL] = eo[FL];
-          eo[FL] = eo[DL];
-          eo[DL] = tmp;  
+/*this->updateCornerOrientation(CORNER::DLB, 1);
+this->updateCornerOrientation(CORNER::DLF, 2);
+this->updateCornerOrientation(CORNER::ULF, 1);
+this->updateCornerOrientation(CORNER::ULB, 2); ???/
+return *this;
+}
+/**
+* Left prime.
+*/
+void Cube::LeftPrime(int amount) {
+    for (int i = 0; i < amount; i++) {
+        int8_t tmp = cp[DLB];
+        cp[DLB] = cp[ULB];
+        cp[ULB] = cp[ULF];
+        cp[ULF] = cp[DLF];
+        cp[DLF] = tmp;
 
-    /*this->updateCornerOrientation(CORNER::DLB, 1);
-    this->updateCornerOrientation(CORNER::DLF, 2);
-    this->updateCornerOrientation(CORNER::ULF, 1);
-    this->updateCornerOrientation(CORNER::ULB, 2);
+        tmp = co[DLB];
+        co[DLB] = (co[DLF] + 1) % 3;
+        co[DLF] = (co[ULF] + 2) % 3;
+        co[ULF] = (co[ULB] + 1) % 3;
+        co[ULB] = (tmp + 2) % 3;
 
-    return *this;*/
-      } 
-  }
+        tmp = ep[BL];
+        ep[BL] = ep[UL];
+        ep[UL] = ep[FL];
+        ep[FL] = ep[DL];
+        ep[DL] = tmp;
 
-  /**
-   * Left 2.
-   */
-  /*RubiksCube& RubiksCubeIndexModel::l2()
-  {
-    swap(this->corners[(unsigned)CORNER::DLB], this->corners[(unsigned)CORNER::ULF]);
-    swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::DLF]);
+        tmp = eo[BL];
+        eo[BL] = eo[UL];
+        eo[UL] = eo[FL];
+        eo[FL] = eo[DL];
+        eo[DL] = tmp;
 
-    swap(this->edges[(unsigned)EDGE::BL],      this->edges[(unsigned)EDGE::FL]);
-    swap(this->edges[(unsigned)EDGE::UL],      this->edges[(unsigned)EDGE::DL]);
+        /*this->updateCornerOrientation(CORNER::DLB, 1);
+        this->updateCornerOrientation(CORNER::DLF, 2);
+        this->updateCornerOrientation(CORNER::ULF, 1);
+        this->updateCornerOrientation(CORNER::ULB, 2);
+        return *this;*/
+    }
+}
 
-    return *this;
-  }*/
+/**
+ * Left 2.
+ */
+/*RubiksCube& RubiksCubeIndexModel::l2()
+{
+  swap(this->corners[(unsigned)CORNER::DLB], this->corners[(unsigned)CORNER::ULF]);
+  swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::DLF]);
+  swap(this->edges[(unsigned)EDGE::BL],      this->edges[(unsigned)EDGE::FL]);
+  swap(this->edges[(unsigned)EDGE::UL],      this->edges[(unsigned)EDGE::DL]);
+  return *this;
+}*/
 
-  /**
-   * Front.
-   */
-  RubiksCube& RubiksCubeIndexModel::f()
-  {
+/**
+ * Front.
+ */
+
+void Cube::Front(int amount) {
+    for(int i = 0; i < amount; i++){
+        int8_t  tmp = cp[ULF];
+        cp[ULF] = cp[DLF];
+        cp[DLF] = cp[DRF];
+        cp[DRF] = cp[URF];
+        cp[URF] = tmp;
+
+
+        tmp = co[ULF];
+        co[ULF] = (co[URF] + 2) % 3;
+        co[URF] = (co[DRF] + 1) % 3;
+        co[DRF] = (co[DLF] + 2) % 3;
+        co[DLF] = (tmp + 1) % 3;
+
+        tmp = ep[UF];
+        ep[UF] = ep[FL];
+        ep[FL] = ep[DF];
+        ep[DF] = ep[FR];
+        ep[FR] = tmp;
+
+        tmp = eo[UF];
+        eo[UF] =  1 - eo[FL];
+        eo[FL] =  1 - eo[DF];
+        eo[DF] =  1 - eo[FR];
+        eo[FR] =  1 - tmp;
+
+    }
+}
+/*RubiksCube& RubiksCubeIndexModel::f()
+{
     Cubie hold                           = this->corners[(unsigned)CORNER::ULF];
     this->corners[(unsigned)CORNER::ULF] = this->corners[(unsigned)CORNER::DLF];
     this->corners[(unsigned)CORNER::DLF] = this->corners[(unsigned)CORNER::DRF];
@@ -290,13 +313,41 @@ void Cube::Up(int amount) {
     this->updateEdgeOrientationZ(EDGE::FR);
 
     return *this;
-  }
+}*/
 
-  /**
-   * Front prime.
-   */
-  RubiksCube& RubiksCubeIndexModel::fPrime()
-  {
+/**
+ * Front prime.
+ */
+
+void Cube::FrontPrime(int amount) {
+    for(int i = 0; i < amount; i++){
+        int8_t  tmp = cp[ULF];
+        cp[ULF] = cp[URF];
+        cp[URF] = cp[DRF];
+        cp[DRF] = cp[DLF];
+        cp[DLF] = tmp;
+
+        tmp = co[ULF];
+        co[ULF] = (co[URF] + 2) % 3;
+        co[URF] = (co[DRF] + 1) % 3;
+        co[DRF] = (co[DLF] + 2) % 3;
+        co[DLF] = (tmp + 1) % 3;
+
+        tmp = ep[UF];
+        ep[UF] = ep[FL];
+        ep[FL] = ep[DF];
+        ep[DF] = ep[FR];
+        ep[FR] = tmp;
+
+        tmp = ep[UF];
+        ep[UF] =  1 - ep[FL];
+        ep[FL] =  1 - ep[DF];
+        ep[DF] =  1 - ep[FR];
+        ep[FR] =  1 - tmp;
+    }
+}
+/*RubiksCube& RubiksCubeIndexModel::fPrime()
+{
     Cubie hold                           = this->corners[(unsigned)CORNER::ULF];
     this->corners[(unsigned)CORNER::ULF] = this->corners[(unsigned)CORNER::URF];
     this->corners[(unsigned)CORNER::URF] = this->corners[(unsigned)CORNER::DRF];
@@ -320,13 +371,13 @@ void Cube::Up(int amount) {
     this->updateEdgeOrientationZ(EDGE::FR);
 
     return *this;
-  }
+}*/
 
-  /**
-   * Front 2.
-   */
-  RubiksCube& RubiksCubeIndexModel::f2()
-  {
+/**
+ * Front 2.
+ */
+/*RubiksCube& RubiksCubeIndexModel::f2()
+{
     swap(this->corners[(unsigned)CORNER::ULF], this->corners[(unsigned)CORNER::DRF]);
     swap(this->corners[(unsigned)CORNER::URF], this->corners[(unsigned)CORNER::DLF]);
 
@@ -334,13 +385,41 @@ void Cube::Up(int amount) {
     swap(this->edges[(unsigned)EDGE::FL],      this->edges[(unsigned)EDGE::FR]);
 
     return *this;
-  }
+}*/
 
-  /**
-   * Right.
-   */
-  RubiksCube& RubiksCubeIndexModel::r()
-  {
+/**
+ * Right.
+ */
+
+void Cube::Right(int amount) {
+    for (int i = 0; i < amount; i++) {
+        int8_t tmp = cp[DRB];
+        cp[DRB] = cp[URB];
+        cp[URB] = cp[URF];
+        cp[URF] = cp[DRF];
+        cp[DRF] = tmp;
+
+        tmp = co[DRB];
+        co[DRB] = (co[DRF] + 2) % 3;
+        co[DRF] = (co[URF] + 1) % 3;
+        co[URF] = (co[URB] + 2) % 3;
+        co[URB] = (tmp + 1) % 3;
+
+        tmp = ep[BR];
+        ep[BR] = ep[UR];
+        ep[UR] = ep[FR];
+        ep[FR] = ep[DR];
+        ep[DR] = tmp;
+
+        tmp = ep[BR];
+        ep[BR] = ep[UR];
+        ep[UR] = ep[FR];
+        ep[FR] = ep[DR];
+        ep[DR] = tmp;
+    }
+}
+/*RubiksCube& RubiksCubeIndexModel::r()
+{
     Cubie hold                           = this->corners[(unsigned)CORNER::DRB];
     this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::URB];
     this->corners[(unsigned)CORNER::URB] = this->corners[(unsigned)CORNER::URF];
@@ -359,13 +438,45 @@ void Cube::Up(int amount) {
     this->updateCornerOrientation(CORNER::URB, 1);
 
     return *this;
-  }
+}*/
 
-  /**
-   * Right prime.
-   */
-  RubiksCube& RubiksCubeIndexModel::rPrime()
-  {
+/**
+ * Right prime.
+ */
+
+
+void Cube::RightPrime(int amount){
+    for (int i = 0; i < amount; i++) {
+        int8_t tmp = cp[DRB];
+        cp[DRB] = cp[DRF];
+        cp[DRF] = cp[URF];
+        cp[URF] = cp[URB];
+        cp[URB] = tmp;
+
+        tmp = co[DRB];
+        co[DRB] = (co[DRF] + 2) % 3;
+        co[DRF] = (co[URF] + 1) % 3;
+        co[URF] = (co[URB] + 2) % 3;
+        co[URB] = (tmp + 1) % 3;
+
+        tmp = ep[BR];
+        ep[BR] = ep[DR];
+        ep[DR] = ep[FR];
+        ep[FR] = ep[UR];
+        ep[UR] = tmp;
+
+        tmp = ep[BR];
+        ep[BR] = ep[DR];
+        ep[DR] = ep[FR];
+        ep[FR] = ep[UR];
+        ep[UR] = tmp;
+
+    }
+}
+
+
+/*RubiksCube& RubiksCubeIndexModel::rPrime()
+{
     Cubie hold                           = this->corners[(unsigned)CORNER::DRB];
     this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::DRF];
     this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::URF];
@@ -384,27 +495,54 @@ void Cube::Up(int amount) {
     this->updateCornerOrientation(CORNER::URB, 1);
 
     return *this;
-  }
+}*/
 
-  /**
-   * Right 2.
-   */
-  /*RubiksCube& RubiksCubeIndexModel::r2()
-  {
-    swap(this->corners[(unsigned)CORNER::DRB], this->corners[(unsigned)CORNER::URF]);
-    swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::DRF]);
+/**
+ * Right 2.
+ */
+/*RubiksCube& RubiksCubeIndexModel::r2()
+{
+  swap(this->corners[(unsigned)CORNER::DRB], this->corners[(unsigned)CORNER::URF]);
+  swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::DRF]);
+  swap(this->edges[(unsigned)EDGE::BR],      this->edges[(unsigned)EDGE::FR]);
+  swap(this->edges[(unsigned)EDGE::UR],      this->edges[(unsigned)EDGE::DR]);
+  return *this;
+}*/
 
-    swap(this->edges[(unsigned)EDGE::BR],      this->edges[(unsigned)EDGE::FR]);
-    swap(this->edges[(unsigned)EDGE::UR],      this->edges[(unsigned)EDGE::DR]);
+/**
+ * Back.
+ */
 
-    return *this;
-  }*/
+void Cube::Back(int amount) {
+    for (int i = 0; i < amount; i++) {
+        int8_t tmp = cp[ULB];
+        cp[ULB] = cp[URB];
+        cp[URB] = cp[DRB];
+        cp[DRB] = cp[DLB];
+        cp[DLB] = tmp;
 
-  /**
-   * Back.
-   */
-  RubiksCube& RubiksCubeIndexModel::b()
-  {
+        tmp = co[ULB];
+        co[ULB] = (co[URB] + 1) % 3;
+        co[URB] = (co[DRB] + 2) % 3;
+        co[DRB] = (co[DLB] + 1) % 3;
+        co[DLB] = (tmp + 2) % 3;
+
+        tmp = ep[UB];
+        ep[UB] = ep[BR];
+        ep[BR] = ep[DB];
+        ep[DB] = ep[BL];
+        ep[BL] = tmp;
+
+        tmp = eo[UB];
+        eo[UB] =  1 - eo[BL];
+        eo[BL] =  1 - eo[DB];
+        eo[DB] =  1 - eo[BR];
+        eo[BR] =  1 - tmp;
+
+    }
+}
+/*RubiksCube& RubiksCubeIndexModel::b()
+{
     Cubie hold                           = this->corners[(unsigned)CORNER::ULB];
     this->corners[(unsigned)CORNER::ULB] = this->corners[(unsigned)CORNER::URB];
     this->corners[(unsigned)CORNER::URB] = this->corners[(unsigned)CORNER::DRB];
@@ -428,13 +566,43 @@ void Cube::Up(int amount) {
     this->updateEdgeOrientationZ(EDGE::BR);
 
     return *this;
-  }
+}*/
 
-  /**
-   * Back prime.
-   */
-  RubiksCube& RubiksCubeIndexModel::bPrime()
-  {
+/**
+ * Back prime.
+ */
+
+void Cube::BackPrime(int amount) {
+    for (int i = 0; i < amount; i++) {
+        int8_t tmp = cp[ULB];
+        cp[ULB] = cp[DLB];
+        cp[DLB] = cp[DRB];
+        cp[DRB] = cp[URB];
+        cp[URB] = tmp;
+
+        tmp = co[ULB];
+        co[ULB] = (co[URB] + 1) % 3;
+        co[URB] = (co[DRB] + 2) % 3;
+        co[DRB] = (co[DLB] + 1) % 3;
+        co[DLB] = (tmp + 2) % 3;
+
+        tmp = ep[UB];
+        ep[UB] = ep[BL];
+        ep[BL] = ep[DB];
+        ep[DB] = ep[BR];
+        ep[BR] = tmp;
+
+        tmp = eo[UB];
+        eo[UB] = 1 - eo[BL];
+        eo[BL] = 1 - eo[DB];
+        eo[DB] = 1 - eo[BR];
+        eo[BR] = 1 - tmp;
+
+    }
+}
+
+/*RubiksCube& RubiksCubeIndexModel::bPrime()
+{
     Cubie hold                           = this->corners[(unsigned)CORNER::ULB];
     this->corners[(unsigned)CORNER::ULB] = this->corners[(unsigned)CORNER::DLB];
     this->corners[(unsigned)CORNER::DLB] = this->corners[(unsigned)CORNER::DRB];
@@ -458,27 +626,55 @@ void Cube::Up(int amount) {
     this->updateEdgeOrientationZ(EDGE::BR);
 
     return *this;
-  }
+}*/
 
-  /**
-   * Back 2.
-   */
- /* RubiksCube& RubiksCubeIndexModel::b2()
-  {
-    swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::DRB]);
-    swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::DLB]);
+/**
+ * Back 2.
+ */
+/* RubiksCube& RubiksCubeIndexModel::b2()
+ {
+   swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::DRB]);
+   swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::DLB]);
+   swap(this->edges[(unsigned)EDGE::UB],      this->edges[(unsigned)EDGE::DB]);
+   swap(this->edges[(unsigned)EDGE::BL],      this->edges[(unsigned)EDGE::BR]);
+   return *this;
+ }*/
 
-    swap(this->edges[(unsigned)EDGE::UB],      this->edges[(unsigned)EDGE::DB]);
-    swap(this->edges[(unsigned)EDGE::BL],      this->edges[(unsigned)EDGE::BR]);
+/**
+ * Down.
+ */
 
-    return *this;
-  }*/
+void Cube::Down(int amount) {
+    for (int i = 0; i < amount; i++) {
+        int8_t tmp = cp[DLB];
+        cp[DLB] = cp[DRB];
+        cp[DRB] = cp[DRF];
+        cp[DRF] = cp[DLF];
+        cp[DLF] = tmp;
 
-  /**
-   * Down.
-   */
-  RubiksCube& RubiksCubeIndexModel::d()
-  {
+        tmp = co[DLB];
+        co[DLB] = co[DRB];
+        co[DRB] = co[DRF];
+        co[DRF] = co[DLF];
+        co[DLF] = tmp;
+
+
+        tmp = ep[DB];
+        ep[DB] = ep[DR];
+        ep[DR] = ep[DF];
+        ep[DF] = ep[DL];
+        ep[DL] = tmp;
+
+        tmp = eo[DB];
+        eo[DB] = eo[DR];
+        eo[DR] = eo[DF];
+        eo[DF] = eo[DL];
+        eo[DL] = tmp;
+
+    }
+}
+/*RubiksCube& RubiksCubeIndexModel::d()
+{
     Cubie hold                           = this->corners[(unsigned)CORNER::DLB];
     this->corners[(unsigned)CORNER::DLB] = this->corners[(unsigned)CORNER::DRB];
     this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::DRF];
@@ -492,13 +688,43 @@ void Cube::Up(int amount) {
     this->edges[(unsigned)EDGE::DL]      = hold;
 
     return *this;
-  }
+}*/
 
-  /**
-   * Down prime.
-   */
-  RubiksCube& RubiksCubeIndexModel::dPrime()
-  {
+/**
+ * Down prime.
+ */
+
+void Cube::DownPrime(int amount) {
+    for (int i = 0; i < amount; i++) {
+        int8_t tmp = cp[DLF];
+        cp[DLF] = cp[DRF];
+        cp[DRF] = cp[DRB];
+        cp[DRB] = cp[DLB];
+        cp[DLB] = tmp;
+
+        tmp = co[DLF];
+        co[DLF] = co[DRF];
+        co[DRF] = co[DRB];
+        co[DRB] = co[DLB];
+        co[DLB] = tmp;
+
+
+        tmp = ep[DL];
+        ep[DL] = ep[DF];
+        ep[DF] = ep[DR];
+        ep[DR] = ep[DB];
+        ep[DB] = tmp;
+
+        tmp = eo[DL];
+        eo[DL] = eo[DF];
+        eo[DF] = eo[DR];
+        eo[DR] = eo[DB];
+        eo[DB] = tmp;
+
+    }
+}
+/*RubiksCube& RubiksCubeIndexModel::dPrime()
+{
     Cubie hold                           = this->corners[(unsigned)CORNER::DLF];
     this->corners[(unsigned)CORNER::DLF] = this->corners[(unsigned)CORNER::DRF];
     this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::DRB];
@@ -512,13 +738,13 @@ void Cube::Up(int amount) {
     this->edges[(unsigned)EDGE::DB]      = hold;
 
     return *this;
-  }
+}*/
 
-  /**
-   * Down 2.
-   */
-  RubiksCube& RubiksCubeIndexModel::d2()
-  {
+/**
+ * Down 2.
+ */
+/*RubiksCube& RubiksCubeIndexModel::d2()
+{
     swap(this->corners[(unsigned)CORNER::DLB], this->corners[(unsigned)CORNER::DRF]);
     swap(this->corners[(unsigned)CORNER::DRB], this->corners[(unsigned)CORNER::DLF]);
 
@@ -526,187 +752,8 @@ void Cube::Up(int amount) {
     swap(this->edges[(unsigned)EDGE::DR],      this->edges[(unsigned)EDGE::DL]);
 
     return *this;
-  }
-  
-void Cube::RotateUp (int amount){
-    if (amount == -1)
-        amount = 3;
-    for (int i = 0; i < amount; i++){
-        int tmp_cp = cp[URF];
-        cp[urf] = cp[ubr];
-        cp[ubr] = cp[ulb];
-        cp[ulb] = cp[ufl];
-        cp[ufl] = tmp_cp;
+}*/
 
-        int8_t tmp_co = co[urf];
-        co[urf] = co[ubr];
-        co[ubr] = co[ulb];
-        co[ulb] = co[ufl];
-        co[ufl] = tmp_co;
-
-        int8_t tmp_eo = eo[ub];
-        eo[ub] = eo[ul];
-        eo[ul] = eo[uf];
-        eo[uf] = eo[ur];
-        eo[ur] = tmp_eo;
-
-        int tmp_edge = ep[ub];
-        ep[ub] = ep[ul];
-        ep[ul] = ep[uf];
-        ep[uf] = ep[ur];
-        ep[ur] = tmp_edge;
-    }
-}
-
-void Cube::RotateDown(int amount){
-    if (amount == -1)
-        amount = 3;
-    for (int i = 0; i < amount; i++){
-        int tmp_cp = cp[dfr];
-        cp[dfr] = cp[dlf];
-        cp[dlf] = cp[dbl];
-        cp[dbl] = cp[drb];
-        cp[drb] = tmp_cp;
-
-        int8_t tmp_co = co[dfr];
-        co[dfr] = co[dlf];
-        co[dlf] = co[dbl];
-        co[dbl] = co[drb];
-        co[drb] = tmp_co;
-
-        int8_t tmp_eo = eo[df];
-        eo[df] = eo[dl];
-        eo[dl] = eo[db];
-        eo[db] = eo[dr];
-        eo[dr] = tmp_eo;
-
-        int tmp_ep = ep[df];
-        ep[df] = ep[dl];
-        ep[dl] = ep[db];
-        ep[db] = ep[dr];
-        ep[dr] = tmp_ep;
-    }
-}
-
-void Cube::RotateLeft(int amount) {
-    if (amount == -1)
-        amount = 3;
-    for (int i = 0; i < amount; i++){
-        int tmp_cp = cp[dlf];
-        cp[dlf] = cp[ufl];
-        cp[ufl] = cp[ulb];
-        cp[ulb] = cp[dbl];
-        cp[dbl] = tmp_cp;
-
-        int8_t tmp_co = co[dlf];
-        co[dlf] = (1 + co[ufl]) % 3;
-        co[ufl] = (2 + co[ulb]) % 3;
-        co[ulb] = (1 + co[dbl]) % 3;
-        co[dbl] = (2 + tmp_co) % 3;
-
-        int8_t tmp_eo = eo[bl];
-        eo[bl] = eo[dl];
-        eo[dl] = eo[fl];
-        eo[fl] = eo[ul];
-        eo[ul] = tmp_eo;
-
-        int tmp_ep = ep[bl];
-        ep[bl] = ep[dl];
-        ep[dl] = ep[fl];
-        ep[fl] = ep[ul];
-        ep[ul] = tmp_ep;
-    }
-}
-
-void Cube::RotateRight(int amount) {
-    if (amount == -1)
-        amount = 3;
-    for (int i = 0; i < amount; i++){
-        int tmp_cp = cp[urf];
-        cp[urf] = cp[dfr];
-        cp[dfr] = cp[drb];
-        cp[drb] = cp[ubr];
-        cp[ubr] = tmp_cp;
-
-        int8_t tmp_co = co[urf];
-        co[urf] = (1 + co[dfr]) % 3;
-        co[dfr] = (2 + co[drb]) % 3;
-        co[drb] = (1 + co[ubr]) % 3;
-        co[ubr] = (2 + tmp_co) % 3;
-
-        int8_t tmp_eo = eo[fr];
-        eo[fr] = eo[dr];
-        eo[dr] = eo[br];
-        eo[br] = eo[ur];
-        eo[ur] = tmp_eo;
-
-        int tmp_ep = ep[fr];
-        ep[fr] = ep[dr];
-        ep[dr] = ep[br];
-        ep[br] = ep[ur];
-        ep[ur] = tmp_ep;
-    }
-}
-
-void Cube::RotateFront(int amount) {
-    if (amount == -1)
-        amount = 3;
-    for (int i = 0; i < amount; i++){
-        int tmp = cp[urf];
-        cp[urf] = cp[ufl];
-        cp[ufl] = cp[dlf];
-        cp[dlf] = cp[dfr];
-        cp[dfr] = tmp;
-
-        int8_t tmp_co = co[urf];
-        co[urf] = (2 + co[ufl]) % 3;
-        co[ufl] = (1 + co[dlf]) % 3;
-        co[dlf] = (2 + co[dfr]) % 3;
-        co[dfr] = (1 + tmp_co) % 3;
-
-        int8_t tmp_eo = eo[uf];
-        eo[uf] = 1 - eo[fl];
-        eo[fl] = 1 - eo[df];
-        eo[df] = 1 - eo[fr];
-        eo[fr] = 1 - tmp_eo;
-
-        int tmp_ep = ep[uf];
-        ep[uf] = ep[fl];
-        ep[fl] = ep[df];
-        ep[df] = ep[fr];
-        ep[fr] = tmp_ep;
-    }
-}
-
-void Cube::RotateBack(int amount) {
-    if (amount == -1)
-        amount = 3;
-    for (int i = 0; i < amount; i++){
-        int tmp = cp[ulb];
-        cp[ulb] = cp[ubr];
-        cp[ubr] = cp[drb];
-        cp[drb] = cp[dbl];
-        cp[dbl] = tmp;
-
-        int8_t tmp_co = co[ulb];
-        co[ulb] = (2 + co[ubr]) % 3;
-        co[ubr] = (1 + co[drb]) % 3;
-        co[drb] = (2 + co[dbl]) % 3;
-        co[dbl] = (1 + tmp_co) % 3;
-
-        int8_t tmp_eo = eo[br];
-        eo[br] = 1 - eo[db];
-        eo[db] = 1 - eo[bl];
-        eo[bl] = 1 - eo[ub];
-        eo[ub] = 1 - tmp_eo;
-
-        int tmp_ep = ep[br];
-        ep[br] = ep[db];
-        ep[db] = ep[bl];
-        ep[bl] = ep[ub];
-        ep[ub] = tmp_ep;
-    }
-}
 
 COLOR Cube::getColor(FACE face, unsigned int row, unsigned int col) {
     return COLOR::RED;
@@ -733,4 +780,3 @@ COLOR Cube::getColor(FACE face, unsigned int row, unsigned int col) {
             rotDown(amount);
     }
 }*/
-
