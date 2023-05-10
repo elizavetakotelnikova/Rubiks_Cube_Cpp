@@ -76,7 +76,7 @@ public:
     bool operator==(const Cube &a);
     bool Check();
     //Solve();
-    void Rotate(Face command, int move);
+    void Rotate(FACE command, int move);
     void Front(int amount);
     void FrontPrime(int amount);
     void Down(int amount);
