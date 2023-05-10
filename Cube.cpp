@@ -745,24 +745,25 @@ COLOR Cube::getColor(FACE face, unsigned int row, unsigned int col) {
     return COLOR::RED;
 }
 
-/*void Cube::rotateCube(char command, int amount){
-    switch (command){
-        case 'F':
-            rotFront(amount);
+void Cube::Rotate(FACE command, int amount){
+    switch (command) {
+        case FACE::FRONT:
+            Front(amount);
             break;
-        case 'R':
-            rotRight(amount);
+        case FACE::RIGHT:
+            Right(amount);
             break;
-        case 'U':
-            rotUp(amount);
+        case FACE::UP:
+            Up(amount);
             break;
-        case 'B':
-            rotBack(amount);
+        case FACE::BACK:
+            Back(amount);
             break;
-        case 'L':
-            rotLeft(amount);
+        case FACE::LEFT:
+            Left(amount);
             break;
-        case 'D':
-            rotDown(amount);
+        case FACE::DOWN:
+            Down(amount);
     }
-}*/
+}
+//if needed, change to Face::FACE_TYPE
