@@ -78,13 +78,17 @@ public:
     //Solve();
     void Rotate(Face command, int move);
     void Front(int amount);
+    void FrontPrime(int amount);
     void Down(int amount);
+    void DownPrime(int amount);
     void Up(int amount);
     void UpPrime(int amount);
     void Left(int amount);
-    void Right(int amount);
     void LeftPrime(int amount);
+    void Right(int amount);
+    void RightPrime(int amount);
     void Back(int amount);
+    void BackPrime(int amount);
     COLOR getColor(FACE face, unsigned row, unsigned col);
     int8_t* getCO();
     int8_t* getCP();
