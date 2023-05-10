@@ -63,17 +63,20 @@ private:
     int8_t ep[12]; //edges position
     int8_t eo[12]; //edges orientation, {0, 1) - oriented or flipped
     COLOR centers[6];
+    //std::string cornerNames[8] = {"URF", "UBR", "DLF", "DFR", "ULB", "UFL", "DRB", "DBL"};
+    //std::string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "BR", "BL", "FL"};
 public:
     Cube();
     void Read(const char* filename);
-    bool IsSolved();
+    //bool IsSolved();
     void Generate();
     void PrintCube();
     void Write();
     Cube& operator=(const Cube &a);
     bool operator==(const Cube &a);
-    Check();
-    Solve();
+    bool Check();
+    //Solve();
+    void Rotate(Face command, int move);
     void Front(int amount);
     void Down(int amount);
     void Up(int amount);
@@ -83,7 +86,6 @@ public:
     void LeftPrime(int amount);
     void Back(int amount);
     COLOR getColor(FACE face, unsigned row, unsigned col);
-
     int8_t* getCO();
     int8_t* getCP();
     int8_t* getEO();
