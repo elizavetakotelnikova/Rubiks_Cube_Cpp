@@ -151,10 +151,10 @@ void Cube::Up(int amount) {
         cube[4][0][1] = temp2;
         cube[4][0][2] = temp3;
         // Rotate adjacent corners
-        COLOR temp4 = cube[1][0][0];
-        COLOR temp5 = cube[1][0][2];
-        COLOR temp6 = cube[1][2][0];
-        COLOR temp7 = cube[1][2][2];
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
         cube[1][0][0] = cube[4][0][2];
         cube[1][0][2] = cube[4][2][2];
         cube[1][2][0] = cube[4][2][0];
@@ -167,12 +167,63 @@ void Cube::Up(int amount) {
         cube[3][0][0] = cube[2][2][2];
         cube[3][2][0] = cube[2][0][2];
         cube[3][0][2] = cube[2][0][0];
-        cube[2][2][0] = temp4;
-        cube[2][2][2] = temp5;
-        cube[2][0][2] = temp6;
-        cube[2][0][0] = temp7;
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
     }
 }
+
+void Cube::UpPrime(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[0][2 - i][2];
+            cube[0][2 - i][0] = cube[0][0][i]; //first column
+            cube[0][0][i] = cube[0][2][2 - i]; //bottom row
+            cube[0][2][2 - i] = cube[0][0][2 - i];
+            cube[0][0][2 - i] = temp[i];
+        }
+        // Rotate adjacent edges ТУТ НАДО ВСЕ ПОМЕНЯТЬ ПРОТИВ ЧАСОВОЙ СТРЕЛКИ
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
 
 /**
  * Up prime.
