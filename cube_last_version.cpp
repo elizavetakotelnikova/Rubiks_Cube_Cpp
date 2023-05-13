@@ -1,4 +1,4 @@
-#include "Cube.h"
+#include "cube.h"
 
 Cube::Cube() {
     std::memset(co, 0, sizeof(co));
@@ -167,6 +167,7 @@ void Cube::Left(int amount) {
         }
         // Rotate adjacent edges
         //should be checked - I guess I might have done a mistake
+        //have been checked by nastya, it is clear!
         COLOR temp1 = cube[0][0][0];
         COLOR temp2 = cube[0][1][0];
         COLOR temp3 = cube[0][2][0];
@@ -197,6 +198,7 @@ void Cube::LeftPrime(int amount) {
         }
         // Rotate adjacent edges
         //should be checked
+        //have been checked and changed by nastya
         COLOR temp1 = cube[0][0][0];
         COLOR temp2 = cube[0][1][0];
         COLOR temp3 = cube[0][2][0];
@@ -208,10 +210,10 @@ void Cube::LeftPrime(int amount) {
         cube[2][2][0] = cube[1][2][0];
         cube[1][0][0] = cube[4][2][2];
         cube[1][1][0] = cube[4][1][2];
-        cube[1][2][0] = cube[4][2][2];
+        cube[1][2][0] = cube[4][0][2];//change 422 to 402!
         cube[4][2][2] = temp1;
         cube[4][1][2] = temp2;
-        cube[4][2][2] = temp3;
+        cube[4][0][2] = temp3;//change 422 to 402!
     }
 }
 
@@ -227,21 +229,22 @@ void Cube::Front(int amount) {
         }
         // Rotate adjacent edges
         //it was fixed
+        //have been checked and changed by nastya
         COLOR temp1 = cube[0][2][0];
         COLOR temp2 = cube[0][2][1];
         COLOR temp3 = cube[0][2][2];
-        cube[0][2][0] = cube[4][2][2];
-        cube[0][2][1] = cube[4][1][2];
-        cube[0][2][2] = cube[4][0][2];
-        cube[4][2][2] = cube[1][0][2];
-        cube[4][1][2] = cube[1][0][1];
-        cube[4][0][2] = cube[1][0][0];
-        cube[1][0][2] = cube[2][0][0];
-        cube[1][0][1] = cube[2][0][1];
-        cube[1][0][0] = cube[2][0][2];
-        cube[4][2][2] = temp1;
-        cube[4][1][2] = temp2;
-        cube[4][0][2] = temp3;
+        cube[0][2][0] = cube[3][2][2];//why you add back, if we do front rotate?)
+        cube[0][2][1] = cube[3][1][2];//changed 4 to 3
+        cube[0][2][2] = cube[3][0][2];
+        cube[3][2][2] = cube[1][0][2];
+        cube[3][1][2] = cube[1][0][1];
+        cube[3][0][2] = cube[1][0][0];
+        cube[1][0][2] = cube[5][0][0];//changed 2 to 5
+        cube[1][0][1] = cube[5][1][0];//01 to 10
+        cube[1][0][0] = cube[5][2][0];//02 to 20
+        cube[5][0][0] = temp1;//changed 4 to 5 and
+        cube[5][1][0] = temp2;
+        cube[5][2][0] = temp3;
     }
 }
 
@@ -257,21 +260,22 @@ void Cube::FrontPrime(int amount) {
         }
         // Rotate adjacent edges
         //should be checked
+        //have been checked and changed by nastya
         COLOR temp1 = cube[0][2][0];
         COLOR temp2 = cube[0][2][1];
         COLOR temp3 = cube[0][2][2];
         cube[0][2][0] = cube[5][0][0];
         cube[0][2][1] = cube[5][1][0];
         cube[0][2][2] = cube[5][2][0];
-        cube[5][0][0] = cube[1][0][0];
-        cube[5][1][0] = cube[1][1][0];
-        cube[5][2][0] = cube[1][2][0];
-        cube[1][0][0] = cube[3][0][2];
-        cube[1][1][0] = cube[3][1][2];
-        cube[1][1][2] = cube[3][2][2];
-        cube[3][0][2] = temp1;
+        cube[5][0][0] = cube[1][0][2];// 100 to 102
+        cube[5][1][0] = cube[1][0][1];//110 to 101
+        cube[5][2][0] = cube[1][0][0];//120 to 100
+        cube[1][0][2] = cube[3][2][2];//302 to 322
+        cube[1][0][1] = cube[3][1][2];
+        cube[1][0][0] = cube[3][0][2];//322 to 302
+        cube[3][2][2] = temp1;
         cube[3][1][2] = temp2;
-        cube[3][2][2] = temp3;
+        cube[3][0][2] = temp3;
     }
 }
 
@@ -286,6 +290,7 @@ void Cube::Right(int amount) {
             cube[5][0][i] = temp[i];
         }
         // Rotate adjacent edges
+        //have been checked and it is clear
         COLOR temp1 = cube[0][0][2];
         COLOR temp2 = cube[0][1][2];
         COLOR temp3 = cube[0][2][2];
@@ -315,15 +320,16 @@ void Cube::RightPrime(int amount) {
             cube[5][2][2 - i] = temp[i];
         }
         // Rotate adjacent edges
+        //have been checked and changed by nastya
         COLOR temp1 = cube[0][0][2];
         COLOR temp2 = cube[0][1][2];
         COLOR temp3 = cube[0][2][2];
-        cube[0][0][2] = cube[4][2][2];
-        cube[0][1][2] = cube[4][1][2];
-        cube[0][2][2] = cube[4][0][2];
-        cube[4][2][2] = cube[1][0][2];
-        cube[4][1][2] = cube[1][1][2];
-        cube[4][0][2] = cube[1][2][2];
+        cube[0][0][2] = cube[4][2][0];//422 to 420...
+        cube[0][1][2] = cube[4][1][0];
+        cube[0][2][2] = cube[4][0][0];
+        cube[4][2][0] = cube[1][0][2];
+        cube[4][1][0] = cube[1][1][2];
+        cube[4][0][0] = cube[1][2][2];
         cube[1][0][2] = cube[2][0][2];
         cube[1][1][2] = cube[2][1][2];
         cube[1][2][2] = cube[2][2][2];
@@ -346,43 +352,23 @@ void Cube::Back(int amount) {
         }
 
         // Rotate adjacent edges
-        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
-        COLOR temp1 = cube[3][0][0];
-        COLOR temp2 = cube[3][0][1];
-        COLOR temp3 = cube[3][0][2];
-        cube[3][0][0] = cube[2][0][0];
-        cube[3][0][1] = cube[2][0][1];
-        cube[3][0][2] = cube[2][0][2];
-        cube[2][0][0] = cube[5][0][0];
-        cube[2][0][1] = cube[5][0][1];
-        cube[2][0][2] = cube[5][0][2];
-        cube[5][0][0] = cube[4][0][0];
-        cube[5][0][1] = cube[4][0][1];
-        cube[5][0][2] = cube[4][0][2];
-        cube[4][0][0] = temp1;
-        cube[4][0][1] = temp2;
-        cube[4][0][2] = temp3;
-        // Rotate adjacent corners
-        temp1 = cube[1][0][0];
-        temp2 = cube[1][0][2];
-        temp3 = cube[1][2][0];
-        COLOR temp4 = cube[1][2][2];
-        cube[1][0][0] = cube[4][0][2];
-        cube[1][0][2] = cube[4][2][2];
-        cube[1][2][0] = cube[4][2][0];
-        cube[1][2][2] = cube[4][0][0];
-        cube[4][0][2] = cube[3][2][2];
-        cube[4][2][2] = cube[3][0][0];
-        cube[4][2][0] = cube[3][2][0];
-        cube[4][0][0] = cube[3][0][2];
-        cube[3][2][2] = cube[2][2][0];
-        cube[3][0][0] = cube[2][2][2];
-        cube[3][2][0] = cube[2][0][2];
-        cube[3][0][2] = cube[2][0][0];
-        cube[2][2][0] = temp1;
-        cube[2][2][2] = temp2;
-        cube[2][0][2] = temp3;
-        cube[2][0][0] = temp4;
+        //writen by nastya, please check!
+        COLOR temp1 = cube[0][0][0];
+        COLOR temp2 = cube[0][0][1];
+        COLOR temp3 = cube[0][0][2];
+        cube[0][0][0] = cube[5][0][2];
+        cube[0][0][1] = cube[5][1][2];
+        cube[0][0][2] = cube[5][2][2];
+        cube[5][0][2] = cube[1][2][2];
+        cube[5][1][2] = cube[1][2][1];
+        cube[5][2][2] = cube[1][2][0];
+        cube[1][2][2] = cube[3][2][0];
+        cube[1][2][1] = cube[3][1][0];
+        cube[1][2][0] = cube[3][0][0];
+        cube[3][2][0] = temp1;
+        cube[3][1][0] = temp2;
+        cube[3][0][0] = temp3;
+
     }
 }
 
@@ -398,22 +384,22 @@ void Cube::BackPrime(int amount) {
             cube[4][2][2 - i] = temp[i];
         }
         // Rotate adjacent edges
-        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
-        COLOR temp1 = cube[3][0][0];
-        COLOR temp2 = cube[3][0][1];
-        COLOR temp3 = cube[3][0][2];
-        cube[3][0][0] = cube[2][0][0];
-        cube[3][0][1] = cube[2][0][1];
-        cube[3][0][2] = cube[2][0][2];
-        cube[2][0][0] = cube[5][0][0];
-        cube[2][0][1] = cube[5][0][1];
-        cube[2][0][2] = cube[5][0][2];
-        cube[5][0][0] = cube[4][0][0];
-        cube[5][0][1] = cube[4][0][1];
-        cube[5][0][2] = cube[4][0][2];
-        cube[4][0][0] = temp1;
-        cube[4][0][1] = temp2;
-        cube[4][0][2] = temp3;
+        //writen by nastya, please check!
+        COLOR temp1 = cube[0][0][0];
+        COLOR temp2 = cube[0][0][1];
+        COLOR temp3 = cube[0][0][2];
+        cube[0][0][0] = cube[3][2][0];
+        cube[0][0][1] = cube[3][1][0];
+        cube[0][0][2] = cube[3][0][0];
+        cube[3][2][0] = cube[1][2][2];
+        cube[3][1][0] = cube[1][2][1];
+        cube[3][0][0] = cube[1][2][0];
+        cube[1][2][2] = cube[5][0][2];
+        cube[1][2][1] = cube[5][1][2];
+        cube[1][2][0] = cube[5][2][2];
+        cube[5][0][2] = temp1;
+        cube[5][1][2] = temp2;
+        cube[5][2][2] = temp3;
     }
 }
 
@@ -429,22 +415,22 @@ void Cube::Down(int amount) {
         }
 
         // Rotate adjacent edges
-        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
-        COLOR temp1 = cube[3][0][0];
-        COLOR temp2 = cube[3][0][1];
-        COLOR temp3 = cube[3][0][2];
-        cube[3][0][0] = cube[2][0][0];
-        cube[3][0][1] = cube[2][0][1];
-        cube[3][0][2] = cube[2][0][2];
-        cube[2][0][0] = cube[5][0][0];
-        cube[2][0][1] = cube[5][0][1];
-        cube[2][0][2] = cube[5][0][2];
-        cube[5][0][0] = cube[4][0][0];
-        cube[5][0][1] = cube[4][0][1];
-        cube[5][0][2] = cube[4][0][2];
-        cube[4][0][0] = temp1;
-        cube[4][0][1] = temp2;
-        cube[4][0][2] = temp3;
+        //writen by nastya, please check!
+        COLOR temp1 = cube[3][2][0];
+        COLOR temp2 = cube[3][2][1];
+        COLOR temp3 = cube[3][2][2];
+        cube[3][2][0] = cube[4][2][0];
+        cube[3][2][1] = cube[4][2][1];
+        cube[3][2][2] = cube[4][2][2];
+        cube[4][2][0] = cube[5][2][0];
+        cube[4][2][1] = cube[5][2][1];
+        cube[4][2][2] = cube[5][2][2];
+        cube[5][2][0] = cube[2][2][0];
+        cube[5][2][1] = cube[2][2][1];
+        cube[5][2][2] = cube[2][2][2];
+        cube[2][2][0] = temp1;
+        cube[2][2][1] = temp2;
+        cube[2][2][2] = temp3;
     }
 }
 
@@ -459,22 +445,22 @@ void Cube::DownPrime(int amount) {
             cube[1][2][2 - i] = temp[i];
         }
         // Rotate adjacent edges
-        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
-        COLOR temp1 = cube[3][0][0];
-        COLOR temp2 = cube[3][0][1];
-        COLOR temp3 = cube[3][0][2];
-        cube[3][0][0] = cube[2][0][0];
-        cube[3][0][1] = cube[2][0][1];
-        cube[3][0][2] = cube[2][0][2];
-        cube[2][0][0] = cube[5][0][0];
-        cube[2][0][1] = cube[5][0][1];
-        cube[2][0][2] = cube[5][0][2];
-        cube[5][0][0] = cube[4][0][0];
-        cube[5][0][1] = cube[4][0][1];
-        cube[5][0][2] = cube[4][0][2];
-        cube[4][0][0] = temp1;
-        cube[4][0][1] = temp2;
-        cube[4][0][2] = temp3;
+        //writen by nastya, please check!
+        COLOR temp1 = cube[3][2][0];
+        COLOR temp2 = cube[3][2][1];
+        COLOR temp3 = cube[3][2][2];
+        cube[3][2][0] = cube[2][2][0];
+        cube[3][2][1] = cube[2][2][1];
+        cube[3][2][2] = cube[2][2][2];
+        cube[2][2][0] = cube[5][2][0];
+        cube[2][2][1] = cube[5][2][1];
+        cube[2][2][2] = cube[5][2][2];
+        cube[5][2][0] = cube[4][2][0];
+        cube[5][2][1] = cube[4][2][1];
+        cube[5][2][2] = cube[4][2][2];
+        cube[4][2][0] = temp1;
+        cube[4][2][1] = temp2;
+        cube[4][2][2] = temp3;
     }
 }
 
@@ -567,4 +553,4 @@ bool Cube::checkWhiteCross() {
     }
     return true;
 }
-//if needed, change to Face::FACE_TYPE
+//if needed, ch
