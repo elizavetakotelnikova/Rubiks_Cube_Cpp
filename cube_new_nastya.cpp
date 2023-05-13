@@ -1,4 +1,4 @@
-#include "cube.h"
+#include "Cube.h"
 
 Cube::Cube() {
     std::memset(co, 0, sizeof(co));
@@ -124,19 +124,9 @@ bool Cube::operator==(const Cube& a){
 
     //return *this;
 }*/
-
 void Cube::Up(int amount) {
     COLOR temp[3];
-    int cube[3];
     for (int j = 0; j < amount; j++) {
-        /*for (int i = 0; i < 3; i++) {
-            temp[i] = сube[0][0][i];
-            cube[0][0][i] = cube[0][2 - i][0];
-            cube[0][2 - i][0] = cube[0][2][2 - i];
-            cube[0][2][2 - i] = cube[0][i][2];
-            cube[0][i][2] = temp[i];
-        }*/
-
         for (int i = 0; i < 3; i++) {
             temp[i] = cube[0][2 - i][0];
             cube[0][2 - i][0] = cube[0][2][2-i]; //first column
@@ -144,26 +134,19 @@ void Cube::Up(int amount) {
             cube[0][i][2] = cube[0][0][i];
             cube[0][0][i] = temp[i];
         }
-
         // Rotate adjacent edges
-        COLOR temp1 = cube[0][0][0];
-        COLOR temp2 = cube[0][0][1];
-        COLOR temp3 = cube[0][0][2];
-        COLOR temp4 = cube[0][1][0];
-        COLOR temp5 = cube[0][2][0];
-        COLOR temp6 = cube[0][2][1];
-        COLOR temp7 = cube[0][2][2];
-        COLOR temp9 = cube[0][1][2];
-
-        cube[5][0][2] = cube[0][0][0];
-        cube[3][0][1] = cube[0][0][1];
-        cube[3][0][2] = cube[0][0][2];
-        cube[2][0][0] = cube[0][1][0];
-        cube[2][0][1] = cube[0][2][0];
-        cube[2][0][2] = cube[0][2][1];
-        cube[5][0][0] = cube[0][2][2];
-        cube[5][0][1] = cube[0][1][2];
-        //cube[5][0][2] = cube[4][0][2];
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
         cube[4][0][0] = temp1;
         cube[4][0][1] = temp2;
         cube[4][0][2] = temp3;
@@ -195,11 +178,11 @@ void Cube::UpPrime(int amount) {
     COLOR temp[3];
     for (int j = 0; j < amount; j++) {
         for (int i = 0; i < 3; i++) {
-            temp[i] = cube[0][2 - i][2];
+            temp[i] = cube[0][2 - i][0];
             cube[0][2 - i][0] = cube[0][0][i]; //first column
-            cube[0][0][i] = cube[0][2][2 - i]; //bottom row
-            cube[0][2][2 - i] = cube[0][0][2 - i];
-            cube[0][0][2 - i] = temp[i];
+            cube[0][0][i] = cube[0][i][2]; //top row
+            cube[0][i][2] = cube[0][2][2 - i];
+            cube[0][2][2 - i] = temp[i];
         }
         // Rotate adjacent edges ТУТ НАДО ВСЕ ПОМЕНЯТЬ ПРОТИВ ЧАСОВОЙ СТРЕЛКИ
         COLOR temp1 = cube[3][0][0];
@@ -289,6 +272,60 @@ void Cube::UpPrime(int amount) {
 /**
  * Left.
  */
+
+
+void Cube::Left(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[3][2 - i][0];
+            cube[3][2 - i][0] = cube[3][2][2-i]; //first column
+            cube[3][2][2-i] = cube[3][i][2]; //top row
+            cube[3][i][2] = cube[3][0][i];
+            cube[3][0][i] = temp[i];
+        }
+        // Rotate adjacent edges
+        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
+
 void Cube::Left(int amount) {
     for (int i = 0; i < amount; i++) {
         int8_t tmp = cp[DLB];
@@ -326,6 +363,59 @@ return *this;
 /**
 * Left prime.
 */
+
+void Cube::LeftPrime(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[3][2 - i][0];
+            cube[3][2 - i][0] = cube[3][0][i]; //first column
+            cube[3][0][i] = cube[3][i][2]; //top row
+            cube[3][i][2] = cube[3][2][2 - i];
+            cube[3][2][2 - i] = temp[i];
+        }
+        // Rotate adjacent edges
+        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
+
 void Cube::LeftPrime(int amount) {
     for (int i = 0; i < amount; i++) {
         int8_t tmp = cp[DLB];
@@ -393,6 +483,58 @@ void Cube::LeftPrime(int amount) {
 }*/
 
 void Cube::Front(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[2][2 - i][0];
+            cube[2][2 - i][0] = cube[2][2][2-i]; //first column
+            cube[2][2][2-i] = cube[2][i][2]; //top row
+            cube[2][i][2] = cube[2][0][i];
+            cube[2][0][i] = temp[i];
+        }
+        // Rotate adjacent edges
+        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
+///ЧТО ТУТ СЛУЧИЛОСЬ Я НЕ ПОНЯЛА, ЭТО ТЫ ЧТО-ТО НАЧАЛА МЕНЯТЬ?
+void Cube::Front(int amount) {
     int index = 1;
     for (int i = 0; i < amount; i++) {
         COLOR fld = sides[index][2][0];
@@ -427,8 +569,60 @@ void Cube::Front(int amount) {
  */
 
 void Cube::FrontPrime(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[2][2 - i][0];
+            cube[2][2 - i][0] = cube[2][0][i]; //first column
+            cube[2][0][i] = cube[2][i][2]; //top row
+            cube[2][i][2] = cube[2][2][2 - i];
+            cube[2][2][2 - i] = temp[i];
+        }
+        // Rotate adjacent edges
+        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
+
+void Cube::FrontPrime(int amount) {
     for(int i = 0; i < amount; i++){
-        Cube tmp = corners[ULF];
+        Cubie tmp = corners[ULF];
         corners[ULF] = corners[URF];
         corners[URF] = corners[DRF];
         corners[DRF] = corners[DLF];
@@ -481,6 +675,59 @@ void Cube::FrontPrime(int amount) {
  */
 
 void Cube::Right(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[5][2 - i][0];
+            cube[5][2 - i][0] = cube[5][2][2-i]; //first column
+            cube[5][2][2-i] = cube[5][i][2]; //top row
+            cube[5][i][2] = cube[5][0][i];
+            cube[5][0][i] = temp[i];
+        }
+        // Rotate adjacent edges
+        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
+
+
+void Cube::Right(int amount) {
     for (int i = 0; i < amount; i++) {
         int8_t tmp = cp[DRB];
         cp[DRB] = cp[URB];
@@ -529,6 +776,58 @@ void Cube::Right(int amount) {
 /**
  * Right prime.
  */
+
+void Cube::RightPrime(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[5][2 - i][0];
+            cube[5][2 - i][0] = cube[5][0][i]; //first column
+            cube[5][0][i] = cube[5][i][2]; //top row
+            cube[5][i][2] = cube[5][2][2 - i];
+            cube[5][2][2 - i] = temp[i];
+        }
+        // Rotate adjacent edges
+        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
 
 
 void Cube::RightPrime(int amount){
@@ -597,6 +896,60 @@ void Cube::RightPrime(int amount){
  */
 
 void Cube::Back(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[4][2 - i][0];
+            cube[4][2 - i][0] = cube[4][2][2-i]; //first column
+            cube[4][2][2-i] = cube[4][i][2]; //top row
+            cube[4][i][2] = cube[4][0][i];
+            cube[4][0][i] = temp[i];
+        }
+
+        // Rotate adjacent edges
+        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
+
+
+void Cube::Back(int amount) {
     for (int i = 0; i < amount; i++) {
         int8_t tmp = cp[ULB];
         cp[ULB] = cp[URB];
@@ -650,6 +1003,59 @@ void Cube::Back(int amount) {
 /**
  * Back prime.
  */
+
+void Cube::BackPrime(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[4][2 - i][0];
+            cube[4][2 - i][0] = cube[4][0][i]; //first column
+            cube[4][0][i] = cube[4][i][2]; //top row
+            cube[4][i][2] = cube[4][2][2 - i];
+            cube[4][2][2 - i] = temp[i];
+        }
+        // Rotate adjacent edges
+        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
+
 
 void Cube::BackPrime(int amount) {
     for (int i = 0; i < amount; i++) {
@@ -720,6 +1126,60 @@ void Cube::BackPrime(int amount) {
  */
 
 void Cube::Down(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[1][2 - i][0];
+            cube[1][2 - i][0] = cube[1][2][2-i]; //first column
+            cube[1][2][2-i] = cube[1][i][2]; //top row
+            cube[1][i][2] = cube[1][0][i];
+            cube[1][0][i] = temp[i];
+        }
+
+        // Rotate adjacent edges
+        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
+
+
+void Cube::Down(int amount) {
     for (int i = 0; i < amount; i++) {
         int8_t tmp = cp[DLB];
         cp[DLB] = cp[DRB];
@@ -766,6 +1226,59 @@ void Cube::Down(int amount) {
 /**
  * Down prime.
  */
+
+void Cube::DownPrime(int amount) {
+    COLOR temp[3];
+    for (int j = 0; j < amount; j++) {
+        for (int i = 0; i < 3; i++) {
+            temp[i] = cube[1][2 - i][0];
+            cube[1][2 - i][0] = cube[1][0][i]; //first column
+            cube[1][0][i] = cube[1][i][2]; //top row
+            cube[1][i][2] = cube[1][2][2 - i];
+            cube[1][2][2 - i] = temp[i];
+        }
+        // Rotate adjacent edges
+        ///ВОТ ЭТО ВСЕ НАДО ПЕРЕДЕЛАТЬ Я ПРОСТО СОКПИРОВАЛА ИЗ UP КАК ШАБЛОН
+        COLOR temp1 = cube[3][0][0];
+        COLOR temp2 = cube[3][0][1];
+        COLOR temp3 = cube[3][0][2];
+        cube[3][0][0] = cube[2][0][0];
+        cube[3][0][1] = cube[2][0][1];
+        cube[3][0][2] = cube[2][0][2];
+        cube[2][0][0] = cube[5][0][0];
+        cube[2][0][1] = cube[5][0][1];
+        cube[2][0][2] = cube[5][0][2];
+        cube[5][0][0] = cube[4][0][0];
+        cube[5][0][1] = cube[4][0][1];
+        cube[5][0][2] = cube[4][0][2];
+        cube[4][0][0] = temp1;
+        cube[4][0][1] = temp2;
+        cube[4][0][2] = temp3;
+        // Rotate adjacent corners
+        temp1 = cube[1][0][0];
+        temp2 = cube[1][0][2];
+        temp3 = cube[1][2][0];
+        COLOR temp4 = cube[1][2][2];
+        cube[1][0][0] = cube[4][0][2];
+        cube[1][0][2] = cube[4][2][2];
+        cube[1][2][0] = cube[4][2][0];
+        cube[1][2][2] = cube[4][0][0];
+        cube[4][0][2] = cube[3][2][2];
+        cube[4][2][2] = cube[3][0][0];
+        cube[4][2][0] = cube[3][2][0];
+        cube[4][0][0] = cube[3][0][2];
+        cube[3][2][2] = cube[2][2][0];
+        cube[3][0][0] = cube[2][2][2];
+        cube[3][2][0] = cube[2][0][2];
+        cube[3][0][2] = cube[2][0][0];
+        cube[2][2][0] = temp1;
+        cube[2][2][2] = temp2;
+        cube[2][0][2] = temp3;
+        cube[2][0][0] = temp4;
+    }
+}
+
+
 
 void Cube::DownPrime(int amount) {
     for (int i = 0; i < amount; i++) {
@@ -885,113 +1398,4 @@ bool Cube::checkWhiteCross() {
     }
     return true;
 }
-
-
-
-//up-prime(to left - 90) грань№0
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[0][2 - i][0];
-cube[0][2 - i][0] = cube[0][0][i]; //first column
-cube[0][0][i] = cube[0][i][2]; //top row
-cube[0][i][2] = cube[0][2][2 - i];
-cube[0][2][2 - i] = temp[i];
-}
-//up(to right - 90)
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[0][2 - i][0];
-cube[0][2 - i][0] = cube[0][2][2-i]; //first column
-cube[0][2][2-i] = cube[0][i][2]; //top row
-cube[0][i][2] = cube[0][0][i];
-cube[0][0][i] = temp[i];
-}
-
-
-//down-prime(to left - 90)грань№1
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[1][2 - i][0];
-cube[1][2 - i][0] = cube[1][0][i]; //first column
-cube[1][0][i] = cube[1][i][2]; //top row
-cube[1][i][2] = cube[1][2][2 - i];
-cube[1][2][2 - i] = temp[i];
-}
-//down(to right - 90)грань№1
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[1][2 - i][0];
-cube[1][2 - i][0] = cube[1][2][2-i]; //first column
-cube[1][2][2-i] = cube[1][i][2]; //top row
-cube[1][i][2] = cube[1][0][i];
-cube[1][0][i] = temp[i];
-}
-
-
-//front-prime(to left - 90)грань№2
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[2][2 - i][0];
-cube[2][2 - i][0] = cube[2][0][i]; //first column
-cube[2][0][i] = cube[2][i][2]; //top row
-cube[2][i][2] = cube[2][2][2 - i];
-cube[2][2][2 - i] = temp[i];
-}
-//front(to right - 90)грань№2
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[2][2 - i][0];
-cube[2][2 - i][0] = cube[2][2][2-i]; //first column
-cube[2][2][2-i] = cube[2][i][2]; //top row
-cube[2][i][2] = cube[2][0][i];
-cube[2][0][i] = temp[i];
-}
-
-
-//left-prime(to left - 90)грань№3
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[3][2 - i][0];
-cube[3][2 - i][0] = cube[3][0][i]; //first column
-cube[3][0][i] = cube[3][i][2]; //top row
-cube[3][i][2] = cube[3][2][2 - i];
-cube[3][2][2 - i] = temp[i];
-}
-//left(to right - 90)грань№3
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[3][2 - i][0];
-cube[3][2 - i][0] = cube[3][2][2-i]; //first column
-cube[3][2][2-i] = cube[3][i][2]; //top row
-cube[3][i][2] = cube[3][0][i];
-cube[3][0][i] = temp[i];
-}
-
-
-//back-prime(to left - 90)грань№4
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[4][2 - i][0];
-cube[4][2 - i][0] = cube[4][0][i]; //first column
-cube[4][0][i] = cube[4][i][2]; //top row
-cube[4][i][2] = cube[4][2][2 - i];
-cube[4][2][2 - i] = temp[i];
-}
-//back(to right - 90)грань№4
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[4][2 - i][0];
-cube[4][2 - i][0] = cube[4][2][2-i]; //first column
-cube[4][2][2-i] = cube[4][i][2]; //top row
-cube[4][i][2] = cube[4][0][i];
-cube[4][0][i] = temp[i];
-}
-
-
-//right-prime(to left - 90)грань№5
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[5][2 - i][0];
-cube[5][2 - i][0] = cube[5][0][i]; //first column
-cube[5][0][i] = cube[5][i][2]; //top row
-cube[5][i][2] = cube[5][2][2 - i];
-cube[5][2][2 - i] = temp[i];
-}
-//right(to right - 90)грань№5
-for (int i = 0; i < 3; i++) {
-temp[i] = cube[5][2 - i][0];
-cube[5][2 - i][0] = cube[5][2][2-i]; //first column
-cube[5][2][2-i] = cube[5][i][2]; //top row
-cube[5][i][2] = cube[5][0][i];
-cube[5][0][i] = temp[i];
-}
-
+//if needed, change to Face::FACE_TYPE
