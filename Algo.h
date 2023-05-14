@@ -1,6 +1,6 @@
 #include "Cube.h"
 #include <vector>
-#include <Queue>
+#include <queue>
 class Algo {
 private:
     int stage;
