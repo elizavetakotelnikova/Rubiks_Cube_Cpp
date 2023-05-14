@@ -480,57 +480,68 @@ int8_t* Cube::getEO() {
 int8_t* Cube::getEP() {
     return this->ep;
 }
-/*RubiksCube& RubiksCubeIndexModel::dPrime()
-{
-    Cubie hold                           = this->corners[(unsigned)CORNER::DLF];
-    this->corners[(unsigned)CORNER::DLF] = this->corners[(unsigned)CORNER::DRF];
-    this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::DRB];
-    this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::DLB];
-    this->corners[(unsigned)CORNER::DLB] = hold;
-    hold                                 = this->edges[(unsigned)EDGE::DL];
-    this->edges[(unsigned)EDGE::DL]      = this->edges[(unsigned)EDGE::DF];
-    this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::DR];
-    this->edges[(unsigned)EDGE::DR]      = this->edges[(unsigned)EDGE::DB];
-    this->edges[(unsigned)EDGE::DB]      = hold;
-    return *this;
-}*/
-
-/**
- * Down 2.
- */
-/*RubiksCube& RubiksCubeIndexModel::d2()
-{
-    swap(this->corners[(unsigned)CORNER::DLB], this->corners[(unsigned)CORNER::DRF]);
-    swap(this->corners[(unsigned)CORNER::DRB], this->corners[(unsigned)CORNER::DLF]);
-    swap(this->edges[(unsigned)EDGE::DB],      this->edges[(unsigned)EDGE::DF]);
-    swap(this->edges[(unsigned)EDGE::DR],      this->edges[(unsigned)EDGE::DL]);
-    return *this;
-}*/
 
 
 COLOR Cube::getColor(FACE face, unsigned int row, unsigned int col) {
     return COLOR::RED;
 }
 
-void Cube::Rotate(FACE command, int amount){
+void Cube::Rotate(commands command){
     switch (command) {
-        case FACE::FRONT:
-            Front(amount);
+        case COMMANDS::F:
+            Front(1);
             break;
-        case FACE::RIGHT:
-            Right(amount);
+        case COMMANDS::Fprime:
+            FrontPrime(1);
             break;
-        case FACE::UP:
-            Up(amount);
+        case COMMANDS::F2:
+            Front(2);
             break;
-        case FACE::BACK:
-            Back(amount);
+        case COMMANDS::R:
+            Right(1);
             break;
-        case FACE::LEFT:
-            Left(amount);
+        case COMMANDS::Rprime:
+            RightPrime(1);
             break;
-        case FACE::DOWN:
-            Down(amount);
+        case COMMANDS::R2:
+            Right(2);
+            break;
+        case COMMANDS::L:
+            Left(1);
+            break;
+        case COMMANDS::Lprime:
+            LeftPrime(1);
+            break;
+        case COMMANDS::L2:
+            Left(2);
+            break;
+        case COMMANDS::B:
+            Back(1);
+            break;
+        case COMMANDS::Bprime:
+            BackPrime(1);
+            break;
+        case COMMANDS::B2:
+            Back(2);
+            break;
+        case COMMANDS::D:
+            Down(1);
+            break;
+        case COMMANDS::Dprime:
+            DownPrime(1);
+            break;
+        case COMMANDS::D2:
+            Down(2);
+            break;
+        case COMMANDS::U:
+            Up(1);
+            break;
+        case COMMANDS::Uprime:
+            UpPrime(1);
+            break;
+        case COMMANDS::U2:
+            Up(2);
+            break;
     }
 }
 
@@ -553,4 +564,13 @@ bool Cube::checkWhiteCross() {
     }
     return true;
 }
-//if needed, ch
+
+COLOR_cube Cube::getCube() {
+    return cube;
+}
+
+face_cube Cube::getFace(int index) {
+    return cube[index];
+}
+
+//if needed, change to Face::FACE_TYPE
