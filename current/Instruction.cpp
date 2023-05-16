@@ -174,10 +174,35 @@ void::Algo::phase_one(Cube &cube, Cubie & mini_cube) {
 
     //если в верхнем слое не окажется угловых элементов с белым цветом
     else{
-        
+
 
     }
 
 
 
+}
+
+
+
+void::Algo::phase_three(Cube &cube, Cubie & mini_cube) {
+    COLOR_cube current_cube = cube.getCube();
+    if(current_cube[0][1][1] == COLOR::YELLOW){
+        while(!(current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW)) {
+            if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW) {
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+            } 
+            else if (current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW) {
+                Cube.Rotate(F);
+                Cube.Rotate(R);
+                Cube.Rotate(U);
+            }
+            else{//это типо когда только точка в центре
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+            }
+        }
+    }
 }
