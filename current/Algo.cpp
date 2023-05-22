@@ -722,5 +722,71 @@ void Algo::phase_three(Cube &Cube, Cubie & mini_cube) {
     }
 }
 
+bool Algo::IsSolvedYellow(Cube & Cube) {
+    COLOR_cube current_cube = Cube.getCube();
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (current_cube[0][i][j] != COLOR::YELLOW) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void Algo::SolveYellowFace(Cube &Cube) {
+    COLOR_cube current_cube = Cube.getCube();
+    if (IsSolvedYellow(Cube)) {
+        return;
+    }
+    if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
+        if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW &&
+            current_cube[0][1][2] == COLOR::YELLOW) {
+            if (current_cube[0][2][1] == COLOR::YELLOW && current_cube[2][0][1] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) { //здесь же пофиг на передние ребра?
+                Cube.Rotate(R2);
+                Cube.Rotate(B);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(U2);
+                Cube.Rotate(R);
+                Cube.Rotate(Bprime);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(U2);
+                Cube.Rotate(Rprime);
+            }
+        }
+    }
+    else if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][2][0] == COLOR::YELLOW) {
+        if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
+            if (current_cube[0][1][2] == COLOR::YELLOW && current_cube[4][0][0] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) {
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Fprime);
+                Cube.Rotate(L);
+                Cube.Rotate(F);
+                Cube.Rotate(R);
+                Cube.Rotate(Fprime);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(F);
+            }
+        }
+    }
+    else if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW) {
+        if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
+            if (current_cube[0][2][1] == COLOR::YELLOW && current_cube[0][2][2] == COLOR::YELLOW) {
+                if (current_cube[4][0][0] == COLOR::YELLOW && current_cube[3][0][2] == COLOR::YELLOW) {
+                    Cube.Rotate(Rprime);
+                    Cube.Rotate(Fprime);
+                    Cube.Rotate(Lprime);
+                    Cube.Rotate(F);
+                    Cube.Rotate(R);
+                    Cube.Rotate(Fprime);
+                    Cube.Rotate(L);
+                    Cube.Rotate(F);
+                }
+            }
+        }
+    }
+    //написано 3 позици + 1 когда слой собран
+}
+
 
 
