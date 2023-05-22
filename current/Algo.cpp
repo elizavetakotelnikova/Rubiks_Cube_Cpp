@@ -464,7 +464,240 @@ void Algo::phase_one(Cube &Cube, Cubie & mini_cube) {
 
 }
 
+/*void TransferRight(Cube& Cube) {
+    Cube.Rotate()
+}*/
 
+bool Algo::isSolvedMiddleLayer(COLOR_cube &cube) {
+    for (int i = 2; i < 6; i++) {
+        if (!(cube[i][1][0] == cube[i][1][1] && cube[i][1][1] == cube[i][1][2])) {
+            return false;
+        }
+        if (!(cube[i][2][0] == cube[i][2][1] && cube[i][2][1] == cube[i][2][2])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void Algo::fixWrongSecondLayerEdges(COLOR_cube current_cube, Cube& Cube) {
+    if (current_cube[2][1][2] != COLOR::YELLOW && current_cube[5][1][0] != COLOR::YELLOW) {
+        Cube.Rotate(F);
+        Cube.Rotate(U);
+        Cube.Rotate(F);
+        Cube.Rotate(U);
+        Cube.Rotate(F);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Fprime);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Fprime);
+    }
+    if (current_cube[5][1][2] != COLOR::YELLOW && current_cube[4][1][0] != COLOR::YELLOW) {
+        Cube.Rotate(Lprime);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Lprime);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Lprime);
+        Cube.Rotate(U);
+        Cube.Rotate(L);
+        Cube.Rotate(U);
+        Cube.Rotate(L);
+    }
+    if (current_cube[4][1][2] != COLOR::YELLOW && current_cube[3][1][0] != COLOR::YELLOW) {
+        Cube.Rotate(B);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(B);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(B);
+        Cube.Rotate(U);
+        Cube.Rotate(B);
+        Cube.Rotate(U);
+        Cube.Rotate(B);
+    }
+    if (current_cube[3][1][2] != COLOR::YELLOW && current_cube[2][1][0] != COLOR::YELLOW) {
+        Cube.Rotate(Rprime);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Rprime);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Rprime);
+        Cube.Rotate(U);
+        Cube.Rotate(R);
+        Cube.Rotate(U);
+        Cube.Rotate(R);
+    }
+}
+
+void Algo::MiddleLayer(Cube& Cube) {
+    COLOR_cube current_cube = Cube.getCube();
+    std::queue<int> Q;
+    while (!isSolvedSecondLayer(current_cube)) {
+        COLOR ce = current_cube[0][0][1];
+        COLOR fe = current_cube[4][0][1];
+        if (ce != COLOR::YELLOW && fe != COLOR::YELLOW) {
+            if (ce == COLOR::RED && fe == COLOR::BLUE) {
+                Cube.Rotate(B);
+                Cube.Rotate(U);
+                Cube.Rotate(B);
+                Cube.Rotate(U);
+                Cube.Rotate(B);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Bprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Bprime);
+            }
+            else if (ce == COLOR::ORANGE && fe == COLOR::BLUE) {
+                Cube.Rotate(B);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(B);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(B);
+                Cube.Rotate(U);
+                Cube.Rotate(B);
+                Cube.Rotate(U);
+                Cube.Rotate(B);
+            }
+            else {
+                if (fe == COLOR::RED) {
+                    Cube.Rotate(Uprime);
+                }
+                if (fe == COLOR::GREEN) {
+                    Cube.Rotate(U2);
+                }
+                if (fe == COLOR::ORANGE) {
+                    Cube.Rotate(U);
+                }
+            }
+        }
+        ce = current_cube[0][1][0];
+        fe = current_cube[3][0][1];
+        if (ce != COLOR::YELLOW && fe != COLOR::YELLOW) {
+            if (ce == COLOR::GREEN && fe == COLOR::RED) {
+                Cube.Rotate(Lprime);
+                Cube.Rotate(U);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(U);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(Uprime); //check Lprime or L
+                Cube.Rotate(Lprime);
+            }
+            else if (ce == COLOR::BLUE && fe == COLOR::RED) {
+                Cube.Rotate(Lprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(U);
+                Cube.Rotate(L);
+                Cube.Rotate(U);
+                Cube.Rotate(L);
+            }
+            else {
+                if (fe == COLOR::ORANGE) {
+                    Cube.Rotate(U2);
+                }
+                if (fe == COLOR::GREEN) {
+                    Cube.Rotate(Uprime);
+                }
+                if (fe == COLOR::BLUE) {
+                    Cube.Rotate(U);
+                }
+            }
+        }
+        ce = current_cube[0][2][1];
+        fe = current_cube[2][0][1];
+        if (ce != COLOR::YELLOW && fe != COLOR::YELLOW) {
+            if (ce == COLOR::ORANGE && fe == COLOR::GREEN) {
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(F);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Fprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Fprime);
+            }
+            else if (ce == COLOR::RED && fe == COLOR::GREEN) {
+                Cube.Rotate(Fprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Fprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Fprime);
+                Cube.Rotate(U);
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(F);
+            }
+            else {
+                if (fe == COLOR::ORANGE) {
+                    Cube.Rotate(Uprime);
+                }
+                if (fe == COLOR::RED) {
+                    Cube.Rotate(U);
+                }
+                if (fe == COLOR::BLUE) {
+                    Cube.Rotate(U2);
+                }
+            }
+        }
+        ce = current_cube[0][1][1];
+        fe = current_cube[5][0][1];
+        if (ce != COLOR::YELLOW && fe != COLOR::YELLOW) {
+            if (ce == COLOR::BLUE && fe == COLOR::ORANGE) {
+                Cube.Rotate(R);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Rprime);
+            }
+            else if (ce == COLOR::GREEN && fe == COLOR::ORANGE) {
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+            }
+            else {
+                if (fe == COLOR::GREEN) {
+                    Cube.Rotate(Uprime);
+                }
+                if (fe == COLOR::BLUE) {
+                    Cube.Rotate(U);
+                }
+                if (fe == COLOR::RED) {
+                    Cube.Rotate(U2);
+                }
+            }
+        }
+        if (!isSolvedSecondLayer(current_cube)) {
+            if (current_cube[0][0][1] != COLOR::YELLOW && current_cube[4][0][1] != COLOR::YELLOW) {
+                continue;
+            }
+            if (current_cube[0][1][1] != COLOR::YELLOW && current_cube[5][0][1] != COLOR::YELLOW) {
+                continue;
+            }
+            if (current_cube[0][2][1] != COLOR::YELLOW && current_cube[2][0][1] != COLOR::YELLOW) {
+                continue;
+            }
+            if (current_cube[0][1][0] != COLOR::YELLOW && current_cube[3][0][1] != COLOR::YELLOW) {
+                continue;
+            }
+            else {
+                fixWrongSecondLayerEdges(current_cube, Cube);
+            }
+        }
+    }
+}
 
 void Algo::phase_three(Cube &Cube, Cubie & mini_cube) {
     COLOR_cube current_cube = Cube.getCube();
