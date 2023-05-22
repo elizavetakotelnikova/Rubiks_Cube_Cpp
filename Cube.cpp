@@ -1,769 +1,849 @@
-#include "Cube.h"
+#include "Algo.h"
 
-Cube::Cube() {
-    std::memset(co, 0, sizeof(co));
-    std::memset(eo, 0, sizeof(eo));
-    for (int i = 0; i < 8; i++) {
-        cp[i] = i;
+bool Algo::isCross(COLOR color, int index, Cube &cube) {
+    face_cube current_face = cube.getFace(index);
+    COLOR center = current_face[1][1];
+    if (current_face[0][1] == center && current_face[1][2] == center)
+        if (current_face[2][1] == center && current_face[1][0] == center) {
+        return true;
     }
-    for (int i = 0; i < 12; i++) {
-        ep[i] = i;
-    }
-    centers[0] = COLOR::RED;
-    centers[1] = COLOR::BLUE;
-    centers[2] = COLOR::WHITE;
-    centers[3] = COLOR::GREEN;
-    centers[4] = COLOR::YELLOW;
-    centers[5] = COLOR::ORANGE;
+    return false;
 }
 
-void Cube::Read(const char* filename) {
-    std::ifstream File;
-    File.open(filename, std::ios::in);
-    for (int i = 0; i < 8; i++) {
-        File >> cp[i] >> co[i];
-    }
-    for (int i = 0; i < 12; i++) {
-        File >> ep[i] >> eo[i];
-    }
-    std::cout << "Cube's state was successfully read from the file " << std::endl;
+bool Algo::isRightWhiteCross(COLOR color, int index, Cube &cube) {
+    COLOR_cube current_cube = cube.getCube();
+    if (current_cube[5][2][1] == COLOR::ORANGE && current_cube[2][2][1] == COLOR::GREEN)
+        if (current_cube[3][2][1] == COLOR::RED && current_cube[4][2][1] == COLOR::BLUE) {
+            return true;
+        }
+    return false;
 }
 
-void Cube::Generate() {
-    for (int i = 0; i++; i < 6) {
-        for (int j = 0; j++; j < 3) {
-            for (int k = 0; k++; k < 3) {
-                sides[i][j][k] = rand() % 6;
+
+bool Algo::matchCenter(COLOR a, COLOR center) {
+    if (a == center) {
+        return true;
+    }
+    return false;
+}
+
+
+void Algo::makeWhiteCross(Cube &cube) {
+     int counter = 0;
+     COLOR_cube current_cube = cube.getCube();
+     while (counter != 4) {
+         if (current_cube[0][1][0] == COLOR::WHITE) {
+             COLOR ce = current_cube[3][0][1]; //current edge
+             std::queue<int> Q;
+             Q.push(3);
+             Q.push(4);
+             Q.push(5);
+             Q.push(2);
+             int i = Q.front();
+             Q.pop();
+             COLOR fc = current_cube[i][1][1]; //face color
+             while (!matchCenter(ce, fc)) {
+                 cube.Rotate(U);
+                 i = Q.front();
+                 Q.pop();
+                 fc = current_cube[i][1][1];
+             }
+             SetEdge(fc, cube, ce);
+             counter++;
+         }
+
+         if (current_cube[0][0][1] == COLOR::WHITE) {
+             COLOR ce = current_cube[4][0][1];
+             //std::queue<int> Q = {4, 5, 2, 3};
+             std::queue<int> Q;
+             Q.push(4);
+             Q.push(5);
+             Q.push(2);
+             Q.push(3);
+             int i = Q.front();
+             Q.pop();
+             COLOR fc = current_cube[i][1][1]; //face color
+             while (!matchCenter(ce, fc)) {
+                 cube.Rotate(U);
+                 i = Q.front();
+                 Q.pop();
+                 fc = current_cube[i][1][1];
+             }
+             SetEdge(fc, cube, ce);
+             counter++;
+         }
+
+         if (current_cube[0][1][2] == COLOR::WHITE) {
+             COLOR ce = current_cube[5][0][1]; //current edge
+             //std::queue<int> Q = {5, 2, 3, 4};
+             std::queue<int> Q;
+             Q.push(5);
+             Q.push(2);
+             Q.push(3);
+             Q.push(4);
+             int i = Q.front();
+             Q.pop();
+             COLOR fc = current_cube[i][1][1]; //face color
+             while (!matchCenter(ce, fc)) {
+                 cube.Rotate(U);
+                 i = Q.front();
+                 Q.pop();
+                 fc = current_cube[i][1][1];
+             }
+             SetEdge(fc, cube, ce);
+             counter++;
+         }
+
+         if (current_cube[2][0][1] == COLOR::WHITE) {
+             COLOR ce = current_cube[0][2][1]; //current edge
+             //std::queue<int> Q = {2, 3, 4, 5};
+             std::queue<int> Q;
+             Q.push(2);
+             Q.push(3);
+             Q.push(4);
+             Q.push(5);
+             int i = Q.front();
+             Q.pop();
+             COLOR fc = current_cube[i][1][1]; //face color
+             while (!matchCenter(ce, fc)) {
+                 cube.Rotate(U);
+                 i = Q.front();
+                 Q.pop();
+                 fc = current_cube[i][1][1];
+             }
+             SetEdge(fc, cube, ce);
+             counter++;
+         }
+         if (counter == 4) { break; }
+
+         if (current_cube[2][0][1] == COLOR::WHITE) {
+             COLOR ce = current_cube[0][2][1]; //current edge
+             //std::queue<int> Q = {2, 3, 4, 5};
+             std::queue<int> Q;
+             Q.push(2);
+             Q.push(3);
+             Q.push(4);
+             Q.push(5);
+             int i = Q.front();
+             Q.pop();
+             COLOR fc = current_cube[i][1][1]; //face color
+             while (!matchCenter(ce, fc)) {
+                 cube.Rotate(U);
+                 i = Q.front();
+                 Q.pop();
+                 fc = current_cube[i][1][1];
+             }
+             SetEdgeFront(fc, cube, ce);
+             counter++;
+         }
+         if (counter == 4) { break; }
+
+         if (current_cube[3][0][1] == COLOR::WHITE) {
+             COLOR ce = current_cube[0][1][0]; //current edge
+             //std::queue<int> Q = {3, 4, 5, 2};
+             std::queue<int> Q;
+             Q.push(3);
+             Q.push(4);
+             Q.push(5);
+             Q.push(2);
+             int i = Q.front();
+             Q.pop();
+             COLOR fc = current_cube[i][1][1]; //face color
+             while (!matchCenter(ce, fc)) {
+                 cube.Rotate(U);
+                 i = Q.front();
+                 Q.pop();
+                 fc = current_cube[i][1][1];
+             }
+             SetEdgeFront(fc, cube, ce);
+             counter++;
+         }
+
+         if (counter == 4) { break; }
+
+         if (current_cube[4][0][1] == COLOR::WHITE) {
+             COLOR ce = current_cube[0][0][1]; //current edge
+             //std::queue<int> Q = {4, 5, 2, 3};
+             std::queue<int> Q;
+             Q.push(4);
+             Q.push(5);
+             Q.push(2);
+             Q.push(3);
+             int i = Q.front();
+             Q.pop();
+             COLOR fc = current_cube[i][1][1]; //face color
+             while (!matchCenter(ce, fc)) {
+                 cube.Rotate(U);
+                 i = Q.front();
+                 Q.pop();
+                 fc = current_cube[i][1][1];
+             }
+             SetEdgeFront(fc, cube, ce);
+             counter++;
+         }
+
+         if (counter == 4) { break; }
+
+         if (current_cube[5][0][1] == COLOR::WHITE) {
+             COLOR ce = current_cube[0][1][2]; //current edge
+             //std::queue<int> Q = {5, 2, 3, 4};
+             std::queue<int> Q;
+             Q.push(5);
+             Q.push(2);
+             Q.push(3);
+             Q.push(4);
+             int i = Q.front();
+             Q.pop();
+             COLOR fc = current_cube[i][1][1]; //face color
+             while (!matchCenter(ce, fc)) {
+                 cube.Rotate(U);
+                 i = Q.front();
+                 Q.pop();
+                 fc = current_cube[i][1][1];
+             }
+             SetEdgeFront(fc, cube, ce);
+             counter++;
+         }
+
+         if (counter == 4) { break; }
+
+         else {
+             if (current_cube[5][1][0] == COLOR::WHITE) {
+                 cube.Rotate(Fprime);
+             }
+
+             if (current_cube[5][1][2] == COLOR::WHITE) {
+                 cube.Rotate(Bprime);
+             }
+
+             if (current_cube[3][1][2] == COLOR::WHITE) {
+                 cube.Rotate(F);
+             }
+
+             if (current_cube[3][1][0] == COLOR::WHITE) {
+                 cube.Rotate(B);
+             }
+
+             if (current_cube[2][1][2] == COLOR::WHITE) {
+                 cube.Rotate(R);
+             }
+
+             if (current_cube[2][1][0] == COLOR::WHITE) {
+                 cube.Rotate(Lprime);
+             }
+
+             if (current_cube[4][1][2] == COLOR::WHITE) {
+                 cube.Rotate(L);
+             }
+
+             if (current_cube[4][1][0] == COLOR::WHITE) {
+                 cube.Rotate(Rprime);
+             }
+         }
+     }
+}
+
+void Algo::SetEdge(COLOR fc, Cube& Cube, COLOR ce) {
+    if (fc == COLOR::RED) {
+        Cube.Rotate(L2);
+    }
+    else if (fc == COLOR::BLUE) {
+        Cube.Rotate(B2);
+    }
+    else if (ce == COLOR::ORANGE) {
+        Cube.Rotate(R2);
+    }
+    else {
+        Cube.Rotate(F2);
+    }
+}
+
+void Algo::SetEdgeFront(COLOR fc, Cube& Cube, COLOR ce) {
+    if (fc == COLOR::GREEN) { //should be checked, I am not sure
+        Cube.Rotate(U);
+        Cube.Rotate(L);
+        Cube.Rotate(Fprime);
+        Cube.Rotate(Lprime);
+    }
+    else if (fc == COLOR::RED) {
+        Cube.Rotate(U);
+        Cube.Rotate(Bprime); //or back?
+        Cube.Rotate(Lprime);
+        Cube.Rotate(B);
+    }
+    else if (ce == COLOR::BLUE) {
+        Cube.Rotate(U);
+        Cube.Rotate(L);
+        Cube.Rotate(B); //check please
+        Cube.Rotate(Lprime);
+    }
+    else {
+        Cube.Rotate(U);
+        Cube.Rotate(Bprime);
+        Cube.Rotate(Rprime);
+        Cube.Rotate(B);
+    }
+}
+
+void Algo::phase_one(Cube &Cube, Cubie & mini_cube) {
+    COLOR_cube current_cube = Cube.getCube();
+
+    //if front side is green
+    if (mini_cube.getCubieLeft() == COLOR::GREEN && current_cube[2][0][2] == COLOR::GREEN &&
+        current_cube[2][1][1] == COLOR::GREEN) {
+        if (mini_cube.getCubieTop() == COLOR::ORANGE && current_cube[0][2][2] == COLOR::ORANGE &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::WHITE && current_cube[5][0][0] == COLOR::WHITE &&
+                current_cube[5][1][1] == COLOR::ORANGE) {
+                Cube.Rotate(R);
+                Cube.Rotate(U);
+                Cube.Rotate(Rprime);
+            }
+        }
+    }
+
+    else if (mini_cube.getCubieLeft() == COLOR::WHITE && current_cube[2][0][2] == COLOR::WHITE &&
+             current_cube[2][1][1] == COLOR::GREEN) {
+        if (mini_cube.getCubieTop() == COLOR::GREEN && current_cube[0][2][2] == COLOR::GREEN &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::ORANGE && current_cube[5][0][0] == COLOR::ORANGE &&
+                current_cube[5][1][1] == COLOR::ORANGE) {
+                Cube.Rotate(Fprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(F);
+            }
+        }
+    }
+
+    else if (mini_cube.getCubieLeft() == COLOR::ORANGE && current_cube[2][0][2] == COLOR::ORANGE &&
+             current_cube[2][1][1] == COLOR::GREEN) {
+        if (mini_cube.getCubieTop() == COLOR::WHITE && current_cube[0][2][2] == COLOR::WHITE &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::GREEN && current_cube[5][0][0] == COLOR::GREEN &&
+                current_cube[5][1][1] == COLOR::ORANGE) {
+                Cube.Rotate(R);
+                Cube.Rotate(U2);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+            }
+        }
+    }
+
+
+        //if front side is red(pink)
+    else if (mini_cube.getCubieLeft() == COLOR::RED && current_cube[3][0][2] == COLOR::RED &&
+             current_cube[3][1][1] == COLOR::RED) {
+        if (mini_cube.getCubieTop() == COLOR::GREEN && current_cube[0][2][0] == COLOR::GREEN &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::WHITE && current_cube[2][0][0] == COLOR::WHITE &&
+                current_cube[2][1][1] == COLOR::GREEN) {
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(Fprime);
+            }
+        }
+    }
+
+    else if (mini_cube.getCubieLeft() == COLOR::WHITE && current_cube[3][0][2] == COLOR::WHITE &&
+             current_cube[3][1][1] == COLOR::RED) {
+        if (mini_cube.getCubieTop() == COLOR::RED && current_cube[0][2][0] == COLOR::RED &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::GREEN && current_cube[2][0][0] == COLOR::GREEN &&
+                current_cube[2][1][1] == COLOR::GREEN) {
+                Cube.Rotate(Lprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(L);
+            }
+        }
+    }
+
+    else if (mini_cube.getCubieLeft() == COLOR::GREEN && current_cube[3][0][2] == COLOR::GREEN &&
+             current_cube[3][1][1] == COLOR::RED) {
+        if (mini_cube.getCubieTop() == COLOR::WHITE && current_cube[0][2][0] == COLOR::WHITE &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::RED && current_cube[2][0][0] == COLOR::RED &&
+                current_cube[2][1][1] == COLOR::GREEN) {
+                Cube.Rotate(R);
+                Cube.Rotate(U2);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+            }
+        }
+    }
+
+        //if front side is blue
+    else if (mini_cube.getCubieLeft() == COLOR::BLUE && current_cube[4][0][2] == COLOR::BLUE &&
+             current_cube[4][1][1] == COLOR::BLUE) {
+        if (mini_cube.getCubieTop() == COLOR::RED && current_cube[0][0][0] == COLOR::RED &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::WHITE && current_cube[3][0][0] == COLOR::WHITE &&
+                current_cube[3][1][1] == COLOR::RED) {
+                Cube.Rotate(L);
+                Cube.Rotate(U);
+                Cube.Rotate(Lprime);
+            }
+        }
+    }
+
+    else if (mini_cube.getCubieLeft() == COLOR::WHITE && current_cube[4][0][2] == COLOR::WHITE &&
+             current_cube[4][1][1] == COLOR::BLUE) {
+        if (mini_cube.getCubieTop() == COLOR::BLUE && current_cube[0][0][0] == COLOR::BLUE &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::RED && current_cube[3][0][0] == COLOR::RED &&
+                current_cube[3][1][1] == COLOR::RED) {
+                Cube.Rotate(Bprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(B);
+            }
+        }
+    }
+
+    else if (mini_cube.getCubieLeft() == COLOR::RED && current_cube[4][0][2] == COLOR::RED &&
+             current_cube[4][1][1] == COLOR::BLUE) {
+        if (mini_cube.getCubieTop() == COLOR::WHITE && current_cube[0][0][0] == COLOR::WHITE &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::BLUE && current_cube[3][0][0] == COLOR::BLUE &&
+                current_cube[3][1][1] == COLOR::RED) {
+                Cube.Rotate(R);
+                Cube.Rotate(U2);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+            }
+        }
+    }
+
+
+        //if front side is orange
+    else if (mini_cube.getCubieLeft() == COLOR::ORANGE && current_cube[5][0][2] == COLOR::ORANGE &&
+             current_cube[5][1][1] == COLOR::ORANGE) {
+        if (mini_cube.getCubieTop() == COLOR::BLUE && current_cube[0][0][2] == COLOR::BLUE &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::WHITE && current_cube[4][0][0] == COLOR::WHITE &&
+                current_cube[4][1][1] == COLOR::BLUE) {
+                Cube.Rotate(B);
+                Cube.Rotate(U);
+                Cube.Rotate(Bprime);
+            }
+        }
+    }
+
+    else if (mini_cube.getCubieLeft() == COLOR::WHITE && current_cube[5][0][2] == COLOR::WHITE &&
+             current_cube[5][1][1] == COLOR::ORANGE) {
+        if (mini_cube.getCubieTop() == COLOR::ORANGE && current_cube[0][0][2] == COLOR::ORANGE &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::BLUE && current_cube[4][0][0] == COLOR::BLUE &&
+                current_cube[4][1][1] == COLOR::BLUE) {
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(R);
+            }
+        }
+    }
+
+    else if (mini_cube.getCubieLeft() == COLOR::BLUE && current_cube[5][0][2] == COLOR::BLUE &&
+             current_cube[5][1][1] == COLOR::ORANGE) {
+        if (mini_cube.getCubieTop() == COLOR::WHITE && current_cube[0][0][2] == COLOR::WHITE &&
+            current_cube[0][1][1] == COLOR::YELLOW) {
+            if (mini_cube.getCubieRight() == COLOR::ORANGE && current_cube[4][0][0] == COLOR::ORANGE &&
+                current_cube[4][1][1] == COLOR::BLUE) {
+                Cube.Rotate(R);
+                Cube.Rotate(U2);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+            }
+        }
+    }
+
+        //если в верхнем слое не окажется угловых элементов с белым цветом
+    else{
+
+
+    }
+
+
+
+}
+
+/*void TransferRight(Cube& Cube) {
+    Cube.Rotate()
+}*/
+
+bool Algo::isSolvedMiddleLayer(COLOR_cube &cube) {
+    for (int i = 2; i < 6; i++) {
+        if (!(cube[i][1][0] == cube[i][1][1] && cube[i][1][1] == cube[i][1][2])) {
+            return false;
+        }
+        if (!(cube[i][2][0] == cube[i][2][1] && cube[i][2][1] == cube[i][2][2])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+void Algo::fixWrongSecondLayerEdges(COLOR_cube current_cube, Cube& Cube) {
+    if (current_cube[2][1][2] != COLOR::YELLOW && current_cube[5][1][0] != COLOR::YELLOW) {
+        Cube.Rotate(F);
+        Cube.Rotate(U);
+        Cube.Rotate(F);
+        Cube.Rotate(U);
+        Cube.Rotate(F);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Fprime);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Fprime);
+    }
+    if (current_cube[5][1][2] != COLOR::YELLOW && current_cube[4][1][0] != COLOR::YELLOW) {
+        Cube.Rotate(Lprime);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Lprime);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Lprime);
+        Cube.Rotate(U);
+        Cube.Rotate(L);
+        Cube.Rotate(U);
+        Cube.Rotate(L);
+    }
+    if (current_cube[4][1][2] != COLOR::YELLOW && current_cube[3][1][0] != COLOR::YELLOW) {
+        Cube.Rotate(B);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(B);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(B);
+        Cube.Rotate(U);
+        Cube.Rotate(B);
+        Cube.Rotate(U);
+        Cube.Rotate(B);
+    }
+    if (current_cube[3][1][2] != COLOR::YELLOW && current_cube[2][1][0] != COLOR::YELLOW) {
+        Cube.Rotate(Rprime);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Rprime);
+        Cube.Rotate(Uprime);
+        Cube.Rotate(Rprime);
+        Cube.Rotate(U);
+        Cube.Rotate(R);
+        Cube.Rotate(U);
+        Cube.Rotate(R);
+    }
+}
+
+void Algo::MiddleLayer(Cube& Cube) {
+    COLOR_cube current_cube = Cube.getCube();
+    std::queue<int> Q;
+    while (!isSolvedSecondLayer(current_cube)) {
+        COLOR ce = current_cube[0][0][1];
+        COLOR fe = current_cube[4][0][1];
+        if (ce != COLOR::YELLOW && fe != COLOR::YELLOW) {
+            if (ce == COLOR::RED && fe == COLOR::BLUE) {
+                Cube.Rotate(B);
+                Cube.Rotate(U);
+                Cube.Rotate(B);
+                Cube.Rotate(U);
+                Cube.Rotate(B);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Bprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Bprime);
+            }
+            else if (ce == COLOR::ORANGE && fe == COLOR::BLUE) {
+                Cube.Rotate(B);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(B);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(B);
+                Cube.Rotate(U);
+                Cube.Rotate(B);
+                Cube.Rotate(U);
+                Cube.Rotate(B);
+            }
+            else {
+                if (fe == COLOR::RED) {
+                    Cube.Rotate(Uprime);
+                }
+                if (fe == COLOR::GREEN) {
+                    Cube.Rotate(U2);
+                }
+                if (fe == COLOR::ORANGE) {
+                    Cube.Rotate(U);
+                }
+            }
+        }
+        ce = current_cube[0][1][0];
+        fe = current_cube[3][0][1];
+        if (ce != COLOR::YELLOW && fe != COLOR::YELLOW) {
+            if (ce == COLOR::GREEN && fe == COLOR::RED) {
+                Cube.Rotate(Lprime);
+                Cube.Rotate(U);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(U);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(Uprime); //check Lprime or L
+                Cube.Rotate(Lprime);
+            }
+            else if (ce == COLOR::BLUE && fe == COLOR::RED) {
+                Cube.Rotate(Lprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(U);
+                Cube.Rotate(L);
+                Cube.Rotate(U);
+                Cube.Rotate(L);
+            }
+            else {
+                if (fe == COLOR::ORANGE) {
+                    Cube.Rotate(U2);
+                }
+                if (fe == COLOR::GREEN) {
+                    Cube.Rotate(Uprime);
+                }
+                if (fe == COLOR::BLUE) {
+                    Cube.Rotate(U);
+                }
+            }
+        }
+        ce = current_cube[0][2][1];
+        fe = current_cube[2][0][1];
+        if (ce != COLOR::YELLOW && fe != COLOR::YELLOW) {
+            if (ce == COLOR::ORANGE && fe == COLOR::GREEN) {
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(F);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Fprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Fprime);
+            }
+            else if (ce == COLOR::RED && fe == COLOR::GREEN) {
+                Cube.Rotate(Fprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Fprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Fprime);
+                Cube.Rotate(U);
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(F);
+            }
+            else {
+                if (fe == COLOR::ORANGE) {
+                    Cube.Rotate(Uprime);
+                }
+                if (fe == COLOR::RED) {
+                    Cube.Rotate(U);
+                }
+                if (fe == COLOR::BLUE) {
+                    Cube.Rotate(U2);
+                }
+            }
+        }
+        ce = current_cube[0][1][1];
+        fe = current_cube[5][0][1];
+        if (ce != COLOR::YELLOW && fe != COLOR::YELLOW) {
+            if (ce == COLOR::BLUE && fe == COLOR::ORANGE) {
+                Cube.Rotate(R);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Rprime);
+            }
+            else if (ce == COLOR::GREEN && fe == COLOR::ORANGE) {
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Uprime);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+            }
+            else {
+                if (fe == COLOR::GREEN) {
+                    Cube.Rotate(Uprime);
+                }
+                if (fe == COLOR::BLUE) {
+                    Cube.Rotate(U);
+                }
+                if (fe == COLOR::RED) {
+                    Cube.Rotate(U2);
+                }
+            }
+        }
+        if (!isSolvedSecondLayer(current_cube)) {
+            if (current_cube[0][0][1] != COLOR::YELLOW && current_cube[4][0][1] != COLOR::YELLOW) {
+                continue;
+            }
+            if (current_cube[0][1][1] != COLOR::YELLOW && current_cube[5][0][1] != COLOR::YELLOW) {
+                continue;
+            }
+            if (current_cube[0][2][1] != COLOR::YELLOW && current_cube[2][0][1] != COLOR::YELLOW) {
+                continue;
+            }
+            if (current_cube[0][1][0] != COLOR::YELLOW && current_cube[3][0][1] != COLOR::YELLOW) {
+                continue;
+            }
+            else {
+                fixWrongSecondLayerEdges(current_cube, Cube);
             }
         }
     }
 }
 
-bool Cube::Check() {
-    for (int i = 0; i < 8; i++) {
-        if ((cp[i] != i) or (co[i] != 0))
-            return false;
+void Algo::phase_three(Cube &Cube, Cubie & mini_cube) {
+    COLOR_cube current_cube = Cube.getCube();
+    if(current_cube[0][1][1] == COLOR::YELLOW){
+        while(!(current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW)) {
+            if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW) {
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+            }
+            else if (current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW) {
+                Cube.Rotate(F);
+                Cube.Rotate(R);
+                Cube.Rotate(U);
+            }
+            else{//это типо когда только точка в центре
+                Cube.Rotate(F);
+                Cube.Rotate(U);
+                Cube.Rotate(R);
+            }
+        }
     }
-    for (int i = 0; i < 12; i++) {
-        if ((ep[i] != i) or (eo[i] != 0))
-            return false;
-    }
-    return true;
 }
 
-void Cube::PrintCube() {
-    std::cout << "Corners' position and orientation:\n";
-    for (int i = 0; i < 8; i++)
-        std::cout << cp[i] << ' ' << co[i] << std::endl;
-    std::cout << "Edges' position and orientation:\n";
-    for (int i = 0; i < 12; ++i)
-        std::cout << ep[i] << ' ' << eo[i] << std::endl;
-}
-
-void Cube::Write() {
-    std::string filename = "Current_state.txt";
-    std::ofstream File;
-    File.open(filename, std::ios::out);
-    for (int i = 0; i < 8; i++)
-        File << cp[i] << ' ' << co[i] << std::endl;
-    for (int i = 0; i < 12; i++)
-        File << ep[i] << ' ' << eo[i] << std::endl;
-    std::cout << "Cube's state was successfully wrote to the file " << filename << std::endl;
-}
-
-Cube& Cube::operator=(const Cube& a){
-    for (int i = 0; i < 8; i++){
-        cp[i] = a.cp[i];
-        co[i] = a.co[i];
-    }
-    for (int i = 0; i < 12; i++){
-        ep[i] = a.ep[i];
-        eo[i] = a.eo[i];
-    }
-    return *this;
-}
-
-bool Cube::operator==(const Cube& a){
-    for (int i = 0; i < 8; i++) {
-        if (cp[i] != a.cp[i] || co[i] != a.co[i])
-            return false;
-    }
-    for (int i = 0; i < 12; i++) {
-        if (ep[i] != a.ep[i] || eo[i] != a.eo[i])
-            return false;
+bool Algo::IsSolvedYellow(Cube & Cube) {
+    COLOR_cube current_cube = Cube.getCube();
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 3; j++) {
+            if (current_cube[0][i][j] != COLOR::YELLOW) {
+                return false;
+            }
+        }
     }
     return true;
 }
 
-void Cube::Up(int amount) {
-    for (int i = 0; i < amount; i++) {
-        int8_t tmp = cp[ULF];
-        cp[ULF] = cp[URF];
-        cp[URF] = cp[URB];
-        cp[URB] = cp[ULB];
-        cp[ULB] = tmp;
-
-        tmp = co[ULF];
-        co[ULF] = co[URF];
-        co[URF] = co[URB];
-        co[URB] = co[ULB];
-        co[ULB] = tmp;
-
-        tmp = ep[UL];
-        ep[UL] = ep[UF];
-        ep[UF] = ep[UR];
-        ep[UR] = ep[UB];
-        ep[UB] = tmp;
-
-        tmp = eo[UL];
-        eo[UL] = eo[UF];
-        eo[UF] = eo[UR];
-        eo[UR] = eo[UB];
-        eo[UB] = tmp;
+void Algo::SolveYellowFace(Cube &Cube) {
+    COLOR_cube current_cube = Cube.getCube();
+    if (IsSolvedYellow(Cube)) {
+        return;
     }
-
-    //return *this;
-}
-
-/**
- * Up prime.
- */
-void Cube::UpPrime(int amount) {
-    for (int i = 0; i < amount; i++) {
-        int8_t tmp = cp[ULB];
-        cp[ULB] = cp[URB];
-        cp[URB] = cp[URF];
-        cp[URF] = cp[ULF];
-        cp[ULF] = tmp;
-
-        tmp = co[ULB];
-        co[ULB] = co[URB];
-        co[URB] = co[URF];
-        co[URF] = co[ULF];
-        co[ULF] = tmp;
-
-        tmp = ep[UB];
-        ep[UB] = ep[UR];
-        ep[UR] = ep[UF];
-        ep[UF] = ep[UL];
-        ep[UL] = tmp;
-
-        tmp = eo[UB];
-        eo[UB] = eo[UR];
-        eo[UR] = eo[UF];
-        eo[UF] = eo[UL];
-        eo[UL] = tmp;
-
+    if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
+        if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW &&
+            current_cube[0][1][2] == COLOR::YELLOW) {
+            if (current_cube[0][2][1] == COLOR::YELLOW && current_cube[2][0][1] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) { //здесь же пофиг на передние ребра?
+                Cube.Rotate(R2);
+                Cube.Rotate(B);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(U2);
+                Cube.Rotate(R);
+                Cube.Rotate(Bprime);
+                Cube.Rotate(Rprime);
+                Cube.Rotate(U2);
+                Cube.Rotate(Rprime);
+            }
+        }
     }
-}
-
-/**
- * Up 2.
- */
-/*  RubiksCube& RubiksCubeIndexModel::u2()
-  {
-    swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::URF]);
-    swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::ULF]);
-    swap(this->edges[(unsigned)EDGE::UB],      this->edges[(unsigned)EDGE::UF]);
-    swap(this->edges[(unsigned)EDGE::UR],      this->edges[(unsigned)EDGE::UL]);
-    return *this;
-  }
-*/
-/**
- * Left.
- */
-void Cube::Left(int amount) {
-    for (int i = 0; i < amount; i++) {
-        int8_t tmp = cp[DLB];
-        cp[DLB] = cp[DLF];
-        cp[DLF] = cp[ULF];
-        cp[ULF] = cp[ULB];
-        cp[ULB] = tmp;
-
-        tmp = co[DLB];
-        co[DLB] = (co[DLF] + 1) % 3;
-        co[DLF] = (co[ULF] + 2) % 3;
-        co[ULF] = (co[ULB] + 1) % 3;
-        co[ULB] = (tmp + 2) % 3;
-
-        tmp = ep[BL];
-        ep[BL] = ep[DL];
-        ep[DL] = ep[FL];
-        ep[FL] = ep[UL];
-        ep[UL] = tmp;
-
-        tmp = eo[BL];
-        eo[BL] = eo[DL];
-        eo[DL] = eo[FL];
-        eo[FL] = eo[UL];
-        eo[UL] = tmp;
+    else if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][2][0] == COLOR::YELLOW) {
+        if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
+            if (current_cube[0][1][2] == COLOR::YELLOW && current_cube[4][0][0] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) {
+                Cube.Rotate(Rprime);
+                Cube.Rotate(Fprime);
+                Cube.Rotate(L);
+                Cube.Rotate(F);
+                Cube.Rotate(R);
+                Cube.Rotate(Fprime);
+                Cube.Rotate(Lprime);
+                Cube.Rotate(F);
+            }
+        }
     }
-}
-
-/*this->updateCornerOrientation(CORNER::DLB, 1);
-this->updateCornerOrientation(CORNER::DLF, 2);
-this->updateCornerOrientation(CORNER::ULF, 1);
-this->updateCornerOrientation(CORNER::ULB, 2); ???/
-return *this;
-}
-/**
-* Left prime.
-*/
-void Cube::LeftPrime(int amount) {
-    for (int i = 0; i < amount; i++) {
-        int8_t tmp = cp[DLB];
-        cp[DLB] = cp[ULB];
-        cp[ULB] = cp[ULF];
-        cp[ULF] = cp[DLF];
-        cp[DLF] = tmp;
-
-        tmp = co[DLB];
-        co[DLB] = (co[DLF] + 1) % 3;
-        co[DLF] = (co[ULF] + 2) % 3;
-        co[ULF] = (co[ULB] + 1) % 3;
-        co[ULB] = (tmp + 2) % 3;
-
-        tmp = ep[BL];
-        ep[BL] = ep[UL];
-        ep[UL] = ep[FL];
-        ep[FL] = ep[DL];
-        ep[DL] = tmp;
-
-        tmp = eo[BL];
-        eo[BL] = eo[UL];
-        eo[UL] = eo[FL];
-        eo[FL] = eo[DL];
-        eo[DL] = tmp;
-
-        /*this->updateCornerOrientation(CORNER::DLB, 1);
-        this->updateCornerOrientation(CORNER::DLF, 2);
-        this->updateCornerOrientation(CORNER::ULF, 1);
-        this->updateCornerOrientation(CORNER::ULB, 2);
-        return *this;*/
+    else if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW) {
+        if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
+            if (current_cube[0][2][1] == COLOR::YELLOW && current_cube[0][2][2] == COLOR::YELLOW) {
+                if (current_cube[4][0][0] == COLOR::YELLOW && current_cube[3][0][2] == COLOR::YELLOW) {
+                    Cube.Rotate(Rprime);
+                    Cube.Rotate(Fprime);
+                    Cube.Rotate(Lprime);
+                    Cube.Rotate(F);
+                    Cube.Rotate(R);
+                    Cube.Rotate(Fprime);
+                    Cube.Rotate(L);
+                    Cube.Rotate(F);
+                }
+            }
+        }
     }
-}
-
-/**
- * Left 2.
- */
-/*RubiksCube& RubiksCubeIndexModel::l2()
-{
-  swap(this->corners[(unsigned)CORNER::DLB], this->corners[(unsigned)CORNER::ULF]);
-  swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::DLF]);
-  swap(this->edges[(unsigned)EDGE::BL],      this->edges[(unsigned)EDGE::FL]);
-  swap(this->edges[(unsigned)EDGE::UL],      this->edges[(unsigned)EDGE::DL]);
-  return *this;
-}*/
-
-/**
- * Front.
- */
-
-void Cube::Front(int amount) {
-    for(int i = 0; i < amount; i++){
-        int8_t  tmp = cp[ULF];
-        cp[ULF] = cp[DLF];
-        cp[DLF] = cp[DRF];
-        cp[DRF] = cp[URF];
-        cp[URF] = tmp;
-
-
-        tmp = co[ULF];
-        co[ULF] = (co[URF] + 2) % 3;
-        co[URF] = (co[DRF] + 1) % 3;
-        co[DRF] = (co[DLF] + 2) % 3;
-        co[DLF] = (tmp + 1) % 3;
-
-        tmp = ep[UF];
-        ep[UF] = ep[FL];
-        ep[FL] = ep[DF];
-        ep[DF] = ep[FR];
-        ep[FR] = tmp;
-
-        tmp = eo[UF];
-        eo[UF] =  1 - eo[FL];
-        eo[FL] =  1 - eo[DF];
-        eo[DF] =  1 - eo[FR];
-        eo[FR] =  1 - tmp;
-
+    else if (current_cube[0][0][1] == COLOR::YELLOW) {
+        if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
+            if (current_cube[0][2][0] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
+                if (current_cube[4][0][0] == COLOR::YELLOW && current_cube[5][0][2] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
+                    Cube.Rotate(R);
+                    Cube.Rotate(U);
+                    Cube.Rotate(Rprime);
+                    Cube.Rotate(U);
+                    Cube.Rotate(R);
+                    Cube.Rotate(U2);
+                    Cube.Rotate(Rprime);
+                }
+            }
+        }
     }
-}
-/*RubiksCube& RubiksCubeIndexModel::f()
-{
-    Cubie hold                           = this->corners[(unsigned)CORNER::ULF];
-    this->corners[(unsigned)CORNER::ULF] = this->corners[(unsigned)CORNER::DLF];
-    this->corners[(unsigned)CORNER::DLF] = this->corners[(unsigned)CORNER::DRF];
-    this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::URF];
-    this->corners[(unsigned)CORNER::URF] = hold;
-    hold                                 = this->edges[(unsigned)EDGE::UF];
-    this->edges[(unsigned)EDGE::UF]      = this->edges[(unsigned)EDGE::FL];
-    this->edges[(unsigned)EDGE::FL]      = this->edges[(unsigned)EDGE::DF];
-    this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::FR];
-    this->edges[(unsigned)EDGE::FR]      = hold;
-    this->updateCornerOrientation(CORNER::ULF, 2);
-    this->updateCornerOrientation(CORNER::URF, 1);
-    this->updateCornerOrientation(CORNER::DRF, 2);
-    this->updateCornerOrientation(CORNER::DLF, 1);
-    this->updateEdgeOrientationZ(EDGE::UF);
-    this->updateEdgeOrientationZ(EDGE::FL);
-    this->updateEdgeOrientationZ(EDGE::DF);
-    this->updateEdgeOrientationZ(EDGE::FR);
-    return *this;
-}*/
-
-/**
- * Front prime.
- */
-
-void Cube::FrontPrime(int amount) {
-    for(int i = 0; i < amount; i++){
-        int8_t  tmp = cp[ULF];
-        cp[ULF] = cp[URF];
-        cp[URF] = cp[DRF];
-        cp[DRF] = cp[DLF];
-        cp[DLF] = tmp;
-
-        tmp = co[ULF];
-        co[ULF] = (co[URF] + 2) % 3;
-        co[URF] = (co[DRF] + 1) % 3;
-        co[DRF] = (co[DLF] + 2) % 3;
-        co[DLF] = (tmp + 1) % 3;
-
-        tmp = ep[UF];
-        ep[UF] = ep[FL];
-        ep[FL] = ep[DF];
-        ep[DF] = ep[FR];
-        ep[FR] = tmp;
-
-        tmp = ep[UF];
-        ep[UF] =  1 - ep[FL];
-        ep[FL] =  1 - ep[DF];
-        ep[DF] =  1 - ep[FR];
-        ep[FR] =  1 - tmp;
+    else if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
+        if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
+            if (current_cube[0][2][1] == COLOR::YELLOW) {
+                if (current_cube[3][0][0] == COLOR::YELLOW && current_cube[2][0][0] == COLOR::YELLOW && current_cube[5][0][0] == COLOR::YELLOW) {
+                    Cube.Rotate(R);
+                    Cube.Rotate(U2);
+                    Cube.Rotate(Rprime);
+                    Cube.Rotate(Uprime);
+                    Cube.Rotate(R);
+                    Cube.Rotate(Uprime);
+                    Cube.Rotate(Rprime);
+                }
+            }
+        }
     }
-}
-/*RubiksCube& RubiksCubeIndexModel::fPrime()
-{
-    Cubie hold                           = this->corners[(unsigned)CORNER::ULF];
-    this->corners[(unsigned)CORNER::ULF] = this->corners[(unsigned)CORNER::URF];
-    this->corners[(unsigned)CORNER::URF] = this->corners[(unsigned)CORNER::DRF];
-    this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::DLF];
-    this->corners[(unsigned)CORNER::DLF] = hold;
-    hold                                 = this->edges[(unsigned)EDGE::UF];
-    this->edges[(unsigned)EDGE::UF]      = this->edges[(unsigned)EDGE::FR];
-    this->edges[(unsigned)EDGE::FR]      = this->edges[(unsigned)EDGE::DF];
-    this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::FL];
-    this->edges[(unsigned)EDGE::FL]      = hold;
-    this->updateCornerOrientation(CORNER::ULF, 2);
-    this->updateCornerOrientation(CORNER::URF, 1);
-    this->updateCornerOrientation(CORNER::DRF, 2);
-    this->updateCornerOrientation(CORNER::DLF, 1);
-    this->updateEdgeOrientationZ(EDGE::UF);
-    this->updateEdgeOrientationZ(EDGE::FL);
-    this->updateEdgeOrientationZ(EDGE::DF);
-    this->updateEdgeOrientationZ(EDGE::FR);
-    return *this;
-}*/
-
-/**
- * Front 2.
- */
-/*RubiksCube& RubiksCubeIndexModel::f2()
-{
-    swap(this->corners[(unsigned)CORNER::ULF], this->corners[(unsigned)CORNER::DRF]);
-    swap(this->corners[(unsigned)CORNER::URF], this->corners[(unsigned)CORNER::DLF]);
-    swap(this->edges[(unsigned)EDGE::UF],      this->edges[(unsigned)EDGE::DF]);
-    swap(this->edges[(unsigned)EDGE::FL],      this->edges[(unsigned)EDGE::FR]);
-    return *this;
-}*/
-
-/**
- * Right.
- */
-
-void Cube::Right(int amount) {
-    for (int i = 0; i < amount; i++) {
-        int8_t tmp = cp[DRB];
-        cp[DRB] = cp[URB];
-        cp[URB] = cp[URF];
-        cp[URF] = cp[DRF];
-        cp[DRF] = tmp;
-
-        tmp = co[DRB];
-        co[DRB] = (co[DRF] + 2) % 3;
-        co[DRF] = (co[URF] + 1) % 3;
-        co[URF] = (co[URB] + 2) % 3;
-        co[URB] = (tmp + 1) % 3;
-
-        tmp = ep[BR];
-        ep[BR] = ep[UR];
-        ep[UR] = ep[FR];
-        ep[FR] = ep[DR];
-        ep[DR] = tmp;
-
-        tmp = ep[BR];
-        ep[BR] = ep[UR];
-        ep[UR] = ep[FR];
-        ep[FR] = ep[DR];
-        ep[DR] = tmp;
+    else if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
+        if (current_cube[0][0][2] == COLOR::YELLOW && current_cube[3][0][0] == COLOR::YELLOW && current_cube[3][0][2] == COLOR::YELLOW && current_cube[4][0][0] == COLOR::YELLOW) {
+            Cube.Rotate(R);
+            Cube.Rotate(U2);
+            Cube.Rotate(R2);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R2);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R2);
+            Cube.Rotate(U2);
+            Cube.Rotate(R);
+        }
     }
-}
-/*RubiksCube& RubiksCubeIndexModel::r()
-{
-    Cubie hold                           = this->corners[(unsigned)CORNER::DRB];
-    this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::URB];
-    this->corners[(unsigned)CORNER::URB] = this->corners[(unsigned)CORNER::URF];
-    this->corners[(unsigned)CORNER::URF] = this->corners[(unsigned)CORNER::DRF];
-    this->corners[(unsigned)CORNER::DRF] = hold;
-    hold                                 = this->edges[(unsigned)EDGE::BR];
-    this->edges[(unsigned)EDGE::BR]      = this->edges[(unsigned)EDGE::UR];
-    this->edges[(unsigned)EDGE::UR]      = this->edges[(unsigned)EDGE::FR];
-    this->edges[(unsigned)EDGE::FR]      = this->edges[(unsigned)EDGE::DR];
-    this->edges[(unsigned)EDGE::DR]      = hold;
-    this->updateCornerOrientation(CORNER::DRB, 2);
-    this->updateCornerOrientation(CORNER::DRF, 1);
-    this->updateCornerOrientation(CORNER::URF, 2);
-    this->updateCornerOrientation(CORNER::URB, 1);
-    return *this;
-}*/
-
-/**
- * Right prime.
- */
-
-
-void Cube::RightPrime(int amount){
-    for (int i = 0; i < amount; i++) {
-        int8_t tmp = cp[DRB];
-        cp[DRB] = cp[DRF];
-        cp[DRF] = cp[URF];
-        cp[URF] = cp[URB];
-        cp[URB] = tmp;
-
-        tmp = co[DRB];
-        co[DRB] = (co[DRF] + 2) % 3;
-        co[DRF] = (co[URF] + 1) % 3;
-        co[URF] = (co[URB] + 2) % 3;
-        co[URB] = (tmp + 1) % 3;
-
-        tmp = ep[BR];
-        ep[BR] = ep[DR];
-        ep[DR] = ep[FR];
-        ep[FR] = ep[UR];
-        ep[UR] = tmp;
-
-        tmp = ep[BR];
-        ep[BR] = ep[DR];
-        ep[DR] = ep[FR];
-        ep[FR] = ep[UR];
-        ep[UR] = tmp;
-
+    else if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
+        if (current_cube[4][0][0] == COLOR::YELLOW && current_cube[4][0][2] == COLOR::YELLOW && current_cube[2][0][0] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) {
+            Cube.Rotate(R);
+            Cube.Rotate(U2);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R);
+            Cube.Rotate(U);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(Rprime);
+        }
     }
 }
 
 
-/*RubiksCube& RubiksCubeIndexModel::rPrime()
-{
-    Cubie hold                           = this->corners[(unsigned)CORNER::DRB];
-    this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::DRF];
-    this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::URF];
-    this->corners[(unsigned)CORNER::URF] = this->corners[(unsigned)CORNER::URB];
-    this->corners[(unsigned)CORNER::URB] = hold;
-    hold                                 = this->edges[(unsigned)EDGE::BR];
-    this->edges[(unsigned)EDGE::BR]      = this->edges[(unsigned)EDGE::DR];
-    this->edges[(unsigned)EDGE::DR]      = this->edges[(unsigned)EDGE::FR];
-    this->edges[(unsigned)EDGE::FR]      = this->edges[(unsigned)EDGE::UR];
-    this->edges[(unsigned)EDGE::UR]      = hold;
-    this->updateCornerOrientation(CORNER::DRB, 2);
-    this->updateCornerOrientation(CORNER::DRF, 1);
-    this->updateCornerOrientation(CORNER::URF, 2);
-    this->updateCornerOrientation(CORNER::URB, 1);
-    return *this;
-}*/
 
-/**
- * Right 2.
- */
-/*RubiksCube& RubiksCubeIndexModel::r2()
-{
-  swap(this->corners[(unsigned)CORNER::DRB], this->corners[(unsigned)CORNER::URF]);
-  swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::DRF]);
-  swap(this->edges[(unsigned)EDGE::BR],      this->edges[(unsigned)EDGE::FR]);
-  swap(this->edges[(unsigned)EDGE::UR],      this->edges[(unsigned)EDGE::DR]);
-  return *this;
-}*/
-
-/**
- * Back.
- */
-
-void Cube::Back(int amount) {
-    for (int i = 0; i < amount; i++) {
-        int8_t tmp = cp[ULB];
-        cp[ULB] = cp[URB];
-        cp[URB] = cp[DRB];
-        cp[DRB] = cp[DLB];
-        cp[DLB] = tmp;
-
-        tmp = co[ULB];
-        co[ULB] = (co[URB] + 1) % 3;
-        co[URB] = (co[DRB] + 2) % 3;
-        co[DRB] = (co[DLB] + 1) % 3;
-        co[DLB] = (tmp + 2) % 3;
-
-        tmp = ep[UB];
-        ep[UB] = ep[BR];
-        ep[BR] = ep[DB];
-        ep[DB] = ep[BL];
-        ep[BL] = tmp;
-
-        tmp = eo[UB];
-        eo[UB] =  1 - eo[BL];
-        eo[BL] =  1 - eo[DB];
-        eo[DB] =  1 - eo[BR];
-        eo[BR] =  1 - tmp;
-
-    }
-}
-/*RubiksCube& RubiksCubeIndexModel::b()
-{
-    Cubie hold                           = this->corners[(unsigned)CORNER::ULB];
-    this->corners[(unsigned)CORNER::ULB] = this->corners[(unsigned)CORNER::URB];
-    this->corners[(unsigned)CORNER::URB] = this->corners[(unsigned)CORNER::DRB];
-    this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::DLB];
-    this->corners[(unsigned)CORNER::DLB] = hold;
-    hold                                 = this->edges[(unsigned)EDGE::UB];
-    this->edges[(unsigned)EDGE::UB]      = this->edges[(unsigned)EDGE::BR];
-    this->edges[(unsigned)EDGE::BR]      = this->edges[(unsigned)EDGE::DB];
-    this->edges[(unsigned)EDGE::DB]      = this->edges[(unsigned)EDGE::BL];
-    this->edges[(unsigned)EDGE::BL]      = hold;
-    this->updateCornerOrientation(CORNER::ULB, 1);
-    this->updateCornerOrientation(CORNER::URB, 2);
-    this->updateCornerOrientation(CORNER::DRB, 1);
-    this->updateCornerOrientation(CORNER::DLB, 2);
-    this->updateEdgeOrientationZ(EDGE::UB);
-    this->updateEdgeOrientationZ(EDGE::BL);
-    this->updateEdgeOrientationZ(EDGE::DB);
-    this->updateEdgeOrientationZ(EDGE::BR);
-    return *this;
-}*/
-
-/**
- * Back prime.
- */
-
-void Cube::BackPrime(int amount) {
-    for (int i = 0; i < amount; i++) {
-        int8_t tmp = cp[ULB];
-        cp[ULB] = cp[DLB];
-        cp[DLB] = cp[DRB];
-        cp[DRB] = cp[URB];
-        cp[URB] = tmp;
-
-        tmp = co[ULB];
-        co[ULB] = (co[URB] + 1) % 3;
-        co[URB] = (co[DRB] + 2) % 3;
-        co[DRB] = (co[DLB] + 1) % 3;
-        co[DLB] = (tmp + 2) % 3;
-
-        tmp = ep[UB];
-        ep[UB] = ep[BL];
-        ep[BL] = ep[DB];
-        ep[DB] = ep[BR];
-        ep[BR] = tmp;
-
-        tmp = eo[UB];
-        eo[UB] = 1 - eo[BL];
-        eo[BL] = 1 - eo[DB];
-        eo[DB] = 1 - eo[BR];
-        eo[BR] = 1 - tmp;
-
-    }
-}
-
-/*RubiksCube& RubiksCubeIndexModel::bPrime()
-{
-    Cubie hold                           = this->corners[(unsigned)CORNER::ULB];
-    this->corners[(unsigned)CORNER::ULB] = this->corners[(unsigned)CORNER::DLB];
-    this->corners[(unsigned)CORNER::DLB] = this->corners[(unsigned)CORNER::DRB];
-    this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::URB];
-    this->corners[(unsigned)CORNER::URB] = hold;
-    hold                                 = this->edges[(unsigned)EDGE::UB];
-    this->edges[(unsigned)EDGE::UB]      = this->edges[(unsigned)EDGE::BL];
-    this->edges[(unsigned)EDGE::BL]      = this->edges[(unsigned)EDGE::DB];
-    this->edges[(unsigned)EDGE::DB]      = this->edges[(unsigned)EDGE::BR];
-    this->edges[(unsigned)EDGE::BR]      = hold;
-    this->updateCornerOrientation(CORNER::ULB, 1);
-    this->updateCornerOrientation(CORNER::URB, 2);
-    this->updateCornerOrientation(CORNER::DRB, 1);
-    this->updateCornerOrientation(CORNER::DLB, 2);
-    this->updateEdgeOrientationZ(EDGE::UB);
-    this->updateEdgeOrientationZ(EDGE::BL);
-    this->updateEdgeOrientationZ(EDGE::DB);
-    this->updateEdgeOrientationZ(EDGE::BR);
-    return *this;
-}*/
-
-/**
- * Back 2.
- */
-/* RubiksCube& RubiksCubeIndexModel::b2()
- {
-   swap(this->corners[(unsigned)CORNER::ULB], this->corners[(unsigned)CORNER::DRB]);
-   swap(this->corners[(unsigned)CORNER::URB], this->corners[(unsigned)CORNER::DLB]);
-   swap(this->edges[(unsigned)EDGE::UB],      this->edges[(unsigned)EDGE::DB]);
-   swap(this->edges[(unsigned)EDGE::BL],      this->edges[(unsigned)EDGE::BR]);
-   return *this;
- }*/
-
-/**
- * Down.
- */
-
-void Cube::Down(int amount) {
-    for (int i = 0; i < amount; i++) {
-        int8_t tmp = cp[DLB];
-        cp[DLB] = cp[DRB];
-        cp[DRB] = cp[DRF];
-        cp[DRF] = cp[DLF];
-        cp[DLF] = tmp;
-
-        tmp = co[DLB];
-        co[DLB] = co[DRB];
-        co[DRB] = co[DRF];
-        co[DRF] = co[DLF];
-        co[DLF] = tmp;
-
-
-        tmp = ep[DB];
-        ep[DB] = ep[DR];
-        ep[DR] = ep[DF];
-        ep[DF] = ep[DL];
-        ep[DL] = tmp;
-
-        tmp = eo[DB];
-        eo[DB] = eo[DR];
-        eo[DR] = eo[DF];
-        eo[DF] = eo[DL];
-        eo[DL] = tmp;
-
-    }
-}
-/*RubiksCube& RubiksCubeIndexModel::d()
-{
-    Cubie hold                           = this->corners[(unsigned)CORNER::DLB];
-    this->corners[(unsigned)CORNER::DLB] = this->corners[(unsigned)CORNER::DRB];
-    this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::DRF];
-    this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::DLF];
-    this->corners[(unsigned)CORNER::DLF] = hold;
-    hold                                 = this->edges[(unsigned)EDGE::DB];
-    this->edges[(unsigned)EDGE::DB]      = this->edges[(unsigned)EDGE::DR];
-    this->edges[(unsigned)EDGE::DR]      = this->edges[(unsigned)EDGE::DF];
-    this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::DL];
-    this->edges[(unsigned)EDGE::DL]      = hold;
-    return *this;
-}*/
-
-/**
- * Down prime.
- */
-
-void Cube::DownPrime(int amount) {
-    for (int i = 0; i < amount; i++) {
-        int8_t tmp = cp[DLF];
-        cp[DLF] = cp[DRF];
-        cp[DRF] = cp[DRB];
-        cp[DRB] = cp[DLB];
-        cp[DLB] = tmp;
-
-        tmp = co[DLF];
-        co[DLF] = co[DRF];
-        co[DRF] = co[DRB];
-        co[DRB] = co[DLB];
-        co[DLB] = tmp;
-
-
-        tmp = ep[DL];
-        ep[DL] = ep[DF];
-        ep[DF] = ep[DR];
-        ep[DR] = ep[DB];
-        ep[DB] = tmp;
-
-        tmp = eo[DL];
-        eo[DL] = eo[DF];
-        eo[DF] = eo[DR];
-        eo[DR] = eo[DB];
-        eo[DB] = tmp;
-
-    }
-}
-
-int8_t* Cube::getCO() {
-    return this->co;
-}
-
-int8_t* Cube::getCP() {
-    return this->cp;
-}
-
-int8_t* Cube::getEO() {
-    return this->eo;
-}
-
-int8_t* Cube::getEP() {
-    return this->ep;
-}
-/*RubiksCube& RubiksCubeIndexModel::dPrime()
-{
-    Cubie hold                           = this->corners[(unsigned)CORNER::DLF];
-    this->corners[(unsigned)CORNER::DLF] = this->corners[(unsigned)CORNER::DRF];
-    this->corners[(unsigned)CORNER::DRF] = this->corners[(unsigned)CORNER::DRB];
-    this->corners[(unsigned)CORNER::DRB] = this->corners[(unsigned)CORNER::DLB];
-    this->corners[(unsigned)CORNER::DLB] = hold;
-    hold                                 = this->edges[(unsigned)EDGE::DL];
-    this->edges[(unsigned)EDGE::DL]      = this->edges[(unsigned)EDGE::DF];
-    this->edges[(unsigned)EDGE::DF]      = this->edges[(unsigned)EDGE::DR];
-    this->edges[(unsigned)EDGE::DR]      = this->edges[(unsigned)EDGE::DB];
-    this->edges[(unsigned)EDGE::DB]      = hold;
-    return *this;
-}*/
-
-/**
- * Down 2.
- */
-/*RubiksCube& RubiksCubeIndexModel::d2()
-{
-    swap(this->corners[(unsigned)CORNER::DLB], this->corners[(unsigned)CORNER::DRF]);
-    swap(this->corners[(unsigned)CORNER::DRB], this->corners[(unsigned)CORNER::DLF]);
-    swap(this->edges[(unsigned)EDGE::DB],      this->edges[(unsigned)EDGE::DF]);
-    swap(this->edges[(unsigned)EDGE::DR],      this->edges[(unsigned)EDGE::DL]);
-    return *this;
-}*/
-
-
-COLOR Cube::getColor(FACE face, unsigned int row, unsigned int col) {
-    return COLOR::RED;
-}
-
-void Cube::Rotate(FACE command, int amount){
-    switch (command) {
-        case FACE::FRONT:
-            Front(amount);
-            break;
-        case FACE::RIGHT:
-            Right(amount);
-            break;
-        case FACE::UP:
-            Up(amount);
-            break;
-        case FACE::BACK:
-            Back(amount);
-            break;
-        case FACE::LEFT:
-            Left(amount);
-            break;
-        case FACE::DOWN:
-            Down(amount);
-    }
-}
-//if needed, change to Face::FACE_TYPE
