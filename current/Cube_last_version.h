@@ -48,13 +48,13 @@
 */
 
 struct Block {
-	int8_t top, bottom, front, back, left, right;
+    int8_t top, bottom, front, back, left, right;
 };
 
 //using block_info_t = std::pair<const int8_t*, const int8_t*>;
 
 enum class FACE: uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
-enum COMMANDS: {U, Uprime, U2, F, Fprime, F2, L, Lprime, L2, R, Rprime, R2, B, Bprime, B2, D, Dprime, D};
+enum COMMANDS: uint8_t {U, Uprime, U2, F, Fprime, F2, L, Lprime, L2, R, Rprime, R2, B, Bprime, B2, D, Dprime};
 enum class COLOR : unsigned char {WHITE, GREEN, RED, BLUE, ORANGE, YELLOW};
 enum CORNER {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF}; //position is a solved state
 enum CORNERS_COLOR {YRB, YOB, YOG, YRG, WRG, WRB, WOB, WOG};
