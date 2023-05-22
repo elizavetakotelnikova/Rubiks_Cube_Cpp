@@ -11,4 +11,7 @@ public:
     void SetEdge(COLOR fc, Cube& Cube, COLOR ce);
     void SetEdgeFront(COLOR fc, Cube& Cube, COLOR ce);
     void makeWhiteCross(Cube& cube);
+
+    void phase_one(Cube &cube, Cubie &mini_cube);
+    void phase_three(Cube &Cube, Cubie &mini_cube);
 };
