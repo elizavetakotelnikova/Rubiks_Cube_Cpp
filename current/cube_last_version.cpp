@@ -486,7 +486,7 @@ COLOR Cube::getColor(FACE face, unsigned int row, unsigned int col) {
     return COLOR::RED;
 }
 
-void Cube::Rotate(commands command){
+void Cube::Rotate(COMMANDS  command){
     switch (command) {
         case COMMANDS::F:
             Front(1);
