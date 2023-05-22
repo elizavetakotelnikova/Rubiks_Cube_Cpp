@@ -8,7 +8,7 @@ public:
     bool isCross(COLOR color, int index, Cube& cube);
     bool isRightWhiteCross(COLOR color, int index, Cube& cube);
     bool matchCenter(COLOR a, COLOR center);
-    void SetEdge(COLOR fc);
-    void SetEdgeFront(COLOR fc);
+    void SetEdge(COLOR fc, Cube& Cube, COLOR ce);
+    void SetEdgeFront(COLOR fc, Cube& Cube, COLOR ce);
     void makeWhiteCross(Cube& cube);
 };
