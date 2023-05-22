@@ -785,7 +785,64 @@ void Algo::SolveYellowFace(Cube &Cube) {
             }
         }
     }
-    //написано 3 позици + 1 когда слой собран
+    else if (current_cube[0][0][1] == COLOR::YELLOW) {
+        if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
+            if (current_cube[0][2][0] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
+                if (current_cube[4][0][0] == COLOR::YELLOW && current_cube[5][0][2] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
+                    Cube.Rotate(R);
+                    Cube.Rotate(U);
+                    Cube.Rotate(Rprime);
+                    Cube.Rotate(U);
+                    Cube.Rotate(R);
+                    Cube.Rotate(U2);
+                    Cube.Rotate(Rprime);
+                }
+            }
+        }
+    }
+    else if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
+        if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
+            if (current_cube[0][2][1] == COLOR::YELLOW) {
+                if (current_cube[3][0][0] == COLOR::YELLOW && current_cube[2][0][0] == COLOR::YELLOW && current_cube[5][0][0] == COLOR::YELLOW) {
+                    Cube.Rotate(R);
+                    Cube.Rotate(U2);
+                    Cube.Rotate(Rprime);
+                    Cube.Rotate(Uprime);
+                    Cube.Rotate(R);
+                    Cube.Rotate(Uprime);
+                    Cube.Rotate(Rprime);
+                }
+            }
+        }
+    }
+    else if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
+        if (current_cube[0][0][2] == COLOR::YELLOW && current_cube[3][0][0] == COLOR::YELLOW && current_cube[3][0][2] == COLOR::YELLOW && current_cube[4][0][0] == COLOR::YELLOW) {
+            Cube.Rotate(R);
+            Cube.Rotate(U2);
+            Cube.Rotate(R2);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R2);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R2);
+            Cube.Rotate(U2);
+            Cube.Rotate(R);
+        }
+    }
+    else if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
+        if (current_cube[4][0][0] == COLOR::YELLOW && current_cube[4][0][2] == COLOR::YELLOW && current_cube[2][0][0] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) {
+            Cube.Rotate(R);
+            Cube.Rotate(U2);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R);
+            Cube.Rotate(U);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(Rprime);
+        }
+    }
 }
 
 
