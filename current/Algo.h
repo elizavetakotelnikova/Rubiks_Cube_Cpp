@@ -18,4 +18,7 @@ public:
     void MiddleLayer(Cube &Cube);
     void fixWrongSecondLayerEdges(COLOR_cube current_cube, Cube &Cube);
     bool isSolvedMiddleLayer(COLOR_cube &cube);
+
+    void SolveYellowFace(Cube &Cube);
+    bool IsSolvedYellow(Cube &Cube);
 };
