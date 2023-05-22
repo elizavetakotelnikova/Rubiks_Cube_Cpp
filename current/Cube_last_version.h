@@ -122,7 +122,7 @@ public:
     bool operator==(const Cube &a);
     bool Check();
     //Solve();
-    void Rotate(FACE command, int move);
+    void Rotate(COMMANDS command);
     void Front(int amount);
     void FrontPrime(int amount);
     void Down(int amount);
