@@ -16,11 +16,19 @@ public:
 
     //void phase_one(Cube &cube, Cubie &mini_cube);
     //void phase_three(Cube &Cube, Cubie &mini_cube);
-    void firstLayerSolver(Cube &Cube, COLOR color);
-    bool isYellowCross(COLOR color,Cube &Cube);
-    void yellowCrossSolver(Cube &Cube, COLOR color);
-    int maxCornersSum(Cube & Cube);
-    void cornerCubiesSolver(Cube& Cube);
+    //void firstLayerSolver(Cube &Cube, COLOR color);
+   // bool isYellowCross(COLOR color,Cube &Cube);
+    //void yellowCrossSolver(Cube &Cube, COLOR color);
+    //int maxCornersSum(Cube & Cube);
+   // void cornerCubiesSolver(Cube& Cube);
+    bool First_layer_solved(Cube& Cube);
+    void First_layer_solver(Cube &Cube);
+    bool isYellowCross(Cube &Cube);
+    void Yellow_cross_solver(Cube &Cube);
+    int Max_corners_sum(Cube & Cube);
+    bool High_corners_correct_pos(Cube& Cube);
+    void Corner_cubies_solver(Cube& Cube);
+    void Solved_sides(Cube& Cube);
 
     void MiddleLayer(Cube &Cube);
     void fixWrongSecondLayerEdges(COLOR_cube current_cube, Cube &Cube);
