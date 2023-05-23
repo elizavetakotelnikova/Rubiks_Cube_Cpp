@@ -5,6 +5,7 @@
 #include <vector>
 #include <cstring>
 #include <fstream>
+#include <stdint.h>
 
 /*F, B, U, D, L, R - 90-degree turns of the front, back, up, down, left, and right faces, respectively.
  * An apostrophe (’) designates a 90-degree counterclockwise “prime” twist
@@ -60,6 +61,7 @@ enum CORNER {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF}; //position is a solved sta
 enum CORNERS_COLOR {YRB, YOB, YOG, YRG, WRG, WRB, WOB, WOG};
 enum EDGE {UB, UR, UF, UL, FR, FL, BL, BR, DF, DL, DB, DR}; // position in s solved state
 enum EDGES_COLOR {YB, YO, YG, YR, GO, GR, BLUERED, BO, WG, WR, WB, WO};
+enum INPUT_COLORS {Y, W, G, R, B, O};
 int FRONT[4] = {0, 2, 3, 4};
 
 typedef uint8_t (*COLOR_cube)[3][3];
@@ -106,7 +108,14 @@ private:
     //std::string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "BR", "BL", "FL"};
 public:
     Cube();
-    void Read(const char* filename);
+    void Read(const std::string& filename);
+    void Shuffle();
+    void Write(const std::string& filename);
+    void printCube();
+
+    uint8_t inputToInt(char x);
+    char outputToChar(uint8_t x);
+    std::string printCube(uint8_t x);
     //bool IsSolved();
     /*COLOR getCubieRight(int side, int row, int column);
     COLOR getCubieLeft(int side, int row, int column);
@@ -120,7 +129,7 @@ public:
     void Write();
     Cube& operator=(const Cube &a);
     bool operator==(const Cube &a);
-    bool Check();
+    bool isSolved();
     //Solve();
     void Rotate(COMMANDS command);
     void Front(int amount);
@@ -135,10 +144,6 @@ public:
     void RightPrime(int amount);
     void Back(int amount);
     void BackPrime(int amount);
-    COLOR getColor(FACE face, unsigned row, unsigned col);
-    int8_t* getCO();
-    int8_t* getCP();
-    int8_t* getEO();
-    int8_t* getEP();
+    //COLOR getColor(FACE face, unsigned row, unsigned col);
 };
 #endif
