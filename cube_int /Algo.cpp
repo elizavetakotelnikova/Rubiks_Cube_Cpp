@@ -1015,4 +1015,13 @@ void::Algo::cornerCubiesSolver(Cube& Cube){
     }
 }
 
+void Algo::Solve(Cube& Cube) {
+    makeWhiteCross(Cube);
+    firstLayerSolver(Cube);
+    MiddleLayer(Cube);
+    yellowCrossSolver(Cube);
+    SolveYellowFace(Cube);
+    permutationYellowCorners();
+} //переименовать надо все
+
 
