@@ -5,6 +5,8 @@ class Algo {
 private:
     int stage;
 public:
+    void Solve(Cube& Cube);
+
     bool isCross(COLOR color, int index, Cube& cube);
     bool isRightWhiteCross(Cube& cube);
     bool matchCenter(uint8_t a, uint8_t center);
