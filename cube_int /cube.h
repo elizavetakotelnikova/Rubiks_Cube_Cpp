@@ -32,8 +32,6 @@ enum CORNER {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF}; //position is a solved sta
 enum CORNERS_COLOR {YRB, YOB, YOG, YRG, WRG, WRB, WOB, WOG};
 enum EDGE {UB, UR, UF, UL, FR, FL, BL, BR, DF, DL, DB, DR}; // position in s solved state
 enum EDGES_COLOR {YB, YO, YG, YR, GO, GR, BLUERED, BO, WG, WR, WB, WO};
-enum INPUT_COLORS {Y, W, G, R, B, O};
-int FRONT[4] = {0, 2, 3, 4};
 
 typedef uint8_t (*COLOR_cube)[3][3];
 typedef uint8_t (*face_cube)[3];
@@ -75,7 +73,7 @@ public:
 
     uint8_t inputToInt(char x);
     char outputToChar(uint8_t x);
-    std::string printCube(uint8_t x);
+    std::string printColor(uint8_t x);
     /*COLOR getCubieRight(int side, int row, int column);
     COLOR getCubieLeft(int side, int row, int column);
     COLOR getCubieTop(int side, int row, int column);*/
