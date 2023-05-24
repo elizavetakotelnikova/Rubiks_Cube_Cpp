@@ -136,16 +136,6 @@ void Cube::Read(const std::string& filename) {
     File.close();
 }
 
-void Cube::Generate() {
-    for (int i = 0; i++; i < 6) {
-        for (int j = 0; j++; j < 3) {
-            for (int k = 0; k++; k < 3) {
-                sides[i][j][k] = rand() % 6;
-            }
-        }
-    }
-}
-
 bool Cube::isSolved() {
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 3; j++) {
@@ -157,26 +147,6 @@ bool Cube::isSolved() {
         }
     }
     return true;
-}
-
-void Cube::PrintCube() {
-    std::cout << "Corners' position and orientation:\n";
-    for (int i = 0; i < 8; i++)
-        std::cout << cp[i] << ' ' << co[i] << std::endl;
-    std::cout << "Edges' position and orientation:\n";
-    for (int i = 0; i < 12; ++i)
-        std::cout << ep[i] << ' ' << eo[i] << std::endl;
-}
-
-void Cube::Write() {
-    std::string filename = "Current_state.txt";
-    std::ofstream File;
-    File.open(filename, std::ios::out);
-    for (int i = 0; i < 8; i++)
-        File << cp[i] << ' ' << co[i] << std::endl;
-    for (int i = 0; i < 12; i++)
-        File << ep[i] << ' ' << eo[i] << std::endl;
-    std::cout << "Cube's state was successfully wrote to the file " << filename << std::endl;
 }
 
 Cube& Cube::operator=(const Cube& a){
