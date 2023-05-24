@@ -12,23 +12,23 @@ Cube::Cube() {
 
 uint8_t Cube::inputToInt(char x) {
     switch(x) {
-        case "Y": return 0;
-        case "W": return 1;
-        case "G": return 2;
-        case "R": return 3;
-        case "B": return 4;
-        case "O": return 5;
+        case 'Y': return 0;
+        case 'W': return 1;
+        case 'G': return 2;
+        case 'R': return 3;
+        case 'B': return 4;
+        case 'O': return 5;
     }
 }
 
 char Cube::outputToChar(uint8_t x) {
     switch(x) {
-        case 0: return "Y";
-        case 1: return "W";
-        case 2: return "G";
-        case 3: return "R";
-        case 4: return "B";
-        case 5: return "O";
+        case 0: return 'Y';
+        case 1: return 'W';
+        case 2: return 'G';
+        case 3: return 'R';
+        case 4: return 'B';
+        case 5: return 'O';
     }
 }
 
@@ -47,17 +47,16 @@ void Cube::Shuffle() {
     //rotationHistory.clear(); //у нас же нет rotation history? зачем это делать, надо ли, как думаешь?
     for (int i = 0; i < 50; i++) {
         int random_value = abs(rand() % 18);
-        Rotate(random_value);
+        Rotate(static_cast<COMMANDS>(random_value));
     }
 }
 
 void Cube::printCube() {
     for (int i = 0; i < 6; i++) {
         std::cout << printColor(i) << "\n";
-        std::cout << "         ";
         for (int j = 0; j < 3; j++) {
             for (int k = 0; k < 3; k++) {
-                std::cout << "  ";
+                std::cout << outputToChar(cube[i][j][k]);
             }
             std::cout << "\n";
         }
@@ -118,8 +117,8 @@ void Cube::Write(const std::string& filename) {
 }*/
 
 void Cube::Read(const std::string& filename) {
-    std::ifstream File;
-    File.open(filename, std::ios::in);
+    std::ifstream File(filename);
+    File.open(filename);
     std::string str;
     if (File.is_open()) {
         for (int i = 0; i < 6; i++) {
@@ -149,17 +148,6 @@ bool Cube::isSolved() {
     return true;
 }
 
-Cube& Cube::operator=(const Cube& a){
-    for (int i = 0; i < 8; i++){
-        cp[i] = a.cp[i];
-        co[i] = a.co[i];
-    }
-    for (int i = 0; i < 12; i++){
-        ep[i] = a.ep[i];
-        eo[i] = a.eo[i];
-    }
-    return *this;
-}
 
 bool Cube::operator==(const Cube& a){
     for (int i = 0; i < 6; i++) {
@@ -543,10 +531,6 @@ void Cube::DownPrime(int amount) {
 }
 
 
-COLOR Cube::getColor(FACE face, unsigned int row, unsigned int col) {
-    return COLOR::RED;
-}
-
 void Cube::Rotate(COMMANDS  command){
     switch (command) {
         case COMMANDS::F:
@@ -606,7 +590,7 @@ void Cube::Rotate(COMMANDS  command){
     }
 }
 
-bool Cube::checkWhiteCross() {
+/*bool Cube::checkWhiteCross() {
     for (int i = 0; i < 6; i++) {
         if (centers[i] == COLOR::WHITE) {
             if (sides[i][0][1].getCubieTop() != COLOR::WHITE) {
@@ -624,7 +608,7 @@ bool Cube::checkWhiteCross() {
         }
     }
     return true;
-}
+}*/
 
 COLOR_cube Cube::getCube() {
     return cube;
