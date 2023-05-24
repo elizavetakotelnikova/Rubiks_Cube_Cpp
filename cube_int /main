@@ -1,0 +1,15 @@
+#include "cube.h"
+#include "algo.h"
+#include <string>
+#include <cstring>
+#include <fstream>
+int main() {
+    Cube new_cube;
+    Algo new_algo{};
+    std::string filename = "input.txt";
+    new_cube.Read(filename);
+    new_cube.Shuffle();
+    new_cube.printCube();
+    new_algo.makeWhiteCross(new_cube);
+    new_cube.printCube();
+}
