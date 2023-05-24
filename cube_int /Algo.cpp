@@ -62,7 +62,7 @@ void Algo::makeWhiteCross(Cube &cube) {
             Q.push(3);
             int i = Q.front();
             Q.pop();
-            COLOR fc = current_cube[i][1][1]; //face color
+            uint8_t fc = current_cube[i][1][1]; //face color
             while (!matchCenter(ce, fc)) {
                 cube.Rotate(U);
                 i = Q.front();
@@ -649,7 +649,8 @@ void Algo::Solve(Cube& Cube) {
     MiddleLayer(Cube);
     yellowCrossSolver(Cube);
     SolveYellowFace(Cube);
-    permutationYellowCorners();
+    cornerCubiesSolver(Cube);
+    highCornersCorrectPos(Cube);
 } //переименовать надо все
 
 bool::Algo::isSolvedFirstLayer(Cube& Cube){
