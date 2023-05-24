@@ -19,7 +19,7 @@ public:
     void firstLayerSolver(Cube &Cube);
     bool isSolvedFirstLayer(Cube &cube);
     bool isYellowCross(Cube &cube);
-    void yellowCrossSolver(Cube &Cube, COLOR color);
+    void yellowCrossSolver(Cube &Cube);
     int maxCornersSum(Cube & Cube);
     void cornerCubiesSolver(Cube& Cube);
     bool highCornersCorrectPos(Cube &Cube);
