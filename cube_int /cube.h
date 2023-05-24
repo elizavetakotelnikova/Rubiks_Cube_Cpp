@@ -12,48 +12,19 @@
  * “2” suffix indicates a 180-degree twist*/
 
 /*
- * indexes of corners (observing from the top face)
- *     *-*-*-*        *-*-*-*
- *     |0| |1|        |4| |5|
- *     *-*-*-*        *-*-*-*
- *     | | | |        | | | |
- *     *-*-*-*        *-*-*-*
- *     |3| |2|        |7| |6|
- *     *-*-*-*        *-*-*-*
- *    bottom face,   top face
  *
- * indexes of edges will be like this (observing from the top face)
- *     *-*-*-*          *-*-*-*         *-*-*-*
- *     | |8| |          |0| |1|         | |4| |
- *     *-*-*-*          *-*-*-*         *-*-*-*
- *     |B| |9|          | | | |         |7| |5|
- *     *-*-*-*          *-*-*-*         *-*-*-*
- *     | |A| |          |3| |2|         | |6| |
- *     *-*-*-*          *-*-*-*         *-*-*-*
- *    bottom face,    middle layer,     top face
- *
- *
- *
- * indexes of edges will be like this (observing from the top face)
  *     *-*-*-*
- *     | |1| |
- *     *-*-*-*
- *     |0| |2|
- *     *-*-*-*
- *     | |3| |
- *     *-*-*-*
+ *     |00|01|02|
+ *     *-*-*-*-*
+ *     |10|11|12|
+ *     *-*-*-*-*
+ *     |20|21|22|
+ *     *-*-*-*-*
  *       face
  *
  *   the way we are holding rubics cube: white face if at the bottom (1), yellow face is top (0), green face is front (2),
  *   red face is left (3), blue face is back (4) and orange face is right (5)
 */
-
-struct Block {
-    int8_t top, bottom, front, back, left, right;
-};
-
-//using block_info_t = std::pair<const int8_t*, const int8_t*>;
-
 enum class FACE: uint8_t {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
 enum COMMANDS: uint8_t {U, Uprime, U2, F, Fprime, F2, L, Lprime, L2, R, Rprime, R2, B, Bprime, B2, D, Dprime, D2};
 enum COLOR : uint8_t {YELLOW, WHITE, GREEN, RED, BLUE, ORANGE};
@@ -67,7 +38,7 @@ int FRONT[4] = {0, 2, 3, 4};
 typedef uint8_t (*COLOR_cube)[3][3];
 typedef uint8_t (*face_cube)[3];
 
-class Cubie {
+/*class Cubie {
 private:
     COLOR right_color;
     COLOR left_color;
@@ -76,7 +47,7 @@ public:
     COLOR getCubieRight();
     COLOR getCubieLeft();
     COLOR getCubieTop();
-};
+};*/
 
 struct Face {
     enum FACE_TYPE {
@@ -90,20 +61,9 @@ struct Face {
     COLOR C[9];
 };
 
-//in this implementation rotating a face means updating indexes and orientations
 class Cube {
 private:
     uint8_t cube[6][3][3];
-    //Cubie corners[8];
-    //Cubie edges[12];
-    //Cubie centers[6];
-    //Face[6] faces[6];
-
-    /*int8_t co[8]; //corners orientation, {0, 1, 2} - oriented, rotated once, rotated twice
-    int8_t cp[8]; //corners position
-    int8_t ep[12]; //edges position
-    int8_t eo[12]; //edges orientation, {0, 1) - oriented or flipped
-    COLOR centers[6];*/
     //std::string cornerNames[8] = {"URF", "UBR", "DLF", "DFR", "ULB", "UFL", "DRB", "DBL"};
     //std::string edgeNames[12] = {"UF", "UR", "UB", "UL", "DF", "DR", "DB", "DL", "FR", "BR", "BL", "FL"};
 public:
@@ -116,7 +76,6 @@ public:
     uint8_t inputToInt(char x);
     char outputToChar(uint8_t x);
     std::string printCube(uint8_t x);
-    //bool IsSolved();
     /*COLOR getCubieRight(int side, int row, int column);
     COLOR getCubieLeft(int side, int row, int column);
     COLOR getCubieTop(int side, int row, int column);*/
@@ -125,8 +84,6 @@ public:
 
     bool checkWhiteCross();
     void Generate();
-    void PrintCube();
-    void Write();
     Cube& operator=(const Cube &a);
     bool operator==(const Cube &a);
     bool isSolved();
