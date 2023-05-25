@@ -45,7 +45,7 @@ std::string Cube::printColor(int x) {
 
 void Cube::Shuffle() {
     history.clear();
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 25; i++) {
         int random_value = abs(rand() % 18);
         Rotate(static_cast<COMMANDS>(random_value));
     }
