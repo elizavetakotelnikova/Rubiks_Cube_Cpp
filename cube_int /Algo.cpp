@@ -301,10 +301,10 @@ void Algo::SetEdgeFront(int fc, Cube& Cube, int ce) {
         Cube.Rotate(Lprime);
     }
     else {
-        Cube.Rotate(U);
-        Cube.Rotate(Bprime);
-        Cube.Rotate(Rprime);
-        Cube.Rotate(B);
+        Cube.Rotate(F);
+        Cube.Rotate(Dprime);
+        Cube.Rotate(R);
+        Cube.Rotate(D);
     }
 }
 
