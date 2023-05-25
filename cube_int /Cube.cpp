@@ -21,7 +21,7 @@ uint8_t Cube::inputToInt(char x) {
     }
 }
 
-char Cube::outputToChar(uint8_t x) {
+char Cube::outputToChar(int x) {
     switch(x) {
         case 0: return 'Y';
         case 1: return 'W';
@@ -32,7 +32,7 @@ char Cube::outputToChar(uint8_t x) {
     }
 }
 
-std::string Cube::printColor(uint8_t x) {
+std::string Cube::printColor(int x) {
     switch(x) {
         case 0: return "Yellow face";
         case 1: return "White face";
@@ -44,11 +44,12 @@ std::string Cube::printColor(uint8_t x) {
 }
 
 void Cube::Shuffle() {
-    //rotationHistory.clear(); //у нас же нет rotation history? зачем это делать, надо ли, как думаешь?
+    history.clear();
     for (int i = 0; i < 50; i++) {
         int random_value = abs(rand() % 18);
         Rotate(static_cast<COMMANDS>(random_value));
     }
+    history.clear();
 }
 
 void Cube::printCube() {
@@ -64,13 +65,13 @@ void Cube::printCube() {
     }
 }
 
-/*void printRotations() {
-    for (int i = 0; i < rotationHistory.size(); i++) {
+void Cube::printRotations() {
+    for (int i = 0; i < history.size(); i++) {
         if (i % 10 == 9)
-            cout << '\n';
-        cout << outputRotations[rotationHistory[i]] << ' ';
+            std::cout << '\n';
+        std::cout << history[i] << ' ';
     }
-}*/
+}
 
 void Cube::Write(const std::string& filename) {
     std::ofstream File;
@@ -162,10 +163,10 @@ bool Cube::operator==(const Cube& a){
     return true;
 }
 
-void Cube::Up(int amount) {
-    uint8_t temp[3];
+void Cube::Up(int amount) { //checked!
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[0][2 - i][0];
             cube[0][2 - i][0] = cube[0][2][2-i]; //first column
             cube[0][2][2-i] = cube[0][i][2]; //top row
@@ -173,9 +174,9 @@ void Cube::Up(int amount) {
             cube[0][0][i] = temp[i];
         }
         // Rotate adjacent edges
-        uint8_t temp1 = cube[3][0][0];
-        uint8_t temp2 = cube[3][0][1];
-        uint8_t temp3 = cube[3][0][2];
+        int temp1 = cube[3][0][0];
+        int temp2 = cube[3][0][1];
+        int temp3 = cube[3][0][2];
         cube[3][0][0] = cube[2][0][0];
         cube[3][0][1] = cube[2][0][1];
         cube[3][0][2] = cube[2][0][2];
@@ -192,9 +193,9 @@ void Cube::Up(int amount) {
 }
 
 void Cube::UpPrime(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[0][2 - i][0];
             cube[0][2 - i][0] = cube[0][0][i]; //first column
             cube[0][0][i] = cube[0][i][2]; //top row
@@ -202,9 +203,9 @@ void Cube::UpPrime(int amount) {
             cube[0][2][2 - i] = temp[i];
         }
         // Rotate adjacent edges
-        uint8_t temp1 = cube[3][0][0];
-        uint8_t temp2 = cube[3][0][1];
-        uint8_t temp3 = cube[3][0][2];
+        int temp1 = cube[3][0][0];
+        int temp2 = cube[3][0][1];
+        int temp3 = cube[3][0][2];
         cube[3][0][0] = cube[4][0][0];
         cube[3][0][1] = cube[4][0][1];
         cube[3][0][2] = cube[4][0][2];
@@ -222,9 +223,9 @@ void Cube::UpPrime(int amount) {
 
 
 void Cube::Left(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[3][2 - i][0];
             cube[3][2 - i][0] = cube[3][2][2-i]; //first column
             cube[3][2][2-i] = cube[3][i][2]; //top row
@@ -234,9 +235,9 @@ void Cube::Left(int amount) {
         // Rotate adjacent edges
         //should be checked - I guess I might have done a mistake
         //have been checked by nastya, it is clear!
-        uint8_t temp1 = cube[0][0][0];
-        uint8_t temp2 = cube[0][1][0];
-        uint8_t temp3 = cube[0][2][0];
+        int temp1 = cube[0][0][0];
+        int temp2 = cube[0][1][0];
+        int temp3 = cube[0][2][0];
         cube[0][0][0] = cube[4][2][2];
         cube[0][1][0] = cube[4][1][2];
         cube[0][2][0] = cube[4][0][2];
@@ -253,9 +254,9 @@ void Cube::Left(int amount) {
 }
 
 void Cube::LeftPrime(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[3][2 - i][0];
             cube[3][2 - i][0] = cube[3][0][i]; //first column
             cube[3][0][i] = cube[3][i][2]; //top row
@@ -265,9 +266,9 @@ void Cube::LeftPrime(int amount) {
         // Rotate adjacent edges
         //should be checked
         //have been checked and changed by nastya
-        uint8_t temp1 = cube[0][0][0];
-        uint8_t temp2 = cube[0][1][0];
-        uint8_t temp3 = cube[0][2][0];
+        int temp1 = cube[0][0][0];
+        int temp2 = cube[0][1][0];
+        int temp3 = cube[0][2][0];
         cube[0][0][0] = cube[2][0][0];
         cube[0][1][0] = cube[2][1][0];
         cube[0][2][0] = cube[2][2][0];
@@ -284,9 +285,9 @@ void Cube::LeftPrime(int amount) {
 }
 
 void Cube::Front(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[2][2 - i][0];
             cube[2][2 - i][0] = cube[2][2][2-i]; //first column
             cube[2][2][2-i] = cube[2][i][2]; //top row
@@ -296,9 +297,9 @@ void Cube::Front(int amount) {
         // Rotate adjacent edges
         //it was fixed
         //have been checked and changed by nastya
-        uint8_t temp1 = cube[0][2][0];
-        uint8_t temp2 = cube[0][2][1];
-        uint8_t temp3 = cube[0][2][2];
+        int temp1 = cube[0][2][0];
+        int temp2 = cube[0][2][1];
+        int temp3 = cube[0][2][2];
         cube[0][2][0] = cube[3][2][2];//why you add back, if we do front rotate?)
         cube[0][2][1] = cube[3][1][2];//changed 4 to 3
         cube[0][2][2] = cube[3][0][2];
@@ -315,9 +316,9 @@ void Cube::Front(int amount) {
 }
 
 void Cube::FrontPrime(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[2][2 - i][0];
             cube[2][2 - i][0] = cube[2][0][i]; //first column
             cube[2][0][i] = cube[2][i][2]; //top row
@@ -327,9 +328,9 @@ void Cube::FrontPrime(int amount) {
         // Rotate adjacent edges
         //should be checked
         //have been checked and changed by nastya
-        uint8_t temp1 = cube[0][2][0];
-        uint8_t temp2 = cube[0][2][1];
-        uint8_t temp3 = cube[0][2][2];
+        int temp1 = cube[0][2][0];
+        int temp2 = cube[0][2][1];
+        int temp3 = cube[0][2][2];
         cube[0][2][0] = cube[5][0][0];
         cube[0][2][1] = cube[5][1][0];
         cube[0][2][2] = cube[5][2][0];
@@ -346,9 +347,9 @@ void Cube::FrontPrime(int amount) {
 }
 
 void Cube::Right(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[5][2 - i][0];
             cube[5][2 - i][0] = cube[5][2][2-i]; //first column
             cube[5][2][2-i] = cube[5][i][2]; //top row
@@ -357,9 +358,9 @@ void Cube::Right(int amount) {
         }
         // Rotate adjacent edges
         //have been checked and it is clear
-        uint8_t temp1 = cube[0][0][2];
-        uint8_t temp2 = cube[0][1][2];
-        uint8_t temp3 = cube[0][2][2];
+        int temp1 = cube[0][0][2];
+        int temp2 = cube[0][1][2];
+        int temp3 = cube[0][2][2];
         cube[0][0][2] = cube[2][0][2];
         cube[0][1][2] = cube[2][1][2];
         cube[0][2][2] = cube[2][2][2];
@@ -376,9 +377,9 @@ void Cube::Right(int amount) {
 }
 
 void Cube::RightPrime(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[5][2 - i][0];
             cube[5][2 - i][0] = cube[5][0][i]; //first column
             cube[5][0][i] = cube[5][i][2]; //top row
@@ -387,9 +388,9 @@ void Cube::RightPrime(int amount) {
         }
         // Rotate adjacent edges
         //have been checked and changed by nastya
-        uint8_t temp1 = cube[0][0][2];
-        uint8_t temp2 = cube[0][1][2];
-        uint8_t temp3 = cube[0][2][2];
+        int temp1 = cube[0][0][2];
+        int temp2 = cube[0][1][2];
+        int temp3 = cube[0][2][2];
         cube[0][0][2] = cube[4][2][0];//422 to 420...
         cube[0][1][2] = cube[4][1][0];
         cube[0][2][2] = cube[4][0][0];
@@ -407,9 +408,9 @@ void Cube::RightPrime(int amount) {
 
 
 void Cube::Back(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[4][2 - i][0];
             cube[4][2 - i][0] = cube[4][2][2-i]; //first column
             cube[4][2][2-i] = cube[4][i][2]; //top row
@@ -419,9 +420,9 @@ void Cube::Back(int amount) {
 
         // Rotate adjacent edges
         //writen by nastya, please check!
-        uint8_t temp1 = cube[0][0][0];
-        uint8_t temp2 = cube[0][0][1];
-        uint8_t temp3 = cube[0][0][2];
+        int temp1 = cube[0][0][0];
+        int temp2 = cube[0][0][1];
+        int temp3 = cube[0][0][2];
         cube[0][0][0] = cube[5][0][2];
         cube[0][0][1] = cube[5][1][2];
         cube[0][0][2] = cube[5][2][2];
@@ -440,9 +441,9 @@ void Cube::Back(int amount) {
 
 
 void Cube::BackPrime(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[4][2 - i][0];
             cube[4][2 - i][0] = cube[4][0][i]; //first column
             cube[4][0][i] = cube[4][i][2]; //top row
@@ -451,9 +452,9 @@ void Cube::BackPrime(int amount) {
         }
         // Rotate adjacent edges
         //writen by nastya, please check!
-        uint8_t temp1 = cube[0][0][0];
-        uint8_t temp2 = cube[0][0][1];
-        uint8_t temp3 = cube[0][0][2];
+        int temp1 = cube[0][0][0];
+        int temp2 = cube[0][0][1];
+        int temp3 = cube[0][0][2];
         cube[0][0][0] = cube[3][2][0];
         cube[0][0][1] = cube[3][1][0];
         cube[0][0][2] = cube[3][0][0];
@@ -470,9 +471,9 @@ void Cube::BackPrime(int amount) {
 }
 
 void Cube::Down(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[1][2 - i][0];
             cube[1][2 - i][0] = cube[1][2][2-i]; //first column
             cube[1][2][2-i] = cube[1][i][2]; //top row
@@ -482,9 +483,9 @@ void Cube::Down(int amount) {
 
         // Rotate adjacent edges
         //writen by nastya, please check!
-        uint8_t temp1 = cube[3][2][0];
-        uint8_t temp2 = cube[3][2][1];
-        uint8_t temp3 = cube[3][2][2];
+        int temp1 = cube[3][2][0];
+        int temp2 = cube[3][2][1];
+        int temp3 = cube[3][2][2];
         cube[3][2][0] = cube[4][2][0];
         cube[3][2][1] = cube[4][2][1];
         cube[3][2][2] = cube[4][2][2];
@@ -501,9 +502,9 @@ void Cube::Down(int amount) {
 }
 
 void Cube::DownPrime(int amount) {
-    uint8_t temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[1][2 - i][0];
             cube[1][2 - i][0] = cube[1][0][i]; //first column
             cube[1][0][i] = cube[1][i][2]; //top row
@@ -512,9 +513,9 @@ void Cube::DownPrime(int amount) {
         }
         // Rotate adjacent edges
         //writen by nastya, please check!
-        uint8_t temp1 = cube[3][2][0];
-        uint8_t temp2 = cube[3][2][1];
-        uint8_t temp3 = cube[3][2][2];
+        int temp1 = cube[3][2][0];
+        int temp2 = cube[3][2][1];
+        int temp3 = cube[3][2][2];
         cube[3][2][0] = cube[2][2][0];
         cube[3][2][1] = cube[2][2][1];
         cube[3][2][2] = cube[2][2][2];
@@ -534,57 +535,75 @@ void Cube::DownPrime(int amount) {
 void Cube::Rotate(COMMANDS  command){
     switch (command) {
         case COMMANDS::F:
+            history.push_back("F");
             Front(1);
             break;
         case COMMANDS::Fprime:
+            history.push_back("Fprime");
             FrontPrime(1);
             break;
         case COMMANDS::F2:
+            history.push_back("F2");
             Front(2);
             break;
         case COMMANDS::R:
+            history.push_back("R");
             Right(1);
             break;
         case COMMANDS::Rprime:
+            history.push_back("Rprime");
             RightPrime(1);
             break;
         case COMMANDS::R2:
+            history.push_back("R2");
             Right(2);
             break;
         case COMMANDS::L:
+            history.push_back("L");
             Left(1);
             break;
         case COMMANDS::Lprime:
+            history.push_back("Lprime");
             LeftPrime(1);
             break;
         case COMMANDS::L2:
+            history.push_back("L2");
             Left(2);
             break;
         case COMMANDS::B:
+            history.push_back("B");
             Back(1);
             break;
         case COMMANDS::Bprime:
+            history.push_back("Bprime");
             BackPrime(1);
             break;
         case COMMANDS::B2:
+            history.push_back("B2");
             Back(2);
             break;
         case COMMANDS::D:
+            history.push_back("D");
             Down(1);
             break;
         case COMMANDS::Dprime:
+            history.push_back("Dprime");
             DownPrime(1);
             break;
         case COMMANDS::D2:
+            history.push_back("D2");
             Down(2);
             break;
         case COMMANDS::U:
+            history.push_back("U");
             Up(1);
             break;
         case COMMANDS::Uprime:
+            history.push_back("Uprime");
             UpPrime(1);
             break;
         case COMMANDS::U2:
+            history.push_back("U2");
             Up(2);
             break;
     }
