@@ -281,7 +281,7 @@ void Algo::SetEdgeFront(int fc, Cube& Cube, int ce) {
     if (fc == COLOR::GREEN) { //should be checked, I am not sure
         Cube.Rotate(F);
         Cube.Rotate(Dprime);
-        Cube.Rotate(Rprime); //check please (
+        Cube.Rotate(Rprime);
         Cube.Rotate(D);
     }
     else if (fc == COLOR::RED) {
@@ -291,14 +291,14 @@ void Algo::SetEdgeFront(int fc, Cube& Cube, int ce) {
         Cube.Rotate(B);
     }
     else if (fc == COLOR::BLUE) {
-        Cube.Rotate(U);
-        Cube.Rotate(L);
-        Cube.Rotate(B); //check please
-        Cube.Rotate(Lprime);
+        Cube.Rotate(Bprime);
+        Cube.Rotate(Dprime);
+        Cube.Rotate(Lprime); //check please
+        Cube.Rotate(D);
     }
     else {
         Cube.Rotate(R);
-        Cube.Rotate(Dprime); //check orange, please
+        Cube.Rotate(Dprime);
         Cube.Rotate(B);
         Cube.Rotate(D);
     }
