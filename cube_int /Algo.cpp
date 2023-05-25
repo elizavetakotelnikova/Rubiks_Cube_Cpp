@@ -214,49 +214,55 @@ void Algo::makeWhiteCross(Cube &cube) {
                 cube.Rotate(Fprime);
             }
 
-            if (current_cube[5][1][2] == COLOR::WHITE) {
+            else if (current_cube[5][1][2] == COLOR::WHITE) {
                 cube.Rotate(Bprime);
             }
 
-            if (current_cube[3][1][2] == COLOR::WHITE) {
+            else if (current_cube[3][1][2] == COLOR::WHITE) {
                 cube.Rotate(F);
             }
 
-            if (current_cube[3][1][0] == COLOR::WHITE) {
+            else if (current_cube[3][1][0] == COLOR::WHITE) {
                 cube.Rotate(B);
             }
 
-            if (current_cube[2][1][2] == COLOR::WHITE) {
+            else if (current_cube[2][1][2] == COLOR::WHITE) {
                 cube.Rotate(R);
             }
 
-            if (current_cube[2][1][0] == COLOR::WHITE) {
+            else if (current_cube[2][1][0] == COLOR::WHITE) {
                 cube.Rotate(Lprime);
             }
 
-            if (current_cube[4][1][2] == COLOR::WHITE) {
+            else if (current_cube[4][1][2] == COLOR::WHITE) {
                 cube.Rotate(L);
             }
 
-            if (current_cube[4][1][0] == COLOR::WHITE) {
+            else if (current_cube[4][1][0] == COLOR::WHITE) {
                 cube.Rotate(Rprime);
             }
 
-            if (current_cube[2][2][1] == COLOR::WHITE) {
+            else if (current_cube[2][2][1] == COLOR::WHITE) {
                 cube.Rotate(F2);
             }
 
-            if (current_cube[3][2][1] == COLOR::WHITE) {
+            else if (current_cube[3][2][1] == COLOR::WHITE) {
                 cube.Rotate(L2);
             }
 
-            if (current_cube[4][2][1] == COLOR::WHITE) {
+            else if (current_cube[4][2][1] == COLOR::WHITE) {
                 cube.Rotate(B2);
             }
 
-            if (current_cube[5][2][1] == COLOR::WHITE) {
+            else if (current_cube[5][2][1] == COLOR::WHITE) {
                 cube.Rotate(R2);
             }
+            counter++;
+            if (counter >= 15) {
+                cube.Shuffle();
+                counter = 0;
+            }
+            cube.printRotations();
         }
         cube.printCube();
     }
