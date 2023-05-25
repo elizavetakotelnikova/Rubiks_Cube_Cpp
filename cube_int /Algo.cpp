@@ -2,7 +2,7 @@
 
 bool Algo::isCross(COLOR color, int index, Cube &cube) {
     face_cube current_face = cube.getFace(index);
-    uint8_t center = current_face[1][1];
+    int center = current_face[1][1];
     if (current_face[0][1] == center && current_face[1][2] == center)
         if (current_face[2][1] == center && current_face[1][0] == center) {
             return true;
@@ -20,7 +20,7 @@ bool Algo::isRightWhiteCross(Cube &cube) {
 }
 
 
-bool Algo::matchCenter(uint8_t a, uint8_t center) {
+bool Algo::matchCenter(int a, int center) {
     if (a == center) {
         return true;
     }
@@ -31,9 +31,9 @@ bool Algo::matchCenter(uint8_t a, uint8_t center) {
 void Algo::makeWhiteCross(Cube &cube) {
     int counter = 0;
     COLOR_cube current_cube = cube.getCube();
-    while (counter != 4) {
+    while (!isCross(WHITE, 1, cube)) {
         if (current_cube[0][1][0] == COLOR::WHITE) {
-            uint8_t ce = current_cube[3][0][1]; //current edge
+            int ce = current_cube[3][0][1]; //current edge
             std::queue<int> Q;
             Q.push(3);
             Q.push(4);
@@ -41,7 +41,7 @@ void Algo::makeWhiteCross(Cube &cube) {
             Q.push(2);
             int i = Q.front();
             Q.pop();
-            uint8_t fc = current_cube[i][1][1]; //face color
+            int fc = current_cube[i][1][1]; //face color
             while (!matchCenter(ce, fc)) {
                 cube.Rotate(U);
                 i = Q.front();
@@ -49,11 +49,11 @@ void Algo::makeWhiteCross(Cube &cube) {
                 fc = current_cube[i][1][1];
             }
             SetEdge(fc, cube, ce);
-            counter++;
+            //counter++;
         }
 
         if (current_cube[0][0][1] == COLOR::WHITE) {
-            uint8_t ce = current_cube[4][0][1];
+            int ce = current_cube[4][0][1];
             //std::queue<int> Q = {4, 5, 2, 3};
             std::queue<int> Q;
             Q.push(4);
@@ -62,7 +62,7 @@ void Algo::makeWhiteCross(Cube &cube) {
             Q.push(3);
             int i = Q.front();
             Q.pop();
-            uint8_t fc = current_cube[i][1][1]; //face color
+            int fc = current_cube[i][1][1]; //face color
             while (!matchCenter(ce, fc)) {
                 cube.Rotate(U);
                 i = Q.front();
@@ -70,11 +70,11 @@ void Algo::makeWhiteCross(Cube &cube) {
                 fc = current_cube[i][1][1];
             }
             SetEdge(fc, cube, ce);
-            counter++;
+            //counter++;
         }
 
         if (current_cube[0][1][2] == COLOR::WHITE) {
-            uint8_t ce = current_cube[5][0][1]; //current edge
+            int ce = current_cube[5][0][1]; //current edge
             //std::queue<int> Q = {5, 2, 3, 4};
             std::queue<int> Q;
             Q.push(5);
@@ -83,7 +83,7 @@ void Algo::makeWhiteCross(Cube &cube) {
             Q.push(4);
             int i = Q.front();
             Q.pop();
-            uint8_t fc = current_cube[i][1][1]; //face color
+            int fc = current_cube[i][1][1]; //face color
             while (!matchCenter(ce, fc)) {
                 cube.Rotate(U);
                 i = Q.front();
@@ -91,11 +91,32 @@ void Algo::makeWhiteCross(Cube &cube) {
                 fc = current_cube[i][1][1];
             }
             SetEdge(fc, cube, ce);
-            counter++;
+            //counter++;
+        }
+
+        if (current_cube[0][2][1] == COLOR::WHITE) {
+            int ce = current_cube[2][0][1]; //current edge
+            //std::queue<int> Q = {5, 2, 3, 4};
+            std::queue<int> Q;
+            Q.push(2);
+            Q.push(3);
+            Q.push(4);
+            Q.push(5);
+            int i = Q.front();
+            Q.pop();
+            int fc = current_cube[i][1][1]; //face color
+            while (!matchCenter(ce, fc)) {
+                cube.Rotate(U);
+                i = Q.front();
+                Q.pop();
+                fc = current_cube[i][1][1];
+            }
+            SetEdge(fc, cube, ce);
+            //counter++;
         }
 
         if (current_cube[2][0][1] == COLOR::WHITE) {
-            uint8_t ce = current_cube[0][2][1]; //current edge
+            int ce = current_cube[0][2][1]; //current edge
             //std::queue<int> Q = {2, 3, 4, 5};
             std::queue<int> Q;
             Q.push(2);
@@ -104,42 +125,21 @@ void Algo::makeWhiteCross(Cube &cube) {
             Q.push(5);
             int i = Q.front();
             Q.pop();
-            uint8_t fc = current_cube[i][1][1]; //face color
+            int fc = current_cube[i][1][1]; //face color
             while (!matchCenter(ce, fc)) {
                 cube.Rotate(U);
                 i = Q.front();
                 Q.pop();
                 fc = current_cube[i][1][1];
             }
-            SetEdge(fc, cube, ce);
-            counter++;
+            SetEdgeFront(fc, cube, ce); //когда ставлю SetEdgeFront вместо SetEdge, все ломается, но это правильно..
+            //counter++;
         }
-        if (counter == 4) { break; }
+        //if (counter == 4) { break; }
 
-        if (current_cube[2][0][1] == COLOR::WHITE) {
-            uint8_t ce = current_cube[0][2][1]; //current edge
-            //std::queue<int> Q = {2, 3, 4, 5};
-            std::queue<int> Q;
-            Q.push(2);
-            Q.push(3);
-            Q.push(4);
-            Q.push(5);
-            int i = Q.front();
-            Q.pop();
-            uint8_t fc = current_cube[i][1][1]; //face color
-            while (!matchCenter(ce, fc)) {
-                cube.Rotate(U);
-                i = Q.front();
-                Q.pop();
-                fc = current_cube[i][1][1];
-            }
-            SetEdgeFront(fc, cube, ce);
-            counter++;
-        }
-        if (counter == 4) { break; }
 
         if (current_cube[3][0][1] == COLOR::WHITE) {
-            uint8_t ce = current_cube[0][1][0]; //current edge
+            int ce = current_cube[0][1][0]; //current edge
             //std::queue<int> Q = {3, 4, 5, 2};
             std::queue<int> Q;
             Q.push(3);
@@ -148,7 +148,7 @@ void Algo::makeWhiteCross(Cube &cube) {
             Q.push(2);
             int i = Q.front();
             Q.pop();
-            uint8_t fc = current_cube[i][1][1]; //face color
+            int fc = current_cube[i][1][1]; //face color
             while (!matchCenter(ce, fc)) {
                 cube.Rotate(U);
                 i = Q.front();
@@ -159,10 +159,11 @@ void Algo::makeWhiteCross(Cube &cube) {
             counter++;
         }
 
-        if (counter == 4) { break; }
+        //if (counter == 4) { break; }
 
         if (current_cube[4][0][1] == COLOR::WHITE) {
-            uint8_t ce = current_cube[0][0][1]; //current edge
+            int ce = current_cube[0][0][1]; //current edge
+            std::cout << ce;
             //std::queue<int> Q = {4, 5, 2, 3};
             std::queue<int> Q;
             Q.push(4);
@@ -171,21 +172,22 @@ void Algo::makeWhiteCross(Cube &cube) {
             Q.push(3);
             int i = Q.front();
             Q.pop();
-            uint8_t fc = current_cube[i][1][1]; //face color
+            int fc = current_cube[i][1][1]; //face color
             while (!matchCenter(ce, fc)) {
                 cube.Rotate(U);
                 i = Q.front();
                 Q.pop();
                 fc = current_cube[i][1][1];
             }
+            std::cout << fc << " " << ce << " ";
             SetEdgeFront(fc, cube, ce);
-            counter++;
+            //counter++;
         }
 
-        if (counter == 4) { break; }
+        //if (counter == 4) { break; }
 
         if (current_cube[5][0][1] == COLOR::WHITE) {
-            uint8_t ce = current_cube[0][1][2]; //current edge
+            int ce = current_cube[0][1][2]; //current edge
             //std::queue<int> Q = {5, 2, 3, 4};
             std::queue<int> Q;
             Q.push(5);
@@ -194,7 +196,7 @@ void Algo::makeWhiteCross(Cube &cube) {
             Q.push(4);
             int i = Q.front();
             Q.pop();
-            uint8_t fc = current_cube[i][1][1]; //face color
+            int fc = current_cube[i][1][1]; //face color
             while (!matchCenter(ce, fc)) {
                 cube.Rotate(U);
                 i = Q.front();
@@ -202,10 +204,10 @@ void Algo::makeWhiteCross(Cube &cube) {
                 fc = current_cube[i][1][1];
             }
             SetEdgeFront(fc, cube, ce);
-            counter++;
+            //counter++;
         }
 
-        if (counter == 4) { break; }
+        //if (counter == 4) { break; }
 
         else {
             if (current_cube[5][1][0] == COLOR::WHITE) {
@@ -239,18 +241,39 @@ void Algo::makeWhiteCross(Cube &cube) {
             if (current_cube[4][1][0] == COLOR::WHITE) {
                 cube.Rotate(Rprime);
             }
+
+            if (current_cube[2][2][1] == COLOR::WHITE) {
+                cube.Rotate(F2);
+            }
+
+            if (current_cube[3][2][1] == COLOR::WHITE) {
+                cube.Rotate(L2);
+            }
+
+            if (current_cube[4][2][1] == COLOR::WHITE) {
+                cube.Rotate(B2);
+            }
+
+            if (current_cube[5][2][1] == COLOR::WHITE) {
+                cube.Rotate(R2);
+            }
+        }
+        cube.printCube();
+        //counter++;
+        if (counter == 1) {
+            break;
         }
     }
 }
 
-void Algo::SetEdge(uint8_t fc, Cube& Cube, uint8_t ce) {
+void Algo::SetEdge(int fc, Cube& Cube, int ce) {
     if (fc == COLOR::RED) {
         Cube.Rotate(L2);
     }
     else if (fc == COLOR::BLUE) {
         Cube.Rotate(B2);
     }
-    else if (ce == COLOR::ORANGE) {
+    else if (fc == COLOR::ORANGE) {
         Cube.Rotate(R2);
     }
     else {
@@ -258,7 +281,7 @@ void Algo::SetEdge(uint8_t fc, Cube& Cube, uint8_t ce) {
     }
 }
 
-void Algo::SetEdgeFront(uint8_t fc, Cube& Cube, uint8_t ce) {
+void Algo::SetEdgeFront(int fc, Cube& Cube, int ce) {
     if (fc == COLOR::GREEN) { //should be checked, I am not sure
         Cube.Rotate(U);
         Cube.Rotate(L);
@@ -271,7 +294,7 @@ void Algo::SetEdgeFront(uint8_t fc, Cube& Cube, uint8_t ce) {
         Cube.Rotate(Lprime);
         Cube.Rotate(B);
     }
-    else if (ce == COLOR::BLUE) {
+    else if (fc == COLOR::BLUE) {
         Cube.Rotate(U);
         Cube.Rotate(L);
         Cube.Rotate(B); //check please
@@ -352,8 +375,8 @@ void Algo::MiddleLayer(Cube& Cube) {
     COLOR_cube current_cube = Cube.getCube();
     std::queue<int> Q;
     while (!isSolvedMiddleLayer(current_cube)) {
-        uint8_t ce = current_cube[0][0][1];
-        uint8_t fe = current_cube[4][0][1];
+        int ce = current_cube[0][0][1];
+        int fe = current_cube[4][0][1];
         if (ce != COLOR::YELLOW && fe != COLOR::YELLOW) {
             if (ce == COLOR::RED && fe == COLOR::BLUE) {
                 Cube.Rotate(B);
