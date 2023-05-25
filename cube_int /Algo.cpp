@@ -259,10 +259,6 @@ void Algo::makeWhiteCross(Cube &cube) {
             }
         }
         cube.printCube();
-        //counter++;
-        if (counter == 1) {
-            break;
-        }
     }
 }
 
@@ -283,10 +279,10 @@ void Algo::SetEdge(int fc, Cube& Cube, int ce) {
 
 void Algo::SetEdgeFront(int fc, Cube& Cube, int ce) {
     if (fc == COLOR::GREEN) { //should be checked, I am not sure
-        Cube.Rotate(U);
-        Cube.Rotate(L);
-        Cube.Rotate(Fprime);
-        Cube.Rotate(Lprime);
+        Cube.Rotate(F);
+        Cube.Rotate(Dprime);
+        Cube.Rotate(Rprime); //check please (
+        Cube.Rotate(D);
     }
     else if (fc == COLOR::RED) {
         Cube.Rotate(U);
@@ -301,9 +297,9 @@ void Algo::SetEdgeFront(int fc, Cube& Cube, int ce) {
         Cube.Rotate(Lprime);
     }
     else {
-        Cube.Rotate(F);
-        Cube.Rotate(Dprime);
         Cube.Rotate(R);
+        Cube.Rotate(Dprime); //check orange, please
+        Cube.Rotate(B);
         Cube.Rotate(D);
     }
 }
