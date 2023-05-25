@@ -9,9 +9,9 @@ public:
 
     bool isCross(COLOR color, int index, Cube& cube);
     bool isRightWhiteCross(Cube& cube);
-    bool matchCenter(uint8_t a, uint8_t center);
-    void SetEdge(uint8_t fc, Cube& Cube, uint8_t ce);
-    void SetEdgeFront(uint8_t fc, Cube& Cube, uint8_t ce);
+    bool matchCenter(int a, int center);
+    void SetEdge(int fc, Cube& Cube, int ce);
+    void SetEdgeFront(int fc, Cube& Cube, int ce);
     void makeWhiteCross(Cube& cube);
 
     //void phase_one(Cube &cube, Cubie &mini_cube);
