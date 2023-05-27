@@ -163,7 +163,7 @@ void Algo::makeWhiteCross(Cube &cube) {
 
         if (current_cube[4][0][1] == COLOR::WHITE) {
             int ce = current_cube[0][0][1]; //current edge
-            std::cout << ce;
+            //std::cout << ce;
             //std::queue<int> Q = {4, 5, 2, 3};
             std::queue<int> Q;
             Q.push(4);
@@ -179,7 +179,7 @@ void Algo::makeWhiteCross(Cube &cube) {
                 Q.pop();
                 fc = current_cube[i][1][1];
             }
-            std::cout << fc << " " << ce << " ";
+            //std::cout << fc << " " << ce << " ";
             SetEdgeFront(fc, cube, ce);
             //counter++;
         }
@@ -262,9 +262,9 @@ void Algo::makeWhiteCross(Cube &cube) {
                 cube.Shuffle();
                 counter = 0;
             }
-            cube.printRotations();
+            //cube.printRotations();
         }
-        cube.printCube();
+        //cube.printCube();
     }
 }
 
