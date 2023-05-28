@@ -1,87 +1,154 @@
 #include "cube.h"
 
 Cube::Cube() {
-    std::memset(co, 0, sizeof(co));
-    std::memset(eo, 0, sizeof(eo));
-    for (int i = 0; i < 8; i++) {
-        cp[i] = i;
-    }
-    for (int i = 0; i < 12; i++) {
-        ep[i] = i;
-    }
-    centers[0] = COLOR::RED;
-    centers[1] = COLOR::BLUE;
-    centers[2] = COLOR::WHITE;
-    centers[3] = COLOR::GREEN;
-    centers[4] = COLOR::YELLOW;
-    centers[5] = COLOR::ORANGE;
-}
-
-void Cube::Read(const char* filename) {
-    std::ifstream File;
-    File.open(filename, std::ios::in);
-    for (int i = 0; i < 8; i++) {
-        File >> cp[i] >> co[i];
-    }
-    for (int i = 0; i < 12; i++) {
-        File >> ep[i] >> eo[i];
-    }
-    std::cout << "Cube's state was successfully read from the file " << std::endl;
-}
-
-void Cube::Generate() {
-    for (int i = 0; i++; i < 6) {
-        for (int j = 0; j++; j < 3) {
-            for (int k = 0; k++; k < 3) {
-                sides[i][j][k] = rand() % 6;
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 3; j++) {
+            for (int k = 0; k < 3; k++) {
+                cube[i][j][k] = i;
             }
         }
     }
 }
 
-bool Cube::Check() {
-    for (int i = 0; i < 8; i++) {
-        if ((cp[i] != i) or (co[i] != 0))
-            return false;
+uint8_t Cube::inputToInt(char x) {
+    switch(x) {
+        case 'Y': return 0;
+        case 'W': return 1;
+        case 'G': return 2;
+        case 'R': return 3;
+        case 'B': return 4;
+        case 'O': return 5;
     }
-    for (int i = 0; i < 12; i++) {
-        if ((ep[i] != i) or (eo[i] != 0))
-            return false;
+}
+
+char Cube::outputToChar(int x) {
+    switch(x) {
+        case 0: return 'Y';
+        case 1: return 'W';
+        case 2: return 'G';
+        case 3: return 'R';
+        case 4: return 'B';
+        case 5: return 'O';
+    }
+}
+
+std::string Cube::printColor(int x) {
+    switch(x) {
+        case 0: return "Yellow face";
+        case 1: return "White face";
+        case 2: return "Green face";
+        case 3: return "Right face";
+        case 4: return "Back face";
+        case 5: return "Orange face";
+    }
+}
+
+void Cube::Shuffle() {
+    history.clear();
+    for (int i = 0; i < 25; i++) {
+        int random_value = abs(rand() % 18);
+        Rotate(static_cast<COMMANDS>(random_value));
+    }
+    history.clear();
+}
+
+void Cube::printCube() {
+    for (int i = 0; i < 6; i++) {
+        std::cout << printColor(i) << "\n";
+        for (int j = 0; j < 3; j++) {
+            for (int k = 0; k < 3; k++) {
+                std::cout << outputToChar(cube[i][j][k]);
+            }
+            std::cout << "\n";
+        }
+        std::cout << '\n';
+    }
+}
+
+void Cube::printRotations() {
+    for (int i = 0; i < history.size(); i++) {
+        if (i % 10 == 9)
+            std::cout << '\n';
+        std::cout << history[i] << ' ';
+    }
+}
+
+void Cube::Write(const std::string& filename) {
+    std::ofstream File;
+    File.open(filename);
+    if (File.is_open()) {
+        for (int i = 0; i < 6; i++) {
+            File << "---\n";
+            for (int j = 0; j < 3; j++) {
+                for (int k = 0; k < 3; k++) {
+                    File << outputToChar(cube[i][j][k]);
+                }
+                File << '\n';
+            }
+        }
+        File << "---\n";
+    }
+    File.close();
+};
+
+/*void readFromFile(const string& fileName) {
+    ifstream file;
+    file.open(fileName);
+    std::string line;
+    if (file.is_open()) {
+        int color = 0;
+        int row = -1;
+        while (std::getline(file, line)) {
+            if (line == "---") {
+                continue;
+            } else {
+                row += 1;
+                for (int i = 0; i < line.length(); i++) {
+                    faces[color][row][i] = colorToInt(line[i]);
+                }
+                if (row == 2) {
+                    row = -1;
+                    color++;
+                }
+            }
+
+        }
+    }
+    file.close();
+}*/
+
+void Cube::Read(const std::string& filename) {
+    std::ifstream File(filename);
+    File.open(filename);
+    std::string str;
+    if (File.is_open()) {
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 3;) {
+                std::getline(File, str);
+                cube[i][j][0] = inputToInt(str[0]);
+                cube[i][j][1] = inputToInt(str[1]);
+                cube[i][j][2] = inputToInt(str[2]);
+            }
+        }
+        std::getline(File, str);
+    }
+    std::cout << "Cube's state was successfully read from the file" << std::endl;
+    File.close();
+}
+
+bool Cube::isSolved() {
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 3; j++) {
+            for (int k = 0; k < 3; k++) {
+                if (cube[i][j][k] != i) {
+                    return false;
+                }
+            }
+        }
     }
     return true;
 }
 
-void Cube::PrintCube() {
-    std::cout << "Corners' position and orientation:\n";
-    for (int i = 0; i < 8; i++)
-        std::cout << cp[i] << ' ' << co[i] << std::endl;
-    std::cout << "Edges' position and orientation:\n";
-    for (int i = 0; i < 12; ++i)
-        std::cout << ep[i] << ' ' << eo[i] << std::endl;
-}
-
-void Cube::Write() {
-    std::string filename = "Current_state.txt";
-    std::ofstream File;
-    File.open(filename, std::ios::out);
-    for (int i = 0; i < 8; i++)
-        File << cp[i] << ' ' << co[i] << std::endl;
-    for (int i = 0; i < 12; i++)
-        File << ep[i] << ' ' << eo[i] << std::endl;
-    std::cout << "Cube's state was successfully wrote to the file " << filename << std::endl;
-}
-
-Cube& Cube::operator=(const Cube& a){
-    for (int i = 0; i < 8; i++){
-        cp[i] = a.cp[i];
-        co[i] = a.co[i];
-    }
-    for (int i = 0; i < 12; i++){
-        ep[i] = a.ep[i];
-        eo[i] = a.eo[i];
-    }
-    return *this;
-}
 
 bool Cube::operator==(const Cube& a){
     for (int i = 0; i < 6; i++) {
@@ -96,10 +163,10 @@ bool Cube::operator==(const Cube& a){
     return true;
 }
 
-void Cube::Up(int amount) {
-    COLOR temp[3];
+void Cube::Up(int amount) { //checked!
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[0][2 - i][0];
             cube[0][2 - i][0] = cube[0][2][2-i]; //first column
             cube[0][2][2-i] = cube[0][i][2]; //top row
@@ -107,9 +174,9 @@ void Cube::Up(int amount) {
             cube[0][0][i] = temp[i];
         }
         // Rotate adjacent edges
-        COLOR temp1 = cube[3][0][0];
-        COLOR temp2 = cube[3][0][1];
-        COLOR temp3 = cube[3][0][2];
+        int temp1 = cube[3][0][0];
+        int temp2 = cube[3][0][1];
+        int temp3 = cube[3][0][2];
         cube[3][0][0] = cube[2][0][0];
         cube[3][0][1] = cube[2][0][1];
         cube[3][0][2] = cube[2][0][2];
@@ -126,9 +193,9 @@ void Cube::Up(int amount) {
 }
 
 void Cube::UpPrime(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[0][2 - i][0];
             cube[0][2 - i][0] = cube[0][0][i]; //first column
             cube[0][0][i] = cube[0][i][2]; //top row
@@ -136,9 +203,9 @@ void Cube::UpPrime(int amount) {
             cube[0][2][2 - i] = temp[i];
         }
         // Rotate adjacent edges
-        COLOR temp1 = cube[3][0][0];
-        COLOR temp2 = cube[3][0][1];
-        COLOR temp3 = cube[3][0][2];
+        int temp1 = cube[3][0][0];
+        int temp2 = cube[3][0][1];
+        int temp3 = cube[3][0][2];
         cube[3][0][0] = cube[4][0][0];
         cube[3][0][1] = cube[4][0][1];
         cube[3][0][2] = cube[4][0][2];
@@ -156,9 +223,9 @@ void Cube::UpPrime(int amount) {
 
 
 void Cube::Left(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[3][2 - i][0];
             cube[3][2 - i][0] = cube[3][2][2-i]; //first column
             cube[3][2][2-i] = cube[3][i][2]; //top row
@@ -168,9 +235,9 @@ void Cube::Left(int amount) {
         // Rotate adjacent edges
         //should be checked - I guess I might have done a mistake
         //have been checked by nastya, it is clear!
-        COLOR temp1 = cube[0][0][0];
-        COLOR temp2 = cube[0][1][0];
-        COLOR temp3 = cube[0][2][0];
+        int temp1 = cube[0][0][0];
+        int temp2 = cube[0][1][0];
+        int temp3 = cube[0][2][0];
         cube[0][0][0] = cube[4][2][2];
         cube[0][1][0] = cube[4][1][2];
         cube[0][2][0] = cube[4][0][2];
@@ -187,9 +254,9 @@ void Cube::Left(int amount) {
 }
 
 void Cube::LeftPrime(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[3][2 - i][0];
             cube[3][2 - i][0] = cube[3][0][i]; //first column
             cube[3][0][i] = cube[3][i][2]; //top row
@@ -199,9 +266,9 @@ void Cube::LeftPrime(int amount) {
         // Rotate adjacent edges
         //should be checked
         //have been checked and changed by nastya
-        COLOR temp1 = cube[0][0][0];
-        COLOR temp2 = cube[0][1][0];
-        COLOR temp3 = cube[0][2][0];
+        int temp1 = cube[0][0][0];
+        int temp2 = cube[0][1][0];
+        int temp3 = cube[0][2][0];
         cube[0][0][0] = cube[2][0][0];
         cube[0][1][0] = cube[2][1][0];
         cube[0][2][0] = cube[2][2][0];
@@ -218,9 +285,9 @@ void Cube::LeftPrime(int amount) {
 }
 
 void Cube::Front(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[2][2 - i][0];
             cube[2][2 - i][0] = cube[2][2][2-i]; //first column
             cube[2][2][2-i] = cube[2][i][2]; //top row
@@ -230,9 +297,9 @@ void Cube::Front(int amount) {
         // Rotate adjacent edges
         //it was fixed
         //have been checked and changed by nastya
-        COLOR temp1 = cube[0][2][0];
-        COLOR temp2 = cube[0][2][1];
-        COLOR temp3 = cube[0][2][2];
+        int temp1 = cube[0][2][0];
+        int temp2 = cube[0][2][1];
+        int temp3 = cube[0][2][2];
         cube[0][2][0] = cube[3][2][2];//why you add back, if we do front rotate?)
         cube[0][2][1] = cube[3][1][2];//changed 4 to 3
         cube[0][2][2] = cube[3][0][2];
@@ -249,9 +316,9 @@ void Cube::Front(int amount) {
 }
 
 void Cube::FrontPrime(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[2][2 - i][0];
             cube[2][2 - i][0] = cube[2][0][i]; //first column
             cube[2][0][i] = cube[2][i][2]; //top row
@@ -261,9 +328,9 @@ void Cube::FrontPrime(int amount) {
         // Rotate adjacent edges
         //should be checked
         //have been checked and changed by nastya
-        COLOR temp1 = cube[0][2][0];
-        COLOR temp2 = cube[0][2][1];
-        COLOR temp3 = cube[0][2][2];
+        int temp1 = cube[0][2][0];
+        int temp2 = cube[0][2][1];
+        int temp3 = cube[0][2][2];
         cube[0][2][0] = cube[5][0][0];
         cube[0][2][1] = cube[5][1][0];
         cube[0][2][2] = cube[5][2][0];
@@ -280,9 +347,9 @@ void Cube::FrontPrime(int amount) {
 }
 
 void Cube::Right(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[5][2 - i][0];
             cube[5][2 - i][0] = cube[5][2][2-i]; //first column
             cube[5][2][2-i] = cube[5][i][2]; //top row
@@ -291,9 +358,9 @@ void Cube::Right(int amount) {
         }
         // Rotate adjacent edges
         //have been checked and it is clear
-        COLOR temp1 = cube[0][0][2];
-        COLOR temp2 = cube[0][1][2];
-        COLOR temp3 = cube[0][2][2];
+        int temp1 = cube[0][0][2];
+        int temp2 = cube[0][1][2];
+        int temp3 = cube[0][2][2];
         cube[0][0][2] = cube[2][0][2];
         cube[0][1][2] = cube[2][1][2];
         cube[0][2][2] = cube[2][2][2];
@@ -310,9 +377,9 @@ void Cube::Right(int amount) {
 }
 
 void Cube::RightPrime(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[5][2 - i][0];
             cube[5][2 - i][0] = cube[5][0][i]; //first column
             cube[5][0][i] = cube[5][i][2]; //top row
@@ -321,9 +388,9 @@ void Cube::RightPrime(int amount) {
         }
         // Rotate adjacent edges
         //have been checked and changed by nastya
-        COLOR temp1 = cube[0][0][2];
-        COLOR temp2 = cube[0][1][2];
-        COLOR temp3 = cube[0][2][2];
+        int temp1 = cube[0][0][2];
+        int temp2 = cube[0][1][2];
+        int temp3 = cube[0][2][2];
         cube[0][0][2] = cube[4][2][0];//422 to 420...
         cube[0][1][2] = cube[4][1][0];
         cube[0][2][2] = cube[4][0][0];
@@ -341,9 +408,9 @@ void Cube::RightPrime(int amount) {
 
 
 void Cube::Back(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[4][2 - i][0];
             cube[4][2 - i][0] = cube[4][2][2-i]; //first column
             cube[4][2][2-i] = cube[4][i][2]; //top row
@@ -353,9 +420,9 @@ void Cube::Back(int amount) {
 
         // Rotate adjacent edges
         //writen by nastya, please check!
-        COLOR temp1 = cube[0][0][0];
-        COLOR temp2 = cube[0][0][1];
-        COLOR temp3 = cube[0][0][2];
+        int temp1 = cube[0][0][0];
+        int temp2 = cube[0][0][1];
+        int temp3 = cube[0][0][2];
         cube[0][0][0] = cube[5][0][2];
         cube[0][0][1] = cube[5][1][2];
         cube[0][0][2] = cube[5][2][2];
@@ -374,9 +441,9 @@ void Cube::Back(int amount) {
 
 
 void Cube::BackPrime(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[4][2 - i][0];
             cube[4][2 - i][0] = cube[4][0][i]; //first column
             cube[4][0][i] = cube[4][i][2]; //top row
@@ -385,9 +452,9 @@ void Cube::BackPrime(int amount) {
         }
         // Rotate adjacent edges
         //writen by nastya, please check!
-        COLOR temp1 = cube[0][0][0];
-        COLOR temp2 = cube[0][0][1];
-        COLOR temp3 = cube[0][0][2];
+        int temp1 = cube[0][0][0];
+        int temp2 = cube[0][0][1];
+        int temp3 = cube[0][0][2];
         cube[0][0][0] = cube[3][2][0];
         cube[0][0][1] = cube[3][1][0];
         cube[0][0][2] = cube[3][0][0];
@@ -404,9 +471,9 @@ void Cube::BackPrime(int amount) {
 }
 
 void Cube::Down(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[1][2 - i][0];
             cube[1][2 - i][0] = cube[1][2][2-i]; //first column
             cube[1][2][2-i] = cube[1][i][2]; //top row
@@ -416,9 +483,9 @@ void Cube::Down(int amount) {
 
         // Rotate adjacent edges
         //writen by nastya, please check!
-        COLOR temp1 = cube[3][2][0];
-        COLOR temp2 = cube[3][2][1];
-        COLOR temp3 = cube[3][2][2];
+        int temp1 = cube[3][2][0];
+        int temp2 = cube[3][2][1];
+        int temp3 = cube[3][2][2];
         cube[3][2][0] = cube[4][2][0];
         cube[3][2][1] = cube[4][2][1];
         cube[3][2][2] = cube[4][2][2];
@@ -435,9 +502,9 @@ void Cube::Down(int amount) {
 }
 
 void Cube::DownPrime(int amount) {
-    COLOR temp[3];
+    int temp[3];
     for (int j = 0; j < amount; j++) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 2; i++) {
             temp[i] = cube[1][2 - i][0];
             cube[1][2 - i][0] = cube[1][0][i]; //first column
             cube[1][0][i] = cube[1][i][2]; //top row
@@ -446,9 +513,9 @@ void Cube::DownPrime(int amount) {
         }
         // Rotate adjacent edges
         //writen by nastya, please check!
-        COLOR temp1 = cube[3][2][0];
-        COLOR temp2 = cube[3][2][1];
-        COLOR temp3 = cube[3][2][2];
+        int temp1 = cube[3][2][0];
+        int temp2 = cube[3][2][1];
+        int temp3 = cube[3][2][2];
         cube[3][2][0] = cube[2][2][0];
         cube[3][2][1] = cube[2][2][1];
         cube[3][2][2] = cube[2][2][2];
@@ -465,87 +532,84 @@ void Cube::DownPrime(int amount) {
 }
 
 
-int8_t* Cube::getCO() {
-    return this->co;
-}
-
-int8_t* Cube::getCP() {
-    return this->cp;
-}
-
-int8_t* Cube::getEO() {
-    return this->eo;
-}
-
-int8_t* Cube::getEP() {
-    return this->ep;
-}
-
-
-COLOR Cube::getColor(FACE face, unsigned int row, unsigned int col) {
-    return COLOR::RED;
-}
-
 void Cube::Rotate(COMMANDS  command){
     switch (command) {
         case COMMANDS::F:
+            history.push_back("F");
             Front(1);
             break;
         case COMMANDS::Fprime:
+            history.push_back("Fprime");
             FrontPrime(1);
             break;
         case COMMANDS::F2:
+            history.push_back("F2");
             Front(2);
             break;
         case COMMANDS::R:
+            history.push_back("R");
             Right(1);
             break;
         case COMMANDS::Rprime:
+            history.push_back("Rprime");
             RightPrime(1);
             break;
         case COMMANDS::R2:
+            history.push_back("R2");
             Right(2);
             break;
         case COMMANDS::L:
+            history.push_back("L");
             Left(1);
             break;
         case COMMANDS::Lprime:
+            history.push_back("Lprime");
             LeftPrime(1);
             break;
         case COMMANDS::L2:
+            history.push_back("L2");
             Left(2);
             break;
         case COMMANDS::B:
+            history.push_back("B");
             Back(1);
             break;
         case COMMANDS::Bprime:
+            history.push_back("Bprime");
             BackPrime(1);
             break;
         case COMMANDS::B2:
+            history.push_back("B2");
             Back(2);
             break;
         case COMMANDS::D:
+            history.push_back("D");
             Down(1);
             break;
         case COMMANDS::Dprime:
+            history.push_back("Dprime");
             DownPrime(1);
             break;
         case COMMANDS::D2:
+            history.push_back("D2");
             Down(2);
             break;
         case COMMANDS::U:
+            history.push_back("U");
             Up(1);
             break;
         case COMMANDS::Uprime:
+            history.push_back("Uprime");
             UpPrime(1);
             break;
         case COMMANDS::U2:
+            history.push_back("U2");
             Up(2);
             break;
     }
 }
 
-bool Cube::checkWhiteCross() {
+/*bool Cube::checkWhiteCross() {
     for (int i = 0; i < 6; i++) {
         if (centers[i] == COLOR::WHITE) {
             if (sides[i][0][1].getCubieTop() != COLOR::WHITE) {
@@ -563,7 +627,7 @@ bool Cube::checkWhiteCross() {
         }
     }
     return true;
-}
+}*/
 
 COLOR_cube Cube::getCube() {
     return cube;
