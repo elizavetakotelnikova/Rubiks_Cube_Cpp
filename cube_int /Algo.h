@@ -31,4 +31,9 @@ public:
 
     void SolveYellowFace(Cube &Cube);
     bool IsSolvedYellow(Cube &Cube);
+
+    void solveOrange(Cube &Cube);
+    void solveRed(Cube &Cube);
+    void solveBlue(Cube &Cube);
+    void solveGreen(Cube &Cube);
 };
