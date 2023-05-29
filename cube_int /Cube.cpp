@@ -37,15 +37,15 @@ std::string Cube::printColor(int x) {
         case 0: return "Yellow face";
         case 1: return "White face";
         case 2: return "Green face";
-        case 3: return "Red face";
-        case 4: return "Blue face";
+        case 3: return "Right face";
+        case 4: return "Back face";
         case 5: return "Orange face";
     }
 }
 
 void Cube::Shuffle() {
     history.clear();
-    for (int i = 0; i < 25; i++) {
+    for (int i = 0; i < 21; i++) {
         int random_value = abs(rand() % 18);
         Rotate(static_cast<COMMANDS>(random_value));
     }
@@ -91,50 +91,51 @@ void Cube::Write(const std::string& filename) {
     File.close();
 };
 
-/*void readFromFile(const string& fileName) {
-    ifstream file;
-    file.open(fileName);
-    std::string line;
+void Cube::Read(const std::string& filename) {
+    std::ifstream file;
+    file.open(filename);
+    std::string str;
     if (file.is_open()) {
-        int color = 0;
-        int row = -1;
-        while (std::getline(file, line)) {
-            if (line == "---") {
+        int face = 0;
+        int row = 0;
+        while (std::getline(file, str)) {
+            if (str == "---") {
                 continue;
-            } else {
-                row += 1;
-                for (int i = 0; i < line.length(); i++) {
-                    faces[color][row][i] = colorToInt(line[i]);
-                }
-                if (row == 2) {
-                    row = -1;
-                    color++;
-                }
             }
-
+            cube[face][row][0] = inputToInt(str[0]);
+            cube[face][row][1] = inputToInt(str[1]);
+            cube[face][row][2] = inputToInt(str[2]);
+            row = (row + 1) % 3;
+            if (row == 0) {
+                face = (face + 1) % 6;
+            }
         }
     }
     file.close();
-}*/
+}
 
-void Cube::Read(const std::string& filename) {
+/*void Cube::Read(const std::string& filename) {
     std::ifstream File(filename);
     File.open(filename);
     std::string str;
     if (File.is_open()) {
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 3;) {
-                std::getline(File, str);
-                cube[i][j][0] = inputToInt(str[0]);
-                cube[i][j][1] = inputToInt(str[1]);
-                cube[i][j][2] = inputToInt(str[2]);
+        File.seekg(0);
+        int row = 0;
+        while (std::getline(File, str)) {
+            if (str == "---") {
+                continue;
             }
+            for (int j = 0; j < 3;j++) {
+                cube[row][j][0] = inputToInt(str[0]);
+                cube[row][j][1] = inputToInt(str[1]);
+                cube[row][j][2] = inputToInt(str[2]);
+            }
+            row++;
         }
-        std::getline(File, str);
     }
     std::cout << "Cube's state was successfully read from the file" << std::endl;
     File.close();
-}
+}*/
 
 bool Cube::isSolved() {
     for (int i = 0; i < 6; i++) {
