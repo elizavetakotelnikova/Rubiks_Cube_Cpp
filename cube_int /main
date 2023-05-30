@@ -24,7 +24,7 @@ int main() {
     new_cube.printCube();
     new_algo.cornerCubiesSolver(new_cube);
     new_cube.printCube();
-    new_algo.solvedSides(new_cube);
+    new_algo.solveCorners(new_cube);
     new_cube.printCube();
     //new_cube.printCube();
 }
