@@ -6,10 +6,25 @@
 int main() {
     Cube new_cube;
     Algo new_algo{};
+    COLOR_cube cur_cube = new_cube.getCube();
     std::string filename = "input.txt";
-    new_cube.Read(filename);
+    //new_cube.Read(filename);
     new_cube.Shuffle();
     new_cube.printCube();
     new_algo.makeWhiteCross(new_cube);
+    //new_cube.Rotate(U);
+    new_cube.printRotations();
+    new_algo.firstLayerSolver(new_cube);
     new_cube.printCube();
+    new_algo.MiddleLayer(new_cube);
+    new_cube.printCube();
+    new_algo.yellowCrossSolver(new_cube);
+    new_cube.printCube();
+    new_algo.SolveYellowFace(new_cube);
+    new_cube.printCube();
+    new_algo.cornerCubiesSolver(new_cube);
+    new_cube.printCube();
+    new_algo.solvedSides(new_cube);
+    new_cube.printCube();
+    //new_cube.printCube();
 }
