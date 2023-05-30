@@ -1921,37 +1921,71 @@ void::Algo::cornerCubiesSolver(Cube& Cube){
 
 }
 
-void::Algo::solvedSides(Cube& Cube){
+bool Algo::areCornersSolved(Cube &Cube) {
     COLOR_cube current_cube = Cube.getCube();
-    if(current_cube[3][0][1] == COLOR::ORANGE && current_cube[2][0][1] == COLOR::RED && current_cube[5][0][1] == COLOR::GREEN){
-        Cube.Rotate(R);
-        Cube.Rotate(Uprime);
-        Cube.Rotate(R);
-        Cube.Rotate(U);
-        Cube.Rotate(R);
-        Cube.Rotate(U);
-        Cube.Rotate(R);
-        Cube.Rotate(Uprime);
-        Cube.Rotate(Rprime);
-        Cube.Rotate(Uprime);
-        Cube.Rotate(R);
-        Cube.Rotate(R);
+    if (current_cube[2][0][1] == COLOR::GREEN && current_cube[3][0][1] == COLOR::RED
+       && current_cube[4][0][1] == COLOR::BLUE && current_cube[5][0][1] == COLOR::ORANGE) {
+        return true;
     }
+    return false;
+}
+
+void::Algo::solveCorners(Cube& Cube){
+    COLOR_cube current_cube = Cube.getCube();
+    while (!areCornersSolved(Cube)) {
+        if (current_cube[3][0][1] == COLOR::ORANGE && current_cube[2][0][1] == COLOR::RED && current_cube[5][0][1] == COLOR::GREEN){
+            Cube.Rotate(R2);
+            Cube.Rotate(U);
+            Cube.Rotate(R);
+            Cube.Rotate(U);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(U);
+            Cube.Rotate(Rprime);
+        }
     else if(current_cube[3][0][1] == COLOR::GREEN && current_cube[2][0][1] == COLOR::ORANGE && current_cube[5][0][1] == COLOR::RED){
-        Cube.Rotate(R);
-        Cube.Rotate(R);
-        Cube.Rotate(U);
-        Cube.Rotate(R);
-        Cube.Rotate(U);
-        Cube.Rotate(Rprime);
-        Cube.Rotate(Uprime);
-        Cube.Rotate(Rprime);
-        Cube.Rotate(Uprime);
-        Cube.Rotate(Rprime);
-        Cube.Rotate(U);
-        Cube.Rotate(Rprime);
-    }
-    else if(current_cube[3][0][1] == COLOR::BLUE && current_cube[4][0][1] == COLOR::RED && current_cube[2][0][1] == COLOR::ORANGE && current_cube[5][0][1] == COLOR::GREEN){
+            Cube.Rotate(R);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R);
+            Cube.Rotate(U);
+            Cube.Rotate(R);
+            Cube.Rotate(U);
+            Cube.Rotate(R);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R2);
+        }
+        else if (current_cube[4][0][1] == COLOR::RED && current_cube[3][0][1] == COLOR::ORANGE && current_cube[5][0][1] == COLOR::BLUE){
+            Cube.Rotate(L);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(L);
+            Cube.Rotate(U);
+            Cube.Rotate(L);
+            Cube.Rotate(U);
+            Cube.Rotate(L);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(Lprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(L2);
+        }
+        else if (current_cube[4][0][1] == COLOR::ORANGE && current_cube[5][0][1] == COLOR::RED && current_cube[3][0][1] == COLOR::BLUE){
+            Cube.Rotate(L2);
+            Cube.Rotate(U);
+            Cube.Rotate(L);
+            Cube.Rotate(U);
+            Cube.Rotate(Lprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(Lprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(Lprime);
+            Cube.Rotate(U);
+            Cube.Rotate(Lprime);
+        }
+    else if (current_cube[3][0][1] == COLOR::BLUE && current_cube[4][0][1] == COLOR::RED && current_cube[2][0][1] == COLOR::ORANGE && current_cube[5][0][1] == COLOR::GREEN){
         Cube.Rotate(R);
         Cube.Rotate(Bprime);
         Cube.Rotate(Rprime);
@@ -1967,7 +2001,7 @@ void::Algo::solvedSides(Cube& Cube){
         Cube.Rotate(F);
         Cube.Rotate(U);
     }
-    else if(current_cube[3][0][1] == COLOR::ORANGE && current_cube[5][0][1] == COLOR::RED && current_cube[2][0][1] == COLOR::BLUE && current_cube[4][0][1] == COLOR::GREEN){
+    else if (current_cube[3][0][1] == COLOR::ORANGE && current_cube[5][0][1] == COLOR::RED && current_cube[2][0][1] == COLOR::BLUE && current_cube[4][0][1] == COLOR::GREEN){
         Cube.Rotate(R);
         Cube.Rotate(R);
         Cube.Rotate(L);
@@ -1988,5 +2022,6 @@ void::Algo::solvedSides(Cube& Cube){
         Cube.Rotate(R);
         Cube.Rotate(L);
         Cube.Rotate(L);
+    }
     }
 }
