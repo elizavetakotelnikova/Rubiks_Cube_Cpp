@@ -1633,33 +1633,33 @@ void::Algo::yellowCrossSolver(Cube &Cube) {
 
 int::Algo::maxCornersSum(Cube& Cube){
     COLOR_cube current_cube = Cube.getCube();
-    int counter1, counter2, counter3, counter4 = 0;
+    int counter1 = 0, counter2 = 0, counter3 = 0, counter4 = 0;
     //if front is green
-    if(current_cube[2][0][2] == COLOR::GREEN && current_cube[2][0][0] == COLOR::GREEN){
-        counter1+=2;
+    if (current_cube[2][0][2] == COLOR::GREEN && current_cube[2][0][0] == COLOR::GREEN){
+        counter1 += 2;
     }
-    else if(current_cube[2][0][0] == COLOR::GREEN || current_cube[2][0][2] == COLOR::GREEN){
-        counter1+=1;
+    else if (current_cube[2][0][0] == COLOR::GREEN || current_cube[2][0][2] == COLOR::GREEN){
+        counter1 += 1;
     }
-    if(current_cube[5][0][2] == COLOR::ORANGE && current_cube[5][0][0] == COLOR::ORANGE){
-        counter1+=2;
+    if (current_cube[5][0][2] == COLOR::ORANGE && current_cube[5][0][0] == COLOR::ORANGE){
+        counter1 += 2;
     }
     else if(current_cube[5][0][0] == COLOR::ORANGE || current_cube[5][0][2] == COLOR::ORANGE){
-        counter1+=1;
+        counter1 += 1;
     }
-    if(current_cube[5][0][2] == COLOR::BLUE && current_cube[5][0][0] == COLOR::BLUE){
+    if (current_cube[5][0][2] == COLOR::BLUE && current_cube[5][0][0] == COLOR::BLUE){
         counter1+=2;
     }
-    else if(current_cube[5][0][0] == COLOR::BLUE || current_cube[5][0][2] == COLOR::BLUE){
+    else if (current_cube[5][0][0] == COLOR::BLUE || current_cube[5][0][2] == COLOR::BLUE){
         counter1+=1;
     }
-    if(current_cube[3][0][2] == COLOR::RED && current_cube[3][0][0] == COLOR::RED){
-        counter1+=2;
+    if (current_cube[3][0][2] == COLOR::RED && current_cube[3][0][0] == COLOR::RED){
+        counter1 += 2;
     }
     else if(current_cube[3][0][0] == COLOR::RED || current_cube[3][0][2] == COLOR::RED){
-        counter1+=1;
+        counter1 += 1;
     }
-    else{
+    else {
         counter1 = 0;
     }
 
@@ -1727,44 +1727,44 @@ int::Algo::maxCornersSum(Cube& Cube){
     Cube.Rotate(U);
     //if front is green
     if(current_cube[2][0][2] == COLOR::GREEN && current_cube[2][0][0] == COLOR::GREEN){
-        counter4+=2;
+        counter4 += 2;
     }
     else if(current_cube[2][0][0] == COLOR::GREEN || current_cube[2][0][2] == COLOR::GREEN){
-        counter4+=1;
+        counter4 += 1;
     }
     if(current_cube[5][0][2] == COLOR::ORANGE && current_cube[5][0][0] == COLOR::ORANGE){
-        counter4+=2;
+        counter4 += 2;
     }
     else if(current_cube[5][0][0] == COLOR::ORANGE || current_cube[5][0][2] == COLOR::ORANGE){
         counter4+=1;
     }
     if(current_cube[5][0][2] == COLOR::BLUE && current_cube[5][0][0] == COLOR::BLUE){
-        counter4+=2;
+        counter4 += 2;
     }
     else if(current_cube[5][0][0] == COLOR::BLUE || current_cube[5][0][2] == COLOR::BLUE){
-        counter4+=1;
+        counter4 += 1;
     }
     if(current_cube[3][0][2] == COLOR::RED && current_cube[3][0][0] == COLOR::RED){
-        counter4+=2;
+        counter4 += 2;
     }
     else if(current_cube[3][0][0] == COLOR::RED || current_cube[3][0][2] == COLOR::RED){
-        counter4+=1;
+        counter4 += 1;
     }
     else{
         counter4 = 0;
     }
     Cube.Rotate(U);
     int maximum = std::max(std::max(std::max(counter1,counter2), counter3), counter4);
-    if(maximum == counter1){
+    if (maximum == counter1){
         return 1;
     }
-    else if(maximum == counter2){
+    else if (maximum == counter2){
         return 2;
     }
-    else if(maximum == counter3){
+    else if (maximum == counter3){
         return 3;
     }
-    else if(maximum == counter4){
+    else {
         return 4;
     }
 }
@@ -1788,7 +1788,7 @@ void::Algo::cornerCubiesSolver(Cube& Cube){
     //if(Max_corners_sum(Cube) == 1){
     //   Cube.Rotate(U);
     //}
-    if(maxCornersSum(Cube) == 2){
+    if (maxCornersSum(Cube) == 2){
         Cube.Rotate(U);
     }
     else if(maxCornersSum(Cube) == 3){
@@ -1800,52 +1800,122 @@ void::Algo::cornerCubiesSolver(Cube& Cube){
         Cube.Rotate(U);
         Cube.Rotate(U);
     }
-    else{//не знаю надо ли в случае 1 типо писать эти 4 поворота, что в целом бесмысленно, лучше вообще может это else не писать?
-        Cube.Rotate(U);
-        Cube.Rotate(U);
-        Cube.Rotate(U);
-        Cube.Rotate(U);
-    }
+    Cube.history.clear();
+    Cube.printCube();
     while(!highCornersCorrectPos(Cube)){
-        if (current_cube[2][1][1] == COLOR::GREEN && current_cube[2][0][2] == COLOR::GREEN && current_cube[4][0][0] == COLOR::BLUE){//а не зел, гол, зел? тогда может еще противополож центр в условие дописать(ту то есть про голубой)
+        Cube.printRotations();
+        Cube.printCube();
+        //1.1 со стороны green
+        if (current_cube[2][0][2] == COLOR::BLUE && current_cube[4][0][0] == COLOR::GREEN){//а не зел, гол, зел? тогда может еще противополож центр в условие дописать(ту то есть про голубой)
             Cube.Rotate(R);
-            Cube.Rotate(U);
-            Cube.Rotate(U);
+            Cube.Rotate(U2);
             Cube.Rotate(Rprime);
             Cube.Rotate(Uprime);
             Cube.Rotate(R);
+            Cube.Rotate(U2);
+            Cube.Rotate(Lprime);
             Cube.Rotate(U);
-            Cube.Rotate(U);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(L);
         }
-        else if (current_cube[5][1][1] == COLOR::ORANGE && current_cube[5][0][2] == COLOR::ORANGE && current_cube[3][0][0] == COLOR::RED){//ор,кр,ор
+        //1.3 со стороны orange
+        if (current_cube[5][0][2] == COLOR::RED && current_cube[3][0][0] == COLOR::ORANGE){//ор,кр,ор
             Cube.Rotate(B);
-            Cube.Rotate(U);
-            Cube.Rotate(U);
+            Cube.Rotate(U2);
             Cube.Rotate(Bprime);
             Cube.Rotate(Uprime);
             Cube.Rotate(B);
+            Cube.Rotate(U2);
+            Cube.Rotate(Fprime);
             Cube.Rotate(U);
-            Cube.Rotate(U);
+            Cube.Rotate(Bprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(F);
         }
-        else if (current_cube[4][1][1] == COLOR::BLUE && current_cube[4][0][2] == COLOR::BLUE && current_cube[2][0][0] == COLOR::GREEN){//гол,зел,гол
+        if (current_cube[4][0][2] == COLOR::GREEN && current_cube[2][0][0] == COLOR::BLUE){//гол,зел,гол
             Cube.Rotate(L);
-            Cube.Rotate(U);
-            Cube.Rotate(U);
+            Cube.Rotate(U2);
             Cube.Rotate(Lprime);
             Cube.Rotate(Uprime);
             Cube.Rotate(L);
+            Cube.Rotate(U2);
+            Cube.Rotate(Rprime);
             Cube.Rotate(U);
-            Cube.Rotate(U);
-        }
-        else if (current_cube[3][1][1] == COLOR::RED && current_cube[3][0][2] == COLOR::RED && current_cube[5][0][0] == COLOR::ORANGE){//кр,ор,кр
+            Cube.Rotate(Lprime);
+            Cube.Rotate(Uprime);
             Cube.Rotate(R);
+        }
+        //2.1
+        if (current_cube[5][0][2] == COLOR::ORANGE && current_cube[3][0][2] == COLOR::RED){//гол,зел,гол
+            Cube.Rotate(Lprime);
             Cube.Rotate(U);
+            Cube.Rotate(R);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(L);
+            Cube.Rotate(U);
+            Cube.Rotate(Lprime);
             Cube.Rotate(U);
             Cube.Rotate(Rprime);
             Cube.Rotate(Uprime);
+            Cube.Rotate(L);
+            Cube.Rotate(U2);
             Cube.Rotate(R);
+            Cube.Rotate(U2);
+            Cube.Rotate(Rprime);
+        }
+        //со стороны red, 1.2
+        if (current_cube[3][0][2] == COLOR::ORANGE && current_cube[5][0][0] == COLOR::RED){//кр,ор,кр
+            Cube.Rotate(F);
+            Cube.Rotate(U2);
+            Cube.Rotate(Fprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(F);
+            Cube.Rotate(U2);
+            Cube.Rotate(Bprime);
             Cube.Rotate(U);
+            Cube.Rotate(Fprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(B);
+        }
+        if (current_cube[2][0][2] != COLOR::GREEN ){//а не зел, гол, зел? тогда может еще противополож центр в условие дописать(ту то есть про голубой)
+            Cube.Rotate(R);
+            Cube.Rotate(U2);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R);
+            Cube.Rotate(U2);
+            Cube.Rotate(Lprime);
             Cube.Rotate(U);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(L);
+        }
+        if (current_cube[2][0][0] != COLOR::GREEN){//гол,зел,гол
+            Cube.Rotate(L);
+            Cube.Rotate(U2);
+            Cube.Rotate(Lprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(L);
+            Cube.Rotate(U2);
+            Cube.Rotate(Rprime);
+            Cube.Rotate(U);
+            Cube.Rotate(Lprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(R);
+        }
+        if (current_cube[5][0][2] != COLOR::ORANGE){//ор,кр,ор
+            Cube.Rotate(B);
+            Cube.Rotate(U2);
+            Cube.Rotate(Bprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(B);
+            Cube.Rotate(U2);
+            Cube.Rotate(Fprime);
+            Cube.Rotate(U);
+            Cube.Rotate(Bprime);
+            Cube.Rotate(Uprime);
+            Cube.Rotate(F);
         }
     }
 
