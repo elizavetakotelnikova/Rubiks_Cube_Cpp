@@ -23,7 +23,8 @@ public:
     int maxCornersSum(Cube & Cube);
     void cornerCubiesSolver(Cube& Cube);
     bool highCornersCorrectPos(Cube &Cube);
-    void solvedSides(Cube &Cube);
+    void solveCorners(Cube &Cube);
+    bool areCornersSolved(Cube &Cube);
 
     void MiddleLayer(Cube &Cube);
     void fixWrongSecondLayerEdges(COLOR_cube current_cube, Cube &Cube);
