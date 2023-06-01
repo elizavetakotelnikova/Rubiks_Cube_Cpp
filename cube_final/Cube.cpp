@@ -607,3 +607,69 @@ face_cube Cube::getFace(int index) {
 std::vector<std::string> Cube::getHistory() {
     return history;
 }
+COMMANDS Cube::inputQueryToRotation(const std::string& x) {
+    if (x == "F") {
+        return F;
+    }
+    else if (x == "Fprime") {
+        return Fprime;
+    }
+    else if (x == "F2") {
+        return F2;
+    }
+    else if (x == "R") {
+        return R;
+    }
+    else if (x == "Rprime") {
+        return Rprime;
+    }
+    else if (x == "R2") {
+        return R2;
+    }
+    else if (x == "L") {
+        return L;
+    }
+    else if (x == "Lprime") {
+        return Lprime;
+    }
+    else if (x == "L2") {
+        return L2;
+    }
+    else if (x == "B") {
+        return B;
+    }
+    else if (x == "Bprime") {
+        return Bprime;
+    }
+    else if (x == "B2") {
+        return B2;
+    }
+    else if (x == "D") {
+        return D;
+    }
+    else if (x == "Dprime") {
+        return Dprime;
+    }
+    else if (x == "D2") {
+        return D2;
+    }
+    else if (x == "U") {
+        return U;
+    }
+    else if (x == "Uprime") {
+        return Uprime;
+    }
+    else if (x == "U2") {
+        return U2;
+    }
+}
+
+void Cube::rotateQuery(int amount) {
+    std::string query;
+    COMMANDS query_number;
+    for (int i = 0; i < amount; i++) {
+        std::cin >> query;
+        query_number = inputQueryToRotation(query);
+        Rotate(query_number);
+    }
+}
