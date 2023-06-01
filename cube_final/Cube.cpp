@@ -15,7 +15,7 @@ bool Cube::isCubecorrect(Cube &Cube){
                 else if (current_cube[i][j][k] == ORANGE) {
                     counter_color[5]++;
                     if (counter_color[5] > 6){
-                        returb false;
+                        return false;
                     }
                 }
                 else if (current_cube[i][j][k] == BLUE) {
