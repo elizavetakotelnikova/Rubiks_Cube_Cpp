@@ -91,7 +91,6 @@ void Algo::makeWhiteCross(Cube &cube) {
 
         if (current_cube[0][2][1] == COLOR::WHITE) {
             int ce = current_cube[2][0][1]; //current edge
-            //std::queue<int> Q = {5, 2, 3, 4};
             std::queue<int> Q;
             Q.push(2);
             Q.push(3);
@@ -274,7 +273,7 @@ void Algo::SetEdgeFront(int fc, Cube& Cube, int ce) {
     else if (fc == COLOR::BLUE) {
         Cube.Rotate(Bprime);
         Cube.Rotate(Dprime);
-        Cube.Rotate(Lprime); //check please
+        Cube.Rotate(Lprime);
         Cube.Rotate(D);
     }
     else {
@@ -462,7 +461,7 @@ void Algo::fixWrongSecondLayerEdges(COLOR_cube current_cube, Cube& Cube) {
     }
 }
 
-void Algo::middleLayer(Cube& Cube) {
+void Algo::solveMiddleLayer(Cube& Cube) {
     COLOR_cube current_cube = Cube.getCube();
     //Cube.history.clear();
     while (!isSolvedMiddleLayer(current_cube)) {
@@ -519,7 +518,7 @@ void Algo::middleLayer(Cube& Cube) {
                 Cube.Rotate(L);
                 Cube.Rotate(Uprime);
                 Cube.Rotate(Lprime);
-                Cube.Rotate(Uprime); //check Lprime or L
+                Cube.Rotate(Uprime);
                 Cube.Rotate(Lprime);
             }
             else if (ce == COLOR::BLUE && fe == COLOR::RED) {
@@ -668,11 +667,12 @@ void Algo::solveYellowFace(Cube &Cube) {
     if (isSolvedYellow(Cube)) {
         return;
     }
-    //pos 1.1(green)
+
+    //pos 1.1 (green)
     if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
         if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW &&
             current_cube[0][1][2] == COLOR::YELLOW) {
-            if (current_cube[0][2][1] == COLOR::YELLOW && current_cube[2][0][0] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) { //здесь же пофиг на передние ребра?
+            if (current_cube[0][2][1] == COLOR::YELLOW && current_cube[2][0][0] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) {
                 Cube.Rotate(R2);
                 Cube.Rotate(D);
                 Cube.Rotate(Rprime);
@@ -686,11 +686,12 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
-    //pos 1.2(pink)
+
+    //pos 1.2 (red)
     if (current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][2] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
         if (current_cube[0][2][1] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW &&
             current_cube[0][0][1] == COLOR::YELLOW) {
-            if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[3][0][0] == COLOR::YELLOW && current_cube[3][0][2] == COLOR::YELLOW) { //здесь же пофиг на передние ребра?
+            if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[3][0][0] == COLOR::YELLOW && current_cube[3][0][2] == COLOR::YELLOW) {
                 Cube.Rotate(F2);
                 Cube.Rotate(D);
                 Cube.Rotate(Fprime);
@@ -704,11 +705,12 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
-    //pos 1.3(blue)
+
+    //pos 1.3 (blue)
     if (current_cube[0][2][0] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW && current_cube[0][2][2] == COLOR::YELLOW) {
         if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW &&
             current_cube[0][1][2] == COLOR::YELLOW) {
-            if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[4][0][0] == COLOR::YELLOW && current_cube[4][0][2] == COLOR::YELLOW) { //здесь же пофиг на передние ребра?
+            if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[4][0][0] == COLOR::YELLOW && current_cube[4][0][2] == COLOR::YELLOW) {
                 Cube.Rotate(L2);
                 Cube.Rotate(D);
                 Cube.Rotate(Lprime);
@@ -722,11 +724,12 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
-    // pos 1.4(orange)
+
+    // pos 1.4 (orange)
     if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][2][0] == COLOR::YELLOW) {
         if (current_cube[0][2][1] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW &&
             current_cube[0][0][1] == COLOR::YELLOW) {
-            if (current_cube[0][1][2] == COLOR::YELLOW && current_cube[2][0][0] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) { //здесь же пофиг на передние ребра?
+            if (current_cube[0][1][2] == COLOR::YELLOW && current_cube[2][0][0] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) {
                 Cube.Rotate(B2);
                 Cube.Rotate(D);
                 Cube.Rotate(Bprime);
@@ -740,6 +743,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pow 2.1
     if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][2][0] == COLOR::YELLOW) {
         if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
@@ -756,6 +760,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 2.2 (red)
     if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
         if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
@@ -772,6 +777,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 2.3 (blue)
     if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
         if (current_cube[0][0][2] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][2] == COLOR::YELLOW) {
@@ -788,6 +794,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 2.4 (orange)
     if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
         if (current_cube[0][2][1] == COLOR::YELLOW && current_cube[0][2][0] == COLOR::YELLOW && current_cube[0][2][2] == COLOR::YELLOW) {
@@ -804,6 +811,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 3.1
     if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW) {
         if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
@@ -822,6 +830,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 3.2
     if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
         if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
@@ -840,6 +849,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 3.3.
     if (current_cube[0][0][0] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW) {
         if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
@@ -858,6 +868,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 3.4
     if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
         if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
@@ -876,6 +887,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 4.1 (green)
     if (current_cube[0][0][1] == COLOR::YELLOW) {
         if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
@@ -893,6 +905,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 4.2 (red)
     if (current_cube[0][1][2] == COLOR::YELLOW) {
         if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
@@ -910,6 +923,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 4.3 (blue)
     if (current_cube[0][2][1] == COLOR::YELLOW) {
         if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
@@ -927,6 +941,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
+
     //pos 4.4 (orange)
     if (current_cube[0][1][0] == COLOR::YELLOW) {
         if (current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
@@ -944,7 +959,8 @@ void Algo::solveYellowFace(Cube &Cube) {
             }
         }
     }
-    //pos 5.1(green)
+
+    //pos 5.1 (green)
     if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][0][2] == COLOR::YELLOW) {
         if (current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW) {
             if (current_cube[0][2][1] == COLOR::YELLOW) {
@@ -1058,6 +1074,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             return;
         }
     }
+
     //6.4
     if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
         if (current_cube[2][0][0] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW && current_cube[3][0][0] == COLOR::YELLOW && current_cube[5][0][2] == COLOR::YELLOW) {
@@ -1073,6 +1090,7 @@ void Algo::solveYellowFace(Cube &Cube) {
             return;
         }
     }
+
     //7.1
     if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
         if (current_cube[4][0][0] == COLOR::YELLOW && current_cube[4][0][2] == COLOR::YELLOW && current_cube[2][0][0] == COLOR::YELLOW && current_cube[2][0][2] == COLOR::YELLOW) {
@@ -1093,7 +1111,7 @@ void Algo::solveYellowFace(Cube &Cube) {
     //7.2 (red is front)
     if (current_cube[0][0][1] == COLOR::YELLOW && current_cube[0][1][0] == COLOR::YELLOW && current_cube[0][1][1] == COLOR::YELLOW && current_cube[0][1][2] == COLOR::YELLOW && current_cube[0][2][1] == COLOR::YELLOW) {
         if (current_cube[3][0][0] == COLOR::YELLOW && current_cube[3][0][2] == COLOR::YELLOW && current_cube[5][0][0] == COLOR::YELLOW && current_cube[5][0][2] == COLOR::YELLOW) {
-            Cube.Rotate(F);//ВАЖНО!!! вот у тебя тут во 2ом ифе было [4][0][0], [4][0][2], [2][0][0],[2][0][0], я поменяла, но у меня и так и так сработало
+            Cube.Rotate(F);
             Cube.Rotate(U2);
             Cube.Rotate(Fprime);
             Cube.Rotate(Uprime);
@@ -1112,11 +1130,11 @@ void Algo::solveYellowFace(Cube &Cube) {
 void Algo::Solve(Cube& Cube) {
     makeWhiteCross(Cube);
     firstLayerSolver(Cube);
-    middleLayer(Cube);
-    yellowCrossSolver(Cube);
+    solveMiddleLayer(Cube);
+    solveYellowCross(Cube);
     solveYellowFace(Cube);
-    cornerCubiesSolver(Cube);
-    solveCorners(Cube);
+    solveCornerCubies(Cube);
+    solveEdges(Cube);
 }
 
 bool::Algo::isSolvedFirstLayer(Cube& Cube){
@@ -1138,6 +1156,7 @@ bool::Algo::isSolvedFirstLayer(Cube& Cube){
 void::Algo::firstLayerSolver(Cube &Cube) {
     COLOR_cube current_cube = Cube.getCube();
     while (!isSolvedFirstLayer(Cube)) {
+
         //if front side is green
         if(current_cube[5][0][0] == COLOR::WHITE){
             if (current_cube[2][0][2] == COLOR::GREEN && current_cube[0][2][2] == COLOR::ORANGE){
@@ -1198,8 +1217,8 @@ void::Algo::firstLayerSolver(Cube &Cube) {
             Cube.Rotate(Rprime);
             Cube.Rotate(Uprime);
         }
-        //if front side is red(pink)
 
+        //if front side is red
         if (current_cube[2][0][0] == COLOR::WHITE){
             if (current_cube[3][0][2] == COLOR::RED && current_cube[0][2][0] == COLOR::GREEN){
                 Cube.Rotate(F);
@@ -1260,7 +1279,6 @@ void::Algo::firstLayerSolver(Cube &Cube) {
         }
 
         //if front side is blue
-
         if (current_cube[3][0][0] == COLOR::WHITE){
             if(current_cube[4][0][2] == COLOR::BLUE && current_cube[0][0][0] == COLOR::RED){
                 Cube.Rotate(L);
@@ -1269,9 +1287,9 @@ void::Algo::firstLayerSolver(Cube &Cube) {
             }
             else if(current_cube[4][0][2] == COLOR::ORANGE && current_cube[0][0][0] == COLOR::BLUE){
                 Cube.Rotate(U);
-                //Cube.Rotate(Bprime);
-                //Cube.Rotate(U);
-                //Cube.Rotate(B);
+                /*Cube.Rotate(Bprime);
+                Cube.Rotate(U);
+                Cube.Rotate(B);*/
                 Cube.Rotate(B);
                 Cube.Rotate(U);
                 Cube.Rotate(Bprime);
@@ -1432,7 +1450,7 @@ bool Algo::isYellowCross(Cube &cube) {
 }
 
 
-void::Algo::yellowCrossSolver(Cube &Cube) {
+void::Algo::solveYellowCross(Cube &Cube) {
     COLOR_cube current_cube = Cube.getCube();
     while(!isYellowCross(Cube)) {
         if(isSolvedMiddleLayer(current_cube)) {
@@ -1685,7 +1703,7 @@ bool::Algo::highCornersCorrectPos(Cube& Cube){
     return false;
 }
 
-void::Algo::cornerCubiesSolver(Cube& Cube){
+void::Algo::solveCornerCubies(Cube& Cube){
     COLOR_cube current_cube = Cube.getCube();
     std::vector<std::string> history = Cube.getHistory();
     //if(Max_corners_sum(Cube) == 1){
@@ -1824,18 +1842,18 @@ void::Algo::cornerCubiesSolver(Cube& Cube){
 
 }
 
-bool Algo::areCornersSolved(Cube &Cube) {
+bool Algo::areEdgesSolved(Cube &Cube) {
     COLOR_cube current_cube = Cube.getCube();
     if (current_cube[2][0][1] == COLOR::GREEN && current_cube[3][0][1] == COLOR::RED
-       && current_cube[4][0][1] == COLOR::BLUE && current_cube[5][0][1] == COLOR::ORANGE) {
+        && current_cube[4][0][1] == COLOR::BLUE && current_cube[5][0][1] == COLOR::ORANGE) {
         return true;
     }
     return false;
 }
 
-void::Algo::solveCorners(Cube& Cube){
+void::Algo::solveEdges(Cube& Cube){
     COLOR_cube current_cube = Cube.getCube();
-    while (!areCornersSolved(Cube)) {
+    while (!areEdgesSolved(Cube)) {
         if (current_cube[3][0][1] == COLOR::ORANGE && current_cube[2][0][1] == COLOR::RED && current_cube[5][0][1] == COLOR::GREEN){
             Cube.Rotate(R2);
             Cube.Rotate(U);
