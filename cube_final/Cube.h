@@ -61,19 +61,17 @@ public:
     void printCube();
     void printRotations();
 
+    //illustrating cube's state
     uint8_t inputToInt(char x);
     char outputToChar(int x);
     std::string printColor(int x);
 
+    //get methods
     COLOR_cube getCube();
     face_cube getFace(int index);
     std::vector<std::string> getHistory();
 
-    bool checkWhiteCross();
-    void Generate();
-    Cube& operator=(const Cube &a);
-    bool operator==(const Cube &a);
-    bool isSolved();
+    //rotations
     void Rotate(COMMANDS command);
     void Front(int amount);
     void FrontPrime(int amount);
@@ -87,5 +85,9 @@ public:
     void RightPrime(int amount);
     void Back(int amount);
     void BackPrime(int amount);
+
+    //other
+    bool operator==(const Cube &a);
+    bool isSolved();
 };
 #endif
