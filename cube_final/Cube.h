@@ -42,7 +42,10 @@ public:
     void Write(const std::string& filename);
     void printCube();
     void printRotations();
-
+    
+    //invariants
+    bool isCubecorrect(Cube &Cube);
+    
     //illustrating cube's state
     uint8_t inputToInt(char x);
     char outputToChar(int x);
