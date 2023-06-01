@@ -46,14 +46,12 @@ bool Cube::isCubecorrect(Cube &Cube){
             }
         }   
     }
-     for(int i = 0; i < 6; i++){
+    for(int i = 0; i < 6; i++){
         if (counter_color[i] <= 6){
-            return true;
-        }
-        else {
             return false;
         }
     }
+    return true;
 }
 
 Cube::Cube() {
