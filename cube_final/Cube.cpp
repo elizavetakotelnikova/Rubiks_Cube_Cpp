@@ -1,5 +1,57 @@
 #include "cube.h"
 
+bool Cube::isCubecorrect(Cube &Cube){
+    COLOR_cube current_cube = Cube.getCube();
+    int counter_color[6];
+    for (int i = 0; i < 6; i++) {
+        for (int j = 0; j < 3; j++) {
+            for (int k = 0; k < 3; k++) {
+                if (current_cube[i][j][k] == RED) {
+                    counter_color[3]++;
+                    if (counter_color[3] > 6){
+                        return false;
+                    }
+                }
+                else if (current_cube[i][j][k] == ORANGE) {
+                    counter_color[5]++;
+                    if (counter_color[5] > 6){
+                        returb false;
+                    }
+                }
+                else if (current_cube[i][j][k] == BLUE) {
+                    counter_color[4]++;
+                    if (counter_color[4] > 6){
+                        return false;
+                    }
+                }
+                else if (current_cube[i][j][k] == GREEN) {
+                    counter_color[2]++;
+                    if (counter_color[2] > 6){
+                        return false;
+                    }
+                }
+                else if (current_cube[i][j][k] == WHITE) {
+                    counter_color[0]++;
+                    if (counter_color[0] > 6){
+                        return false;
+                    }
+                }
+                else if (current_cube[i][j][k] == YELLOW) {
+                    counter_color[1]++;
+                    if (counter_color[1] > 6){
+                        return false;
+                    }
+                }
+
+            }
+        }
+        if (counter_color[i] <= 6){
+            return true;
+        }
+    }
+    //return false;
+}
+
 Cube::Cube() {
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 3; j++) {
