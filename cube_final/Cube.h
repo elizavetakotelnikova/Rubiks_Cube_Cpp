@@ -25,29 +25,11 @@
  *   the way we are holding rubics cube: white face if at the bottom (1), yellow face is top (0), green face is front (2),
  *   red face is left (3), blue face is back (4) and orange face is right (5)
 */
-enum class FACE: int {UP, LEFT, FRONT, RIGHT, BACK, DOWN};
 enum COMMANDS: int {U, Uprime, U2, F, Fprime, F2, L, Lprime, L2, R, Rprime, R2, B, Bprime, B2, D, Dprime, D2};
 enum COLOR : int {YELLOW, WHITE, GREEN, RED, BLUE, ORANGE};
-enum CORNER {ULB, URB, URF, ULF, DLF, DLB, DRB, DRF}; //position is a solved state
-enum CORNERS_COLOR {YRB, YOB, YOG, YRG, WRG, WRB, WOB, WOG};
-enum EDGE {UB, UR, UF, UL, FR, FL, BL, BR, DF, DL, DB, DR}; // position in s solved state
-enum EDGES_COLOR {YB, YO, YG, YR, GO, GR, BLUERED, BO, WG, WR, WB, WO};
 
 typedef int (*COLOR_cube)[3][3];
 typedef int (*face_cube)[3];
-
-
-struct Face {
-    enum FACE_TYPE {
-        top,
-        bottom,
-        front,
-        back,
-        left,
-        right,
-    };
-    COLOR C[9];
-};
 
 class Cube {
 private:
