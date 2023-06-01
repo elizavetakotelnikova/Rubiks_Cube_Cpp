@@ -2,7 +2,7 @@
 
 bool Cube::isCubecorrect(Cube &Cube){
     COLOR_cube current_cube = Cube.getCube();
-    int counter_color[6];
+    int counter_color[6] = {0,0,0,0,0,0};
     for (int i = 0; i < 6; i++) {
         for (int j = 0; j < 3; j++) {
             for (int k = 0; k < 3; k++) {
@@ -45,9 +45,9 @@ bool Cube::isCubecorrect(Cube &Cube){
 
             }
         }
-        if (counter_color[i] <= 6){
+      
             return true;
-        }
+   
     }
     //return false;
 }
