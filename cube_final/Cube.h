@@ -54,6 +54,8 @@ public:
     std::vector<std::string> getHistory();
 
     //rotations
+    void rotateQuery(int amount);
+    COMMANDS inputQueryToRotation(const std::string& x);
     void Rotate(COMMANDS command);
     void Front(int amount);
     void FrontPrime(int amount);
