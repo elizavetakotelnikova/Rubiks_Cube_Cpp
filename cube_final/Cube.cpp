@@ -164,7 +164,7 @@ bool Cube::operator==(const Cube& a){
     return true;
 }
 
-void Cube::Up(int amount) { //checked!
+void Cube::Up(int amount) {
     int temp[3];
     for (int j = 0; j < amount; j++) {
         for (int i = 0; i < 2; i++) {
@@ -295,16 +295,16 @@ void Cube::Front(int amount) {
         int temp1 = cube[0][2][0];
         int temp2 = cube[0][2][1];
         int temp3 = cube[0][2][2];
-        cube[0][2][0] = cube[3][2][2];//why you add back, if we do front rotate?)
-        cube[0][2][1] = cube[3][1][2];//changed 4 to 3
+        cube[0][2][0] = cube[3][2][2];
+        cube[0][2][1] = cube[3][1][2];
         cube[0][2][2] = cube[3][0][2];
         cube[3][2][2] = cube[1][0][2];
         cube[3][1][2] = cube[1][0][1];
         cube[3][0][2] = cube[1][0][0];
-        cube[1][0][2] = cube[5][0][0];//changed 2 to 5
-        cube[1][0][1] = cube[5][1][0];//01 to 10
-        cube[1][0][0] = cube[5][2][0];//02 to 20
-        cube[5][0][0] = temp1;//changed 4 to 5 and
+        cube[1][0][2] = cube[5][0][0];
+        cube[1][0][1] = cube[5][1][0];
+        cube[1][0][0] = cube[5][2][0];
+        cube[5][0][0] = temp1;
         cube[5][1][0] = temp2;
         cube[5][2][0] = temp3;
     }
@@ -327,12 +327,12 @@ void Cube::FrontPrime(int amount) {
         cube[0][2][0] = cube[5][0][0];
         cube[0][2][1] = cube[5][1][0];
         cube[0][2][2] = cube[5][2][0];
-        cube[5][0][0] = cube[1][0][2];// 100 to 102
-        cube[5][1][0] = cube[1][0][1];//110 to 101
-        cube[5][2][0] = cube[1][0][0];//120 to 100
-        cube[1][0][2] = cube[3][2][2];//302 to 322
+        cube[5][0][0] = cube[1][0][2];
+        cube[5][1][0] = cube[1][0][1];
+        cube[5][2][0] = cube[1][0][0];
+        cube[1][0][2] = cube[3][2][2];
         cube[1][0][1] = cube[3][1][2];
-        cube[1][0][0] = cube[3][0][2];//322 to 302
+        cube[1][0][0] = cube[3][0][2];
         cube[3][2][2] = temp1;
         cube[3][1][2] = temp2;
         cube[3][0][2] = temp3;
@@ -382,7 +382,7 @@ void Cube::RightPrime(int amount) {
         int temp1 = cube[0][0][2];
         int temp2 = cube[0][1][2];
         int temp3 = cube[0][2][2];
-        cube[0][0][2] = cube[4][2][0];//422 to 420...
+        cube[0][0][2] = cube[4][2][0];
         cube[0][1][2] = cube[4][1][0];
         cube[0][2][2] = cube[4][0][0];
         cube[4][2][0] = cube[1][0][2];
