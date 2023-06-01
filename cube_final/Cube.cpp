@@ -37,7 +37,7 @@ std::string Cube::printColor(int x) {
         case 0: return "Yellow face";
         case 1: return "White face";
         case 2: return "Green face";
-        case 3: return "Right face";
+        case 3: return "Red face";
         case 4: return "Back face";
         case 5: return "Orange face";
     }
